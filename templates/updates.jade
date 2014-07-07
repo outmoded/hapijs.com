@@ -1,0 +1,52 @@
+extends layout
+
+block title
+  title Latest hapi Updates
+
+block content
+
+  section.github-updates
+    .content
+      h3 Latest Updates
+      - var issueString = weeklyIssues.length === 1 ? 'issue' : 'issues';
+      - var pullRequestString = weeklyPullRequests.length === 1 ? 'pull request' : 'pull requests';
+      - var commitString = weeklyCommits.length === 1 ? 'commit' : 'commits';
+      p During the last week we’ve closed <strong>#{weeklyIssues.length} #{issueString}</strong>, merged <strong>#{weeklyPullRequests.length} #{pullRequestString}</strong> and pushed <strong>#{weeklyCommits.length} #{commitString}</strong> to master branch.
+
+      .cf
+        .column.pull-request-list
+          header.cf
+            h4.pull-left Merged pull requests
+            a.pull-right(href='https://github.com/spumko/hapi/pulls', title='See all pull requests') See all
+
+          ul.unstyled
+            each pullRequest in pullRequests.slice(0, 5)
+              li
+                p.pull-request-number
+                  a(href='#{pullRequest.html_url}') ##{pullRequest.number}
+                p.pull-request-title= pullRequest.title
+
+        .column.closed-issues-list
+          header.cf
+            h4.pull-left Closed issues
+            a.pull-right(href='https://github.com/spumko/hapi/issues?page=1&state=open', title='See all issues') See all
+
+          ul.unstyled
+            each issue in issues.slice(0, 5)
+              li
+                p.issue-number
+                  a(href='#{issue.html_url}') ##{issue.number}
+                p.issue-title= issue.title
+
+  section.changelog
+    .content
+      h3 Changelog
+      ul.unstyled
+        each log in Object.keys(changelog).slice(0, 5)
+          li
+            h4 #{log}
+            ul
+              each item in changelog[log]
+                li
+                  a.issue-number-plain(href='https://github.com/spumko/hapi/issues/#{item.number.slice(1)}') #{item.number}
+                  p.issue-title= item.text

@@ -1,0 +1,21 @@
+extends layout
+
+block title
+  title= title
+
+block content
+
+  .content.page-api.cf 
+
+    .column.api-description
+      .reference !{html}
+
+    .column.nav-secondary
+
+      nav(role='toc')
+        h3 Tutorials
+        ul.unstyled(role='categories')
+          each tutorial in tutorials
+            li(role='category')
+              a(href='/tutorials/#{tutorial.slug}', class=(tutorial.slug === active ? 'active' : '')) !{tutorial.name}
+

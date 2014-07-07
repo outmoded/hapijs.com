@@ -1,0 +1,55 @@
+/*--------------------------------------------------------------------
+* ANIMATIONS
+--------------------------------------------------------------------*/
+
+.animated
+  -webkit-animation-duration: 1s
+  animation-duration: 1s
+  -webkit-animation-fill-mode: both
+  animation-fill-mode: both
+
+@-webkit-keyframes flash
+  0%, 50%, 100%
+    opacity: 1
+
+  25%, 75%
+    opacity: 0
+
+@keyframes flash
+  0%, 50%, 100%
+    opacity: 1
+
+  25%, 75% 
+    opacity: 0
+
+.flash 
+  -webkit-animation-name: flash
+  animation-name: flash
+
+@-webkit-keyframes fadeInDown
+  0%
+    opacity: 0
+    -webkit-transform: translateY(-20px)
+    transform: translateY(-20px)
+
+  100%
+    opacity: 1
+    -webkit-transform: translateY(0)
+    transform: translateY(0)
+
+@keyframes fadeInDown
+  0% 
+    opacity: 0
+    -webkit-transform: translateY(-20px)
+    -ms-transform: translateY(-20px)
+    transform: translateY(-20px)
+
+  100%
+    opacity: 1
+    -webkit-transform: translateY(0)
+    -ms-transform: translateY(0)
+    transform: translateY(0)
+
+.fadeInDown
+  -webkit-animation-name: fadeInDown
+  animation-name: fadeInDown

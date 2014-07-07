@@ -1,0 +1,55 @@
+/*--------------------------------------------------------------------
+* BUTTONS
+--------------------------------------------------------------------*/
+
+button
+  border: none
+
+.button, a.button
+  display: inline-block
+  border-radius: 3px
+  padding: 6px 15px
+  font-size: $font-small
+  font-weight: $font-bold
+  text-align: center
+  text-decoration: none
+  line-height: 1.5
+  background-color: $gray
+  color: white
+  cursor: pointer
+  -webkit-appearance: none
+  transition: all .3s ease-in 
+  -webkit-transition: all .3s ease-in
+
+  &:hover
+    background-color: black
+
+  &.button-primary
+    background-color: $orange
+
+    &:hover
+      background-color: $orange-dark
+
+  &.button-secondary
+    background-color: $green
+
+    &:hover
+      background-color: $green-dark
+
+  &.button-large
+    padding: 15px 30px
+    font-size: $font-base
+
+  &.button-disabled, &:disabled
+    color: $gray-light
+    background-color: lighten($gray-lighter, 50%)
+    cursor: not-allowed
+
+    &.button-primary
+      color: $orange-lighter
+      background-color: $orange-light
+
+@media $smartphone
+  
+  .button
+    width: 100%

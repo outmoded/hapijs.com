@@ -1,0 +1,43 @@
+extends layout
+
+block title
+  title= title
+
+block content
+
+  .content.page-api.cf 
+
+    .column.api-description
+      .reference !{html}
+
+    .column.nav-secondary
+
+      .tag-list.cf
+        p.pull-left Reference version:
+        .tag-list-toggle.pull-right= tag
+          ul.unstyled.tag-list-picker
+            each available in tags
+              if tag !== available.name
+                li
+                  a(href='/api/#{available.name}')= available.name
+
+      nav(role='toc')
+        h3 Table of contents
+        ul.unstyled(role='categories')
+          each cat in toc
+            li(role='category')
+              a(href='##{cat.tag}', class=cat.children.length ? 'section-closed' : '') !{cat.name}
+              ul.unstyled(style="display: none;")
+                each subcat in cat.children
+                  li
+                    a(href='##{subcat.tag}', class=subcat.children.length ? 'section-closed' : '') !{subcat.name}
+                    ul.unstyled(style='display: none;')
+                      each subsubcat in subcat.children
+                        li
+                          a(href='##{subsubcat.tag}', class=subsubcat.children.length ? 'section-closed' : '') !{subsubcat.name}
+                          ul.unstyled(style='display: none;')
+                            each subsubsubcat in subsubcat.children
+                              li
+                                a(href='##{subsubsubcat.tag}') !{subsubsubcat.name}
+
+  script(src='/public/js/app.js')

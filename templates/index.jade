@@ -1,0 +1,83 @@
+extends layout
+
+block title
+  title hapi.js
+
+block header
+
+  .content
+
+    section.introduction.cf
+
+      h2 A rich framework for building applications and services
+      h4 hapi enables developers to focus on writing reusable application logic instead of spending time building infrastructure.
+
+      .install-hapi.cf
+        p $ npm install hapi -g
+        .cursor.animated.flash
+    
+      .latest-update
+        small Current version: <a href='https://github.com/spumko/hapi/tags'>#{tags[0].name}</a> 
+        small  ● Latest update:
+        small  <a href="#{latestUpdate.url}" role="update">#{latestUpdate.updated}</a>
+        small  ● Downloads last month:
+        small  <a href="http://npm-stat.com/charts.html?package=hapi">#{String(downloads.downloads).replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')}</a>
+
+block content
+
+  .content
+    section.community
+      h2 Community
+      p hapi's <strong>stability</strong> and <strong>reliability</strong> is empowering these companies today:
+
+      .cf
+
+        each company in companies.frontPage
+          - var companyProps = companies.all[company.name]
+          a(href='#{companyProps.url}', class='community-logo')
+            img(src='/public/img/#{companyProps.logo}', width=(company.width ? '#{company.width}' : undefined), height=(company.height ? '#{company.height}' : undefined), alt='#{company.name}')
+
+      a(href='/community', class='button button-primary') See more
+
+      p Are you using hapi too? <a href='https://github.com/spumko/hapi/issues/1613'>Let us know</a>.
+
+      p Visit us on IRC in <a href='http://webchat.freenode.net/?channels=hapi'>#hapi</a> on <a href='http://freenode.net'>freenode</a>.
+    section.getting-started !{guide}
+
+      a(href='/tutorials', class='button button-primary') Read more about getting started with hapi
+
+
+      script.
+        var ageString = function (then) {
+
+            then = new Date(then);
+            var now = new Date();
+            var age = Math.round((now.getTime() - then.getTime()) / 60 / 1000); // minutes
+
+            if (age < 60) {
+                if (age === 1) {
+                    return '1 minute ago';
+                }
+
+                return age + ' minutes ago';
+            }
+
+            age = Math.round(age / 60);
+
+            if (age < 60) {
+                if (age === 1) {
+                    return '1 hour ago';
+                }
+
+                return age + ' hours ago';
+            }
+
+            age = Math.round(age / 24);
+            if (age === 1) {
+                return '1 day ago';
+            }
+
+            return age + ' days ago';
+        };
+
+        $('[role=update]').text(ageString($('[role=update]').text()));

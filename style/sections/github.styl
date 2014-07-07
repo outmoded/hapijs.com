@@ -1,0 +1,103 @@
+/*--------------------------------------------------------------------
+* GITHUB ACTIVITY
+--------------------------------------------------------------------*/
+
+.github-updates
+  
+  h3
+    margin-top: 0
+  
+  header, .unstyled
+    margin-bottom: 40px
+  
+  header
+    padding: 15px 0
+    border-bottom: $ui-border
+
+    h4
+      margin: 0
+
+.pull-request-list,
+.closed-issues-list
+  
+  .unstyled
+    
+    li
+      display: block
+      margin-bottom: 15px
+      font-size: $font-small
+      position: relative
+      text-align: left
+
+    p
+      margin-top: 0
+      margin-bottom: 0
+
+      &:last-of-type
+        padding-left: 60px
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+
+.pull-request-number,
+.issue-number
+  position: absolute
+  top: 0
+  left: 0
+  padding: 0 5px
+  width: 50px
+
+  &:hover
+    transition: all .5s ease
+
+.pull-request-number
+  background: $green-light
+
+  &:hover
+    background: $green-lighter
+
+  a
+    color: $green-dark
+
+.issue-number
+  background: $orange-light
+
+  &:hover
+    background: $orange-lighter
+
+  a
+    color: $orange-dark
+
+.changelog
+  
+  ul
+    margin: 0
+
+    li li
+      width: 100%
+
+      &:not(:last-child)
+        padding-bottom: 8px
+
+  .issue-number-plain
+    margin-right: 5px
+
+  li p, li a
+    display: inline-block
+
+  li p
+    margin: 0
+
+@media $smartphone
+
+  .changelog
+
+    li p, li a
+      display: block
+
+    li li
+      padding: 5px 0
+      line-height: 1.5
+
+      &:not(:last-of-type)
+        border-bottom: 1px solid $gray-lighter

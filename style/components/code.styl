@@ -1,0 +1,36 @@
+/*--------------------------------------------------------------------
+* CODE
+--------------------------------------------------------------------*/
+
+p > code, a > code, li > code
+  padding: .2rem .33rem
+  color: $gray-light
+  background-color: lighten($gray-lighter, 65%)
+
+code
+  text-align: left
+  font-family: $font-inconsolata
+
+pre
+  overflow: visible
+
+pre > code
+  display: block
+  padding: 0.5em
+  margin: 0
+  padding: 20px
+  white-space: pre-wrap
+  background-color: lighten($gray-lighter, 80%)
+  word-break: break-all
+  word-wrap: break-word
+
+.hljs-comment
+  color: lighten($gray-light, 20%)
+  font-style: italic
+
+.hljs-keyword
+  font-weight: bold
+
+.hljs-number,
+.hljs-string
+  color: darken($green-light, 30%)

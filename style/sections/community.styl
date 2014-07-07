@@ -1,0 +1,76 @@
+/*--------------------------------------------------------------------
+* COMMUNITY
+--------------------------------------------------------------------*/
+
+.community-logo
+  height: 90px
+  line-height: 90px
+
+  img
+    vertical-align: middle
+
+.community-logo, .community-company-logo
+  cursor: pointer
+  opacity: .8
+
+  &:hover
+    opacity: 1
+
+.company
+  text-align: left
+  font-size: $font-small
+
+  &:not(:last-of-type)
+    margin-bottom: 30px
+
+  &:last-of-type:after
+    display: none
+
+  blockquote p
+    margin: 0 0 10px 0
+
+.community-company-logo, .community-logo
+  display: inline-block
+
+.community-company-logo, blockquote.full-width
+  text-align: center
+
+@media $desktop
+
+  .community
+    .button-primary
+      margin-top: 30px
+
+  .community-logo
+    margin: 5px 20px
+
+  .company
+    
+    .community-company-logo
+      width: 150px
+      float: left
+
+    blockquote
+      padding-left: 200px
+
+      &.full-width
+        padding: 0
+
+@media $mobile-devices
+
+  .community-company-logo
+    display: block
+    margin: 0 auto 20px
+
+@media $tablet
+
+  .community-logo
+    margin: 20px
+
+@media $smartphone
+
+  .community-logo
+    display: block
+    margin: 40px auto
+    max-width: 100%
+

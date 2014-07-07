@@ -1,0 +1,156 @@
+/*--------------------------------------------------------------------
+* HEADER
+--------------------------------------------------------------------*/
+
+header
+
+  p
+    margin: 0
+  
+  nav
+    padding: 20px 0
+
+    ul
+      float: right
+
+    a
+      display: block
+      color: $orange
+      font-weight: 700
+
+      &.logo
+        float: left
+        padding: 0
+        background: url('/public/img/logo.svg') no-repeat 0 0
+        background-size: contain
+
+        &:hover
+          opacity: .8
+
+  .introduction
+    
+    .latest-update p,
+    .latest-update em,
+      display: inline-block
+
+    .latest-update
+
+      p, em
+        font-size: $font-small
+
+    .button-large
+      margin-bottom: 30px
+
+    h2
+      margin-bottom: 0
+
+    h4
+      margin-top: 10px
+      color: $gray-light
+
+  .install-hapi
+    border-radius: 3px
+    padding: 30px
+    margin: 0 auto 30px
+    min-height: 50px
+    font: $font-large $font-inconsolata
+    text-align: left
+    background-color: #3C3B30
+    color: white
+    max-width: 500px
+
+    p, .cursor
+      float: left
+
+    .cursor
+      margin-left: 10px
+      height: 20px
+      width: 10px
+      background: $orange-light
+      -webkit-animation-iteration-count: infinite
+      animation-iteration-count: infinite
+      -webkit-animation-duration: 2s
+      animation-duration: 2s
+
+.js .nav-collapse
+  clip: rect(0 0 0 0)
+  max-height: 0
+  position: absolute
+  display: block
+  overflow: hidden
+  zoom: 1
+
+.nav-collapse.opened
+  max-height: 9999px
+
+.disable-pointer-events
+  pointer-events: none !important
+
+.nav-toggle
+  -webkit-tap-highlight-color: rgba(0,0,0,0)
+  -webkit-touch-callout: none
+  -webkit-user-select: none
+  -moz-user-select: none
+  -ms-user-select: none
+  -o-user-select: none
+  user-select: none
+
+@media $mobile-devices
+
+  header
+
+    nav
+      ul, li
+        width: 100%
+
+      ul.unstyled
+        margin-top: 120px
+        float: none
+
+      li
+        display: block
+        border-bottom: $ui-border
+
+      a
+        padding: 10px 20px
+
+        &.logo
+          height: 75px
+          width: 100px
+
+      .nav-toggle
+        float: right
+        margin-top: 40px
+        width: 30px
+        height: 40px
+        padding: 0
+        background: url('/public/img/icon-menu.svg') 0 0 no-repeat
+        background-size: contain
+
+@media $desktop
+
+  header
+    ul
+      line-height: 150px
+      
+  nav 
+
+    a
+      padding-right: 20px
+
+      &.logo
+        height: 150px
+        width: 201px
+  
+  .js .nav-collapse 
+    position: relative
+  
+  .js .nav-collapse.closed 
+    max-height: none
+
+  .nav-toggle
+    display: none
+
+  .introduction
+    margin: 0 auto
+    max-width: 75%

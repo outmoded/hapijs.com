@@ -1,0 +1,165 @@
+/*--------------------------------------------------------------------
+* API
+--------------------------------------------------------------------*/
+
+.page-api
+  
+  .nav-secondary
+
+    overflow: hidden
+    height: 100%
+
+    nav
+      height: 100%
+      overflow: auto
+    
+      ul.unstyled li
+        padding: 10px 0
+        display: block
+
+        &[role='category'] > a,
+        .section-closed,
+        .section-opened
+          font-weight: bold
+
+        .active
+          color: black
+
+        &:not(:last-of-type)
+          border-bottom: $ui-border
+
+        .section-closed, .section-opened
+          display: block
+          padding-left: 20px
+
+        .section-closed
+          background: url('/public/img/icon-arrow-right.svg') 0 8px no-repeat
+
+        .section-opened
+          background: url('/public/img/icon-arrow-down.svg') 0 8px no-repeat
+
+        .section-closed:not(.active), .section-opened:not(.active)
+          color: $orange
+
+      ul ul.unstyled
+        margin-left: 20px
+
+        li
+          padding: 0
+
+          &:not(:last-of-type)
+            border-bottom: none
+
+        a
+          font-size: $font-small
+
+        a:not(.active):not(.section-closed):not(.section-opened)
+          color: $gray-light
+
+          &:hover
+            color: $gray
+
+  .tag-list, .tag-list-toggle
+    border-radius: 3px
+
+  .tag-list
+    margin: 30px 0
+    padding: 10px 15px
+    border: 1px solid $gray-lighter
+
+    p
+      margin: 5px 0
+
+    .tag-list-toggle, .tag-list-picker
+      border: 1px solid $gray-lighter
+
+    .tag-list-toggle
+      position: relative
+      padding: 5px 10px
+      cursor: pointer
+      color: $orange
+
+      &:hover
+        color: $orange-dark
+
+      &:hover:after
+        border-top-color: $orange-dark
+
+      &:after
+        top: 50%
+        border: solid transparent
+        content: ''
+        height: 0
+        width: 0
+        position: absolute
+        pointer-events: none
+        border-color: rgba(213, 21, 21, 0)
+        border-top-color: $orange
+        border-width: 8px
+        margin-top: -4px
+      
+      &:hover
+        .tag-list-picker, .tag-list-picker li
+          display: block
+      
+      .tag-list-picker
+        display: none
+        position: absolute
+        top: 98%
+        right: 0
+        height: 200px
+        width: 100%
+        overflow-y: scroll
+        z-index: 10
+        border-radius: 0 0 3px 3px
+        background-color: white
+
+        li
+
+          &:not(:last-of-type)
+            border-bottom: 1px solid $gray-lighter
+
+        a
+          padding: 5px 10px
+          display: block
+
+          &:hover
+            background-color: $orange-lighter
+
+
+@media $desktop-wide
+
+  .page-api
+    
+    .tag-list-toggle
+      width: 100px
+
+      &:after
+        left: 70px
+
+
+@media screen and (max-width: 1199px)
+
+  .page-api
+    
+    .tag-list p, .tag-list-toggle
+      float: none
+
+    .tag-list-toggle
+      width: 100%
+
+      &:after
+        left: 90%
+
+@media $desktop
+
+  .page-api
+
+    .column
+      &:first-of-type
+        width: 70%
+        padding-right: 120px
+
+      &:last-of-type
+        width: 30%
+        float: right
