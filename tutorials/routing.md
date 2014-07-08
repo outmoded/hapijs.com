@@ -89,7 +89,7 @@ The second parameter, `reply`, is the method used to respond to the request. As 
 
 ## Config
 
-Aside from these three basic elements, you may also specify a `config` parameter for each route. This is where you configure things like [validation](/tutorials/validation), [authentication](/tutorials/authentication), prerequisites, payload processing, and caching options. More details can be found in the linked tutorials, as well as the [API reference](/api#route-options).
+Aside from these three basic elements, you may also specify a `config` parameter for each route. This is where you configure things like [validation](/tutorials/validation), [authentication](/tutorials/auth), prerequisites, payload processing, and caching options. More details can be found in the linked tutorials, as well as the [API reference](/api#route-options).
 
 Here we will look at a couple of options designed to help generate documentation.
 
