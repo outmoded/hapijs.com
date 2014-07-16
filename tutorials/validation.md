@@ -27,7 +27,7 @@ server.route({
     config: {
         validate: {
             params: {
-                name: Joi.string().min(3).max(10);
+                name: Joi.string().min(3).max(10)
             }
         }
     }
