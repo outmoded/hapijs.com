@@ -52,7 +52,7 @@ $(CACHE_DIR)%.json: | $(ALL_DIRS)
 	./build.js $*.json
 
 # link the newest api reference to index.html
-$(BUILD_DIR)api/index.html: | $(ALL_DIRS)
+$(BUILD_DIR)api/index.html: $(CACHE_DIR)tags.json | $(ALL_DIRS)
 	@cd $(BUILD_DIR)api; ln -sf `ls -1 *.html | tail -n 1` index.html
 
 # build api reference html
