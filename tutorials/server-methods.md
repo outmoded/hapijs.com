@@ -65,7 +65,7 @@ The parameters mean:
 * `segment`: an optional segment name used to isolate cache items, if specified this *must* begin with `'##'`
 * `cache`: an optional string with the name of the cache connection configured on your server to use
 
-More information on the caching options can be found in the [API Reference](/api#servermethodmethod) as well as the documentation for [catbox](https://github.com/spumko/catbox#policy).
+More information on the caching options can be found in the [API Reference](/api#servermethodmethod) as well as the documentation for [catbox](https://github.com/hapijs/catbox#policy).
 
 ## Generate a custom key
 

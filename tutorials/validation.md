@@ -9,7 +9,7 @@ If the validation parameter is set to `false` it signifies that no value is allo
 
 You may also pass a function with the signature `function (value, options, next)` where `value` is the data to be validated, `options` is the validation options as defined on the server object, and `next` is the callback method (with the signature `function (err, value)`) to be called once validation is complete.
 
-The last available setting for the validation parameters, is a [Joi](https://github.com/spumko/joi) object, which allows you to create your validations with a simple and clear object syntax.
+The last available setting for the validation parameters, is a [Joi](https://github.com/hapijs/joi) object, which allows you to create your validations with a simple and clear object syntax.
 
 ## Input
 

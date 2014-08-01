@@ -17,7 +17,7 @@ block content
         .column.pull-request-list
           header.cf
             h4.pull-left Merged pull requests
-            a.pull-right(href='https://github.com/spumko/hapi/pulls', title='See all pull requests') See all
+            a.pull-right(href='https://github.com/hapijs/hapi/pulls', title='See all pull requests') See all
 
           ul.unstyled
             each pullRequest in pullRequests.slice(0, 5)
@@ -29,7 +29,7 @@ block content
         .column.closed-issues-list
           header.cf
             h4.pull-left Closed issues
-            a.pull-right(href='https://github.com/spumko/hapi/issues?page=1&state=open', title='See all issues') See all
+            a.pull-right(href='https://github.com/hapijs/hapi/issues?page=1&state=open', title='See all issues') See all
 
           ul.unstyled
             each issue in issues.slice(0, 5)
@@ -48,5 +48,5 @@ block content
             ul
               each item in changelog[log]
                 li
-                  a.issue-number-plain(href='https://github.com/spumko/hapi/issues/#{item.number.slice(1)}') #{item.number}
+                  a.issue-number-plain(href='https://github.com/hapijs/hapi/issues/#{item.number.slice(1)}') #{item.number}
                   p.issue-title= item.text

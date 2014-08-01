@@ -33,4 +33,4 @@ var server = new Hapi.Server('localhost', 3000, { debug: { request: ['error'] } 
 
 ## Logging plugins
 
-The built-in methods are fairly minimal, however, and for more thorough logging you should really look into using a plugin like [good](https://github.com/spumko/good) or [bucker](https://github.com/nlf/bucker).
+The built-in methods are fairly minimal, however, and for more thorough logging you should really look into using a plugin like [good](https://github.com/hapijs/good) or [bucker](https://github.com/nlf/bucker).

@@ -65,7 +65,7 @@ The `method` parameter can be any valid HTTP method or an asterisk to allow any 
 
 ## Using plugins
 
-A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [good](https://github.com/spumko/good) plugin on to our server.
+A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [good](https://github.com/hapijs/good) plugin on to our server.
 
 The plugin first needs to be installed:
 

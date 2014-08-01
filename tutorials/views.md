@@ -179,4 +179,4 @@ server.ext('onPreResponse', function (request, reply) {
 
 What this does is check the `response` type to make sure it's a view, since we don't want to modify requests that aren't.
 
-Then, we use [Hoek](https://github.com/spumko/hoek)'s `applyToDefaults` method to apply the context given explicitly to this view on top of the default context object we defined at the top level.
+Then, we use [Hoek](https://github.com/hapijs/hoek)'s `applyToDefaults` method to apply the context given explicitly to this view on top of the default context object we defined at the top level.

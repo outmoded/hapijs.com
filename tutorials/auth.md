@@ -5,7 +5,7 @@ Authentication within hapi is based on the concept of `schemes` and `strategies`
 
 Think of a scheme as a general type of auth, like "basic" or "digest". A strategy on the other hand, is a pre-configured and named instance of a scheme.
 
-First, let's look at an example of how to use [hapi-auth-basic](https://github.com/spumko/hapi-auth-basic):
+First, let's look at an example of how to use [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic):
 
 ```javascript
 var Bcrypt = require('bcrypt');
@@ -40,7 +40,7 @@ server.pack.register(Basic, function (err) {
 });
 ```
 
-First, we define our `users` database, which is a simple object in this example. Then we define a validation function, which is a feature specific to [hapi-auth-basic](https://github.com/spumko/hapi-auth-basic) and allows us to verify that the user has provided valid credentials.
+First, we define our `users` database, which is a simple object in this example. Then we define a validation function, which is a feature specific to [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) and allows us to verify that the user has provided valid credentials.
 
 Next, we register the plugin, which creates a scheme with the name of `basic`. This is done within the plugin via [plugin.auth.scheme()](/api#pluginauthscheme).
 
@@ -62,7 +62,7 @@ In this context, `request` is the `request` object created by the server. It is 
 
 `reply` is a callback that must be called when your authentication is complete. It has a signature of `function (err, result)`.
 
-If `err` is a non-null value, this indicates a failure in authentication and the error will be used as a reply to the end user. It is advisable to use [boom](https://github.com/spumko/boom) to create this error to make it simple to provide the appropriate status code and message.
+If `err` is a non-null value, this indicates a failure in authentication and the error will be used as a reply to the end user. It is advisable to use [boom](https://github.com/hapijs/boom) to create this error to make it simple to provide the appropriate status code and message.
 
 The `result` parameter should be an object, though the object itself as well as all of its keys are optional if an `err` is provided.
 
@@ -78,7 +78,7 @@ The `credentials` and `artifacts` properties can be accessed later (in a route h
 
 The `payload` method has the signature `function (request, next)`.
 
-The `next` method here is a callback with the signature `function (err)` and must be called when authentication of the payload is complete. If `err` is null, the payload is successfully authenticated. If it is `false`, it indicates that authentication could not be performed. If it is any other value, that value will be used as the error response to the user (again, recommended to use [boom](https://github.com/spumko/boom)).
+The `next` method here is a callback with the signature `function (err)` and must be called when authentication of the payload is complete. If `err` is null, the payload is successfully authenticated. If it is `false`, it indicates that authentication could not be performed. If it is any other value, that value will be used as the error response to the user (again, recommended to use [boom](https://github.com/hapijs/boom)).
 
 ### `response`
 

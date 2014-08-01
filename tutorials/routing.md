@@ -83,9 +83,9 @@ When determining what handler to use for a particular request, hapi searches pat
 
 The handler option is a function that accepts two parameters, `request`, and `reply`.
 
-The `request` parameter is an object with details about the end user's request, such as path parameters, an associated payload, authentication information, headers, etc. Full documentation on what the `request` object contains can be found in the [API reference](https://github.com/spumko/hapi/blob/master/docs/Reference.md#request-properties).
+The `request` parameter is an object with details about the end user's request, such as path parameters, an associated payload, authentication information, headers, etc. Full documentation on what the `request` object contains can be found in the [API reference](https://github.com/hapijs/hapi/blob/master/docs/Reference.md#request-properties).
 
-The second parameter, `reply`, is the method used to respond to the request. As you've seen in the previous examples, if you wish to respond with a payload you simply pass the payload as a parameter to `reply`. The payload may be a string, a buffer, a JSON serializable object, or a stream. The result of `reply` is a response object, that can be chained with additional methods to alter the response before it is sent. For example `reply('created').code(201)` will send a payload of `created` with an HTTP status code of `201`. You may also set headers, content type, content length, send a redirection response, and many other things that are documented in the [API reference](https://github.com/spumko/hapi/blob/master/docs/Reference.md#response-object).
+The second parameter, `reply`, is the method used to respond to the request. As you've seen in the previous examples, if you wish to respond with a payload you simply pass the payload as a parameter to `reply`. The payload may be a string, a buffer, a JSON serializable object, or a stream. The result of `reply` is a response object, that can be chained with additional methods to alter the response before it is sent. For example `reply('created').code(201)` will send a payload of `created` with an HTTP status code of `201`. You may also set headers, content type, content length, send a redirection response, and many other things that are documented in the [API reference](https://github.com/hapijs/hapi/blob/master/docs/Reference.md#response-object).
 
 ## Config
 
@@ -109,4 +109,4 @@ server.route({
 });
 ```
 
-Functionally speaking these options have no effect, however they can be very valuable when using a plugin like [lout](https://github.com/spumko/lout) to generate documentation for your API. The metadata is associated with the route, and becomes available for inspection or display later.
+Functionally speaking these options have no effect, however they can be very valuable when using a plugin like [lout](https://github.com/hapijs/lout) to generate documentation for your API. The metadata is associated with the route, and becomes available for inspection or display later.
