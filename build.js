@@ -139,6 +139,12 @@ targets['updates.html'] = function (file) {
     Jade.renderFile(Path.join(templatesPath, 'updates.jade'), locals, writeFile(file));
 };
 
+targets['plugins.html'] = function (file) {
+
+    var Plugins = require('./lib/plugins');
+    Jade.renderFile(Path.join(templatesPath, 'plugins.jade'), Plugins, writeFile(file));
+};
+
 targets['404.html'] = function (file) {
 
     Jade.renderFile(Path.join(templatesPath, '404.jade'), writeFile(file));

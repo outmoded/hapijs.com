@@ -22,7 +22,7 @@ TUTORIALS_HTML := $(patsubst %.md,%.html,$(TUTORIALS))
 -include $(CACHE_DIR)tags.mk
 
 # list of all html pages that are NOT api references
-ALL_HTML := $(addprefix $(BUILD_DIR),404.html 500.html community.html index.html updates.html $(TUTORIALS_HTML) tutorials/index.html)
+ALL_HTML := $(addprefix $(BUILD_DIR),404.html 500.html community.html index.html updates.html plugins.html $(TUTORIALS_HTML) tutorials/index.html)
 
 # all images, images/% -> public/img/%
 IMAGES := $(addprefix public/img/,$(notdir $(wildcard images/*)))
@@ -78,6 +78,9 @@ $(BUILD_DIR)updates.html: templates/updates.jade $(CACHE_DIR)changelog.json $(LO
 # community.html
 $(BUILD_DIR)community.html: templates/community.jade lib/community.js $(LAYOUT) | $(ALL_DIRS)
 	./build.js community.html
+
+$(BUILD_DIR)plugins.html: templates/plugins.jade lib/plugins.js $(LAYOUT) | $(ALL_DIRS)
+	./build.js plugins.html
 
 # all other html files, these have no dependencies other than
 # layout and their own template

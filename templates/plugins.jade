@@ -1,0 +1,30 @@
+extends layout
+
+block title
+  title hapi Plugins
+
+block content
+  .content.page-api.cf
+
+    .column.api-description
+      p There are dozens of plugins for hapi, ranging from documentation to authentication, and much more. If you wrote or use a plugin that you don't see on this list, please send us a <a href="https://github.com/hapijs/hapijs.com/blob/beta/lib/plugins.js">pull request</a>.
+
+      each category, categoryName in categories
+        .category
+          a(id=categoryName)
+          h3= categoryName
+
+          ul
+            each plugin, pluginName in category
+              li
+                a(href=plugin.url)= pluginName
+                p= plugin.description
+
+    .column.nav-secondary
+      nav(role='toc')
+        h3 Plugins
+
+        ul.unstyled(role='categories')
+          each category, categoryName in categories
+            li(role='category')
+              a(href='##{categoryName}')= categoryName
