@@ -54,7 +54,13 @@ Several other methods and properties are available to plugins as well.
 
 #### `plugin.select()`
 
-As documented in the [getting started tutorial](/tutorials/getting-started), servers can be created with a label assigned to them. This label can then be used to apply plugins only to specific servers by using the `plugin.select()` method.
+Servers can be created with a label assigned to them:
+
+```javascript
+var server = new Hapi.Server({ labels: 'api' });
+```
+
+This label can then be used to apply plugins only to specific servers by using the `plugin.select()` method.
 
 For example, to add a route only to servers with a label of `'api'`, you would use:
 
