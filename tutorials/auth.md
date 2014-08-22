@@ -110,7 +110,7 @@ The default mode is `false`, which means that the strategy will be registered bu
 
 If set to `true` or `'required'`, which are the same, the strategy will be automatically assigned to all routes that don't contain an `auth` config. This setting means that in order to access the route, the user must be authenticated, and their authentication must be valid, otherwise they will receive an error.
 
-If mode is set to `'optional'` the strategy will still be applied to all routes lacking `auth` config, but in this case the user does *not* need to be authenticated. Authentication data is optional, but most be valid if provided.
+If mode is set to `'optional'` the strategy will still be applied to all routes lacking `auth` config, but in this case the user does *not* need to be authenticated. Authentication data is optional, but must be valid if provided.
 
 The last mode setting is `'try'` which, again, applies to all routes lacking an `auth` config. The difference between `'try'` and `'optional'` is that with `'try'` invalid authentication is accepted, and the user will still reach the route handler.
 
