@@ -41,7 +41,7 @@ block content
   section.changelog
     .content
       h3 Changelog
-      ul.unstyled
+      ul.nodots
         each log in Object.keys(changelog).slice(0, 5)
           li
             h4 #{log}
