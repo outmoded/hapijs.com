@@ -6,7 +6,7 @@ BUILD_DIR := output/
 ALL_DIRS := $(addprefix $(BUILD_DIR),api tutorials public public/css public/css/plugins public/js public/img) $(CACHE_DIR)api
 
 # the templates that impact every page
-LAYOUT := build.js templates/layout.jade templates/includes/navigation.jade templates/includes/footer.jade
+LAYOUT := build.js lib/markdown.js templates/layout.jade templates/includes/navigation.jade templates/includes/footer.jade
 
 # the files lib/locals.js depends on
 LOCALS := $(addprefix $(CACHE_DIR),issues.json weeklyIssues.json commits.json weeklyCommits.json downloads.json tags.json) lib/markdown.js
@@ -48,7 +48,7 @@ $(CACHE_DIR)tags.mk: $(CACHE_DIR)tags.json
 	./build.js tags.mk
 
 # generate json files used by everything else
-$(CACHE_DIR)%.json: | $(ALL_DIRS)
+$(CACHE_DIR)%.json: lib/markdown.js | $(ALL_DIRS)
 	./build.js $*.json
 
 # link the newest api reference to index.html
