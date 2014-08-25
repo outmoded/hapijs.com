@@ -1,6 +1,6 @@
 # Hapijs.com
 
-This is the home of [hapijs.com](hapijs.com). 
+This is the home of [hapijs.com](http://hapijs.com). 
 
 ## Running/developing
 
