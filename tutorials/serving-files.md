@@ -73,13 +73,13 @@ It can also be an object with a `path` property. When using the object form of t
 ```javascript
 server.route({
     method: 'GET',
-    path: '/picture.jpg',
+    path: '/script.js',
     handler: {
         file: {
-            path: 'picture.jpg',
-            filename: 'banana.jpg', // override the filename in the Content-Disposition header
+            path: 'script.js',
+            filename: 'client.js', // override the filename in the Content-Disposition header
             mode: 'attachment', // specify the Content-Disposition is an attachment
-            lookupCompressed: true // allow looking for picture.jpg.gz if the request allows it
+            lookupCompressed: true // allow looking for script.js.gz if the request allows it
         }
     }
 });
