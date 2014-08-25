@@ -105,6 +105,7 @@ targets.tutorial = function (title, file) {
         }
 
         tutorials.html = content.html;
+        tutorials.title = 'Tutorials | ' + content.title;
         tutorials.active = title;
         Jade.renderFile(Path.join(templatesPath, 'tutorial.jade'), tutorials, writeFile(file));
     });
