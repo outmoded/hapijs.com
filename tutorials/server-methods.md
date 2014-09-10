@@ -5,6 +5,7 @@ Server methods are a useful way of sharing functions by attaching them to your s
 
 ```javascript
 var add = function (x, y, next) {
+    // note that the 'next' callback must be used to return values
     next(null, x + y);
 };
 
@@ -37,7 +38,7 @@ becomes accessible as server.methods.math.add
 
 ## Function
 
-The `fn` parameter is the actual function to call when the method is invoked. It can take any number of arguments but *must* accept a callback as its last parameter. The callback accepts three parameters: `err`, `result`, and `ttl`. The first two parameters are err-first callbacks. If an error occurs in your method, pass it as the first argument, otherwise the first argument should be undefined or null and the return value as the second argument. The `ttl` argument is used to tell hapi how long the return value can be cached; if it is specified as `0` then the value will never be cached.
+The `fn` parameter is the actual function to call when the method is invoked. It can take any number of arguments but *must* accept a callback as its last parameter. The callback accepts three parameters: `err`, `result`, and `ttl`. If an error occurs in your method, pass it as the first argument. If there was no error, the first argument should be undefined or null and the return value passed as the second argument. The `ttl` argument is used to tell hapi how long the return value can be cached; if it is specified as `0` then the value will never be cached.
 
 ## Caching
 
