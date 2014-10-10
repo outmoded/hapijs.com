@@ -5,22 +5,20 @@ hapi has extensive support for template rendering, including the ability to load
 
 ## Configuring the server
 
-To get started with views, first we have to configure at least one templating engine on the server. This is done by setting a `view` parameter in the server's options, like so:
+To get started with views, first we have to configure at least one templating engine on the server. This is done by using the `server.views` method:
 
 ```javascript
 var Path = require('path');
 var Hapi = require('hapi');
 
-var serverOptions = {
-    views: {
-        engines: {
-            html: require('handlebars')
-        },
-        path: Path.join(__dirname, 'templates')
-    }
-};
+var server = new Hapi.Server(3000);
+server.views({
+    engines: {
+        html: require('handlebars')
+    },
+    path: Path.join(__dirname, 'templates')
+});
 
-var server = new Hapi.Server(3000, serverOptions);
 ```
 
 We're doing several things here.
@@ -36,17 +34,15 @@ There are many options available to the views engine in hapi. Full documentation
 Note that all options may be set either globally, which configures them for all registered engines, or local to one specific engine, for example:
 
 ```javascript
-var serverOptions = {
-    views: {
-        engines: {
-            'html': {
-                module: require('handlebars'),
-                compileMode: 'sync' // engine specific
-            }
-        },
-        compileMode: 'async' // global setting
-    }
-}
+server.views({
+    engines: {
+        'html': {
+            module: require('handlebars'),
+            compileMode: 'sync' // engine specific
+        }
+    },
+    compileMode: 'async' // global setting
+});
 ```
 
 #### Engines
@@ -93,17 +89,15 @@ views\
 Your configuration might look like:
 
 ```javascript
-{
-    views: {
-        engines: {
-            html: require('handlebars')
-        },
-        basePath: __dirname,
-        path: './views',
-        layoutPath: './views/layout',
-        helpersPath: './views/helpers'
-    }
-}
+server.views({
+    engines: {
+        html: require('handlebars')
+    },
+    basePath: __dirname,
+    path: './views',
+    layoutPath: './views/layout',
+    helpersPath: './views/helpers'
+});
 ```
 
 ## Rendering a view
