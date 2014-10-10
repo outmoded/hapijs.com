@@ -137,6 +137,11 @@ targets['hapidays.html'] = function (file) {
     Jade.renderFile(Path.join(templatesPath, 'hapidays.jade'), writeFile(file));
 };
 
+targets['help.html'] = function (file) {
+
+    Jade.renderFile(Path.join(templatesPath, 'help.jade'), writeFile(file));
+};
+
 targets['updates.html'] = function (file) {
 
     var locals = require('./lib/locals');
