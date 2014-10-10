@@ -22,7 +22,7 @@ TUTORIALS_HTML := $(patsubst %.md,%.html,$(TUTORIALS))
 -include $(CACHE_DIR)tags.mk
 
 # list of all html pages that are NOT api references
-ALL_HTML := $(addprefix $(BUILD_DIR),404.html 500.html community.html index.html updates.html plugins.html $(TUTORIALS_HTML) tutorials/index.html)
+ALL_HTML := $(addprefix $(BUILD_DIR),404.html 500.html community.html index.html updates.html plugins.html hapidays.html $(TUTORIALS_HTML) tutorials/index.html)
 
 # all images, images/% -> public/img/%
 IMAGES := $(addprefix public/img/,$(notdir $(wildcard images/*)))
