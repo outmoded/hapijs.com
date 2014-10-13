@@ -8,21 +8,19 @@ server.views({
     engines: {
         jade: require('jade')
     },
-    path: Path.join(__dirname, 'templates')
+    path: Path.join(__dirname, 'templates'),
+    isCached: Config.getconfig.env === 'production'
 });
 
-server.route({
-    method: 'GET',
-    path: '/',
-    handler: function (request, reply) {
-
-        reply('home');
-    }
-});
-
-server.pack.register({
-    plugin: require('good')
-}, function (err) {
+server.pack.register([
+    require('good'),
+    require('./lib/npm'),
+    require('./lib/github'),
+    require('./lib/community'),
+    require('./lib/stylus'),
+    require('./lib/uglify'),
+    require('./lib/routes')
+], function (err) {
 
     if (err) {
         throw err;

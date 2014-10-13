@@ -17,11 +17,11 @@ block header
         .cursor.animated.flash
     
       .latest-update
-        small Current version: <a href='https://github.com/hapijs/hapi/tags'>#{tags[0].name}</a> 
+        small Current version: <a href='https://github.com/hapijs/hapi/tags'>#{version}</a> 
         small  ● Latest update:
         small  <a href="#{latestUpdate.url}" role="update">#{latestUpdate.updated}</a>
         small  ● Downloads last month:
-        small  <a href="http://npm-stat.com/charts.html?package=hapi">#{String(downloads.downloads).replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')}</a>
+        small  <a href="http://npm-stat.com/charts.html?package=hapi">#{downloads}</a>
 
 block content
 
@@ -37,8 +37,8 @@ block content
 
       .cf
 
-        each company in companies.frontPage
-          - var companyProps = companies.all[company.name]
+        each company in community.frontPage
+          - var companyProps = community.all[company.name]
           a(href='#{companyProps.url}', class='community-logo')
             img(src='/public/img/#{companyProps.logo}', width=(company.width ? '#{company.width}' : undefined), height=(company.height ? '#{company.height}' : undefined), alt='#{company.name}')
 
@@ -50,39 +50,3 @@ block content
     section.getting-started !{guide}
 
       a(href='/tutorials', class='button button-primary') Read more about getting started with hapi
-
-
-      script.
-        var ageString = function (then) {
-
-            then = new Date(then);
-            var now = new Date();
-            var age = Math.round((now.getTime() - then.getTime()) / 60 / 1000); // minutes
-
-            if (age < 60) {
-                if (age === 1) {
-                    return '1 minute ago';
-                }
-
-                return age + ' minutes ago';
-            }
-
-            age = Math.round(age / 60);
-
-            if (age < 60) {
-                if (age === 1) {
-                    return '1 hour ago';
-                }
-
-                return age + ' hours ago';
-            }
-
-            age = Math.round(age / 24);
-            if (age === 1) {
-                return '1 day ago';
-            }
-
-            return age + ' days ago';
-        };
-
-        $('[role=update]').text(ageString($('[role=update]').text()));

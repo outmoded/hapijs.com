@@ -7,9 +7,12 @@
     "getconfig": "^0.3.0",
     "good": "3.x.x",
     "hapi": "7.x.x",
-    "jade": "^1.7.0"
+    "jade": "^1.7.0",
+    "uglify-js": "^2.4.15",
+    "wreck": "^5.0.1"
   },
   "scripts": {
+    "build": "make",
     "start": "node server.js"
   },
   "repository": {
@@ -22,5 +25,8 @@
     "url": "https://github.com/hapijs/hapijs.com/issues"
   },
   "homepage": "https://github.com/hapijs/hapijs.com",
-  "devDependencies": {}
+  "devDependencies": {
+    "glob-cli": "^1.0.0",
+    "stylus": "^0.49.1"
+  }
 }

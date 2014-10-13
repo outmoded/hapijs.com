@@ -81,3 +81,40 @@ if (window.location.hash) {
     expand(target);
     target.addClass('active');
 }
+
+var ageString = function (then) {
+
+    then = new Date(then);
+    var now = new Date();
+    var age = Math.round((now.getTime() - then.getTime()) / 60 / 1000); // minutes
+
+    if (age < 60) {
+        if (age === 1) {
+            return '1 minute ago';
+        }
+
+        return age + ' minutes ago';
+    }
+
+    age = Math.round(age / 60);
+
+    if (age < 60) {
+        if (age === 1) {
+            return '1 hour ago';
+        }
+
+        return age + ' hours ago';
+    }
+
+    age = Math.round(age / 24);
+    if (age === 1) {
+        return '1 day ago';
+    }
+
+    return age + ' days ago';
+};
+
+$(function () {
+    console.log('testing');
+    $('[role=update]').text(ageString($('[role=update]').text()));
+});

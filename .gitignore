@@ -1,4 +1,5 @@
-output
 node_modules
-.cache
 npm-debug.log
+public/js/app.min.js
+public/js/app.min.js.map
+public/css/main.css
