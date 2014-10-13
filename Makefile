@@ -11,6 +11,9 @@ LAYOUT := build.js lib/markdown.js templates/layout.jade templates/includes/navi
 # the files lib/locals.js depends on
 LOCALS := $(addprefix $(CACHE_DIR),issues.json weeklyIssues.json commits.json weeklyCommits.json downloads.json tags.json) lib/markdown.js
 
+# the files dependend on for the contribute page
+CONTRIBUTE_LOCALS := $(addprefix $(CACHE_DIR),newContributorIssues.json helpWantedIssues.json)
+
 # dependencies of main.css
 STYLUS := $(wildcard style/*.styl) $(wildcard style/components/*.styl) $(wildcard style/globals/*.styl) $(wildcard style/sections/*.styl)
 
@@ -22,7 +25,7 @@ TUTORIALS_HTML := $(patsubst %.md,%.html,$(TUTORIALS))
 -include $(CACHE_DIR)tags.mk
 
 # list of all html pages that are NOT api references
-ALL_HTML := $(addprefix $(BUILD_DIR),404.html 500.html community.html hapidays.html help.html index.html updates.html plugins.html $(TUTORIALS_HTML) tutorials/index.html)
+ALL_HTML := $(addprefix $(BUILD_DIR),404.html 500.html community.html contribute.html hapidays.html help.html index.html updates.html plugins.html $(TUTORIALS_HTML) tutorials/index.html)
 
 # all images, images/% -> public/img/%
 IMAGES := $(addprefix public/img/,$(notdir $(wildcard images/*)))
@@ -79,6 +82,10 @@ $(BUILD_DIR)updates.html: templates/updates.jade $(CACHE_DIR)changelog.json $(LO
 $(BUILD_DIR)community.html: templates/community.jade lib/community.js $(LAYOUT) | $(ALL_DIRS)
 	./build.js community.html
 
+# contribute.html
+$(BUILD_DIR)contribute.html: templates/contribute.jade $(CONTRIBUTE_LOCALS) $(LAYOUT) | $(ALL_DIRS)
+	./build.js contribute.html
+
 $(BUILD_DIR)plugins.html: templates/plugins.jade lib/plugins.js $(LAYOUT) | $(ALL_DIRS)
 	./build.js plugins.html
 
@@ -123,15 +130,22 @@ downloads:
 # forcibly refreshes the relevant information and rebuilds
 # dependent static output
 issues:
+	./build.js downloads.json
 	./build.js issues.json
+	./build.js newContributorIssues.json
+	./build.js helpWantedIssues.json
+	./build.js weeklyIssues.json
 	@$(MAKE)
 
 push:
+	./build.js downloads.json
 	./build.js commits.json
+	./build.js weeklyCommits.json
 	./build.js changelog.json
 	@$(MAKE)
 
 create:
+	./build.js downloads.json
 	./build.js tags.json
 	@$(MAKE)
 

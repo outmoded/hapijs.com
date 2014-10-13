@@ -48,6 +48,16 @@ targets['weeklyIssues.json'] = function (file) {
     Github.weeklyIssues(writeFile(file));
 };
 
+targets['newContributorIssues.json'] = function (file) {
+
+    Github.newContributorIssues(writeFile(file));
+};
+
+targets['helpWantedIssues.json'] = function (file) {
+
+    Github.helpWantedIssues(writeFile(file));
+};
+
 targets['commits.json'] = function (file) {
 
     Github.commits(writeFile(file));
@@ -130,6 +140,16 @@ targets['index.html'] = function (file) {
 targets['community.html'] = function (file) {
 
     Jade.renderFile(Path.join(templatesPath, 'community.jade'), require('./lib/community'), writeFile(file));
+};
+
+targets['contribute.html'] = function (file) {
+
+    var locals = {
+        helpWantedIssues: require('./.cache/helpWantedIssues.json'),
+        newContributorIssues: require('./.cache/newContributorIssues.json')
+    };
+
+    Jade.renderFile(Path.join(templatesPath, 'contribute.jade'), locals, writeFile(file));
 };
 
 targets['hapidays.html'] = function (file) {

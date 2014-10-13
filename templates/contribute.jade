@@ -1,0 +1,36 @@
+extends layout
+
+block title
+  title Contributing to hapi
+
+block content
+
+  section.contributing
+    .content
+      h3 Contibuting to hapi
+      p If you're interested in helping out, here's a list of currently open issues that would be a great place to start. Make sure to read the <a href="/styleguide">style guide</a> before you write any code. For further information about the hapijs community, see the <a href="/governance">governance</a> and <a href="/operating">operating guidelines</a>.
+
+      .cf
+        .column.new-contributor-issues
+          header.cf
+            h4.pull-left Issues for new contributors
+            a.pull-right(href='https://github.com/hapijs/hapi/issues?q=is%3Aopen+is%3Aissue+label%3A%22new+contributor%22', title='See all issues for new contributors') See all
+
+          ul.unstyled
+            each issue in newContributorIssues.slice(0, 20)
+              li
+                p.issue-number
+                  a(href='#{issue.html_url}') ##{issue.number}
+                p.issue-title= issue.title
+
+        .column.help-wanted-issues
+          header.cf
+            h4.pull-left Help wanted
+            a.pull-right(href='https://github.com/hapijs/hapi/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22', title='See all issues where help is wanted') See all
+
+          ul.unstyled
+            each issue in helpWantedIssues.slice(0, 20)
+              li
+                p.issue-number
+                  a(href='#{issue.html_url}') ##{issue.number}
+                p.issue-title= issue.title
