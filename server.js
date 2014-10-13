@@ -17,6 +17,7 @@ server.pack.register([
     require('./lib/npm'),
     require('./lib/github'),
     require('./lib/community'),
+    require('./lib/plugins'),
     require('./lib/stylus'),
     require('./lib/uglify'),
     require('./lib/routes')

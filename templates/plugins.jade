@@ -9,7 +9,7 @@ block content
     .column.api-description
       p There are dozens of plugins for hapi, ranging from documentation to authentication, and much more. If you wrote or use a plugin that you don't see on this list, please send us a <a href="https://github.com/hapijs/hapijs.com/blob/beta/lib/plugins.js">pull request</a>.
 
-      each category, categoryName in categories
+      each category, categoryName in plugins.categories
         .category
           a(id=categoryName)
           h3= categoryName
@@ -25,6 +25,6 @@ block content
         h3 Plugins
 
         ul.unstyled(role='categories')
-          each category, categoryName in categories
+          each category, categoryName in plugins.categories
             li(role='category')
               a(href='##{categoryName}')= categoryName
