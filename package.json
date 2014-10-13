@@ -1,22 +1,13 @@
 {
   "name": "hapijs.com",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "hapijs.com",
   "main": "server.js",
   "dependencies": {
-    "async": "^0.9.0",
-    "cheerio": "^0.16.0",
-    "good": "^2.0.0",
-    "hapi": "^5.0.0",
-    "highlight.js": "^8.0.0",
-    "hoek": "^2.3.0",
-    "jade": "^1.3.1",
-    "joi": "^4.2.1",
-    "nipple": "^2.5.2",
-    "robotskirt": "^2.7.1",
-    "stylus": "^0.46.3",
-    "uglify-js2": "^2.1.11",
-    "watch": "^0.10.0"
+    "getconfig": "^0.3.0",
+    "good": "3.x.x",
+    "hapi": "7.x.x",
+    "jade": "^1.7.0"
   },
   "scripts": {
     "start": "node server.js"
@@ -31,6 +22,5 @@
     "url": "https://github.com/hapijs/hapijs.com/issues"
   },
   "homepage": "https://github.com/hapijs/hapijs.com",
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

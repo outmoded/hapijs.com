@@ -1,21 +1,28 @@
+var Config = require('getconfig');
 var Path = require('path');
 var Hapi = require('hapi');
-var server = new Hapi.Server(3000);
-var Watcher = require('./lib/watcher');
+
+var server = new Hapi.Server(Config.host, Config.port);
+
+server.views({
+    engines: {
+        jade: require('jade')
+    },
+    path: Path.join(__dirname, 'templates')
+});
 
 server.route({
     method: 'GET',
-    path: '/{any*}',
-    handler: {
-        directory: {
-            path: Path.join(__dirname, 'output'),
-            index: true,
-            defaultExtension: 'html'
-        }
+    path: '/',
+    handler: function (request, reply) {
+
+        reply('home');
     }
 });
 
-server.pack.require({ good: null }, function (err) {
+server.pack.register({
+    plugin: require('good')
+}, function (err) {
 
     if (err) {
         throw err;
@@ -24,12 +31,5 @@ server.pack.require({ good: null }, function (err) {
     server.start(function () {
 
         server.log('info', 'Static output preview running at: ' + server.info.uri);
-        Watcher.watch();
     });
-});
-
-// suppress error when using "make watch"
-process.on('SIGINT', function () {
-
-    process.exit(0);
 });
