@@ -5,6 +5,7 @@
   "main": "server.js",
   "dependencies": {
     "async": "^0.9.0",
+    "boom": "^2.5.1",
     "getconfig": "^0.3.0",
     "good": "3.x.x",
     "hapi": "7.x.x",

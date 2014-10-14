@@ -15,6 +15,15 @@ server.views({
     isCached: Config.getconfig.env === 'production'
 });
 
+server.ext('onPreResponse', function (request, reply) {
+
+    if (!request.response.isBoom) {
+        return reply();
+    }
+
+    reply.view('error', request.response).code(request.response.output.statusCode);
+});
+
 server.pack.register([
     require('good'),
     require('./lib/npm'),
