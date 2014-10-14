@@ -21,7 +21,7 @@ block content
               li
                 p.issue-number
                   a(href='#{issue.html_url}') ##{issue.number}
-                p.issue-title= issue.title
+                p.issue-title (#{issue.repo}) #{issue.title}
 
         .column.help-wanted-issues
           header.cf
@@ -33,4 +33,4 @@ block content
               li
                 p.issue-number
                   a(href='#{issue.html_url}') ##{issue.number}
-                p.issue-title= issue.title
+                p.issue-title (#{issue.repo}) #{issue.title}
