@@ -1,12 +1,15 @@
 var Config = require('getconfig');
 var Path = require('path');
 var Hapi = require('hapi');
+var Jade = require('jade');
+
+Jade.filters.remarked = require('./lib/remarked');
 
 var server = new Hapi.Server(Config.host, Config.port);
 
 server.views({
     engines: {
-        jade: require('jade')
+        jade: Jade
     },
     path: Path.join(__dirname, 'templates'),
     isCached: Config.getconfig.env === 'production'
