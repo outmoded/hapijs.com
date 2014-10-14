@@ -21,6 +21,7 @@ server.pack.register([
     require('./lib/github'),
     require('./lib/community'),
     require('./lib/plugins'),
+    require('./lib/tutorials'),
     require('./lib/stylus'),
     require('./lib/uglify'),
     require('./lib/routes')
