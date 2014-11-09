@@ -70,7 +70,7 @@ A common desire when creating any web application, is an access log. To add some
 The plugin first needs to be installed:
 
 ```bash
-npm install --save good
+npm install --save good good-console
 ```
 
 Then update your `server.js`:
@@ -97,7 +97,15 @@ server.route({
     }
 });
 
-server.pack.register(Good, function (err) {
+server.pack.register({
+    plugin: Good,
+    options: {
+        reporters: [{
+            reporter: require('good-console'),
+            args:[{ log: '*', request: '*' }]
+        }]
+    }
+}, function (err) {
     if (err) {
         throw err; // something bad happened loading the plugin
     }
