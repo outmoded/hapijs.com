@@ -56,7 +56,7 @@ $(BUILD_DIR)api/index.html: $(CACHE_DIR)tags.json | $(ALL_DIRS)
 	@cd $(BUILD_DIR)api; ln -sf `ls -1 *.html | tail -n 1` index.html
 
 # build api reference html
-$(BUILD_DIR)api/%.html: $(CACHE_DIR)api/%.json templates/api.jade $(LAYOUT) | $(ALL_DIRS)
+$(BUILD_DIR)api/%.html: $(CACHE_DIR)tags.json $(CACHE_DIR)api/%.json templates/api.jade $(LAYOUT) | $(ALL_DIRS)
 	./build.js api/$*.html
 
 # link tutorials/getting-started.html to tutorials/index.html
