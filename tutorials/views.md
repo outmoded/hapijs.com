@@ -124,6 +124,23 @@ In order to pass context to `reply.view()`, you pass an object as the second par
 reply.view('index', { title: 'My home page' });
 ```
 
+If you are using layouts, hapi will add a special context property called `content`. The `content` property contains the rendered HTML of the template so should be used with triple braces in your layout:
+
+```javascript
+reply.view('index', { title: 'My home page' }, { layout: 'homepageLayout' });
+```
+
+```html
+<html>
+    <head>
+        <title>{{title}}</title>
+    </head>
+    <body>
+        {{{content}}}
+    </body>
+</html>
+```
+
 ### View handler
 
 The second method of rendering a view, is using hapi's built in view handler. That route would look like:
