@@ -3,7 +3,7 @@
 
 As with any server software, logging is very important. Hapi has some built in logging methods, as well as some limited capability for viewing these logs.
 
-There are three nearly identical logging methods, `server.log`, `plugin.log`, and `request.log`. The difference between the three is in what event they emit, what object emits the event, and what data is automatically associated. The `server.log` method emits a `log` event on the server, and has the server's URI associated with it. `plugin.log` emits a `log` event on `server.pack.events` with no additional data associated. Lastly, `request.log` emits a `request` event on the `server` and has the request's internal id associated with it.
+There are two nearly identical logging methods, `server.log` and `request.log`. The difference between the two is in what event they emit, what object emits the event, and what data is automatically associated. The `server.log` method emits a `log` event on the server, and has the server's URI associated with it. `server.pack.events` with no additional data associated. Lastly, `request.log` emits a `request` event on the `server` and has the request's internal id associated with it.
 
 They each accept up to three parameters. They are, in order, `tags`, `data`, and `timestamp`.
 
