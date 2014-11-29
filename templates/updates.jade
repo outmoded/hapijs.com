@@ -8,10 +8,10 @@ block content
   section.github-updates
     .content
       h3 Latest Updates
-      - var issueString = weeklyIssues.length === 1 ? 'issue' : 'issues';
-      - var pullRequestString = weeklyPullRequests.length === 1 ? 'pull request' : 'pull requests';
-      - var commitString = weeklyCommits.length === 1 ? 'commit' : 'commits';
-      p During the last week we’ve closed <strong>#{weeklyIssues.length} #{issueString}</strong>, merged <strong>#{weeklyPullRequests.length} #{pullRequestString}</strong> and pushed <strong>#{weeklyCommits.length} #{commitString}</strong> to master branch.
+      - var issueString = issues.length === 1 ? 'issue' : 'issues';
+      - var pullRequestString = pullRequests.length === 1 ? 'pull request' : 'pull requests';
+      - var commitString = commits.length === 1 ? 'commit' : 'commits';
+      p During the last week we’ve closed <strong>#{issues.length} #{issueString}</strong>, merged <strong>#{pullRequests.length} #{pullRequestString}</strong> and pushed <strong>#{commits.length} #{commitString}</strong> to master branch.
 
       .cf
         .column.pull-request-list
@@ -41,12 +41,13 @@ block content
   section.changelog
     .content
       h3 Changelog
-      ul.nodots
-        each log in Object.keys(changelog).slice(0, 5)
-          li
-            h4 #{log}
-            ul
-              each item in changelog[log]
-                li
-                  a.issue-number-plain(href='https://github.com/hapijs/hapi/issues/#{item.number.slice(1)}') #{item.number}
-                  p.issue-title= item.text
+      .changelog!= changelog
+      // ul.nodots
+      //   each log in Object.keys(changelog).slice(0, 5)
+      //     li
+      //       h4 #{log}
+      //       ul
+      //         each item in changelog[log]
+      //           li
+      //             a.issue-number-plain(href='https://github.com/hapijs/hapi/issues/#{item.number.slice(1)}') #{item.number}
+      //             p.issue-title= item.text

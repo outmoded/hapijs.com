@@ -1,11 +1,18 @@
 var Config = require('getconfig');
-var Path = require('path');
+var Crypto = require('crypto');
 var Hapi = require('hapi');
 var Jade = require('jade');
+var Markdown = require('./lib/markdown');
+var Path = require('path');
 
-Jade.filters.remarked = require('./lib/remarked');
+var server = new Hapi.Server();
 
-var server = new Hapi.Server(Config.host, Config.port);
+Jade.filters.markdown = Markdown.parseSync;
+
+server.connection({
+    host: Config.host,
+    port: Config.port
+});
 
 server.views({
     engines: {
@@ -18,19 +25,15 @@ server.views({
 server.ext('onPreResponse', function (request, reply) {
 
     if (!request.response.isBoom) {
-        return reply();
+        return reply.continue();
     }
 
     reply.view('error', request.response).code(request.response.output.statusCode);
 });
 
-server.pack.register([
-    require('good'),
+server.register([
     require('./lib/npm'),
     require('./lib/github'),
-    require('./lib/community'),
-    require('./lib/plugins'),
-    require('./lib/tutorials'),
     require('./lib/stylus'),
     require('./lib/uglify'),
     require('./lib/routes')
@@ -42,6 +45,6 @@ server.pack.register([
 
     server.start(function () {
 
-        server.log('info', 'Static output preview running at: ' + server.info.uri);
+        console.log('hapijs.com running at: ' + server.info.uri);
     });
 });

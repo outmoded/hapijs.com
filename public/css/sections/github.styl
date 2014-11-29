@@ -2,6 +2,26 @@
 * GITHUB ACTIVITY
 --------------------------------------------------------------------*/
 
+.page-api
+  h1, h2, h3, h4, h5, h6
+    position: relative
+
+  h1:hover a.anchor,
+  h2:hover a.anchor,
+  h3:hover a.anchor,
+  h4:hover a.anchor,
+  h5:hover a.anchor,
+  h6:hover a.anchor
+    position: absolute
+    display: inline-block
+    padding-right: 20px
+    left: -20px
+
+    .octicon-link:before
+      font-size: 60%
+      content: '#'
+      vertical-align: center
+
 .contributing,
 .github-updates
   
@@ -72,24 +92,20 @@
     color: $orange-dark
 
 .changelog
-  
-  ul
+  ul.task-list
     margin: 0
 
-    li li
+    li
       width: 100%
-
       &:not(:last-child)
         padding-bottom: 8px
 
-  .issue-number-plain
-    margin-right: 5px
+    li > a > strong
+      margin-right: 5px
+      display: inline-block
 
-  li p, li a
-    display: inline-block
-
-  li p
-    margin: 0
+    ul.task-list
+      font-size: 80%
 
 @media $smartphone
 

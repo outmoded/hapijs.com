@@ -2,19 +2,17 @@
 * CODE
 --------------------------------------------------------------------*/
 
-p > code, a > code, li > code
+.highlight > pre, a > code, li > code, pre > code, p > code
+  font-family: $font-inconsolata
   padding: .2rem .33rem
   color: $gray-light
   background-color: lighten($gray-lighter, 65%)
 
-code
-  text-align: left
-  font-family: $font-inconsolata
-
 pre
   overflow: visible
 
-pre > code
+.highlight > pre, pre > code
+  text-align: left
   display: block
   padding: 0.5em
   margin: 0
@@ -24,13 +22,15 @@ pre > code
   word-break: break-all
   word-wrap: break-word
 
-.hljs-comment
+.pl-c
   color: lighten($gray-light, 20%)
   font-style: italic
 
-.hljs-keyword
+.pl-st,
+.pl-k,
+.pl-s
   font-weight: bold
 
-.hljs-number,
-.hljs-string
+.pl-c1,
+.pl-s1
   color: darken($green-light, 30%)
