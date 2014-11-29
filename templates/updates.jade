@@ -42,12 +42,3 @@ block content
     .content
       h3 Changelog
       .changelog!= changelog
-      // ul.nodots
-      //   each log in Object.keys(changelog).slice(0, 5)
-      //     li
-      //       h4 #{log}
-      //       ul
-      //         each item in changelog[log]
-      //           li
-      //             a.issue-number-plain(href='https://github.com/hapijs/hapi/issues/#{item.number.slice(1)}') #{item.number}
-      //             p.issue-title= item.text
