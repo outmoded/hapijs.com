@@ -2,6 +2,9 @@
 * API
 --------------------------------------------------------------------*/
 
+.api-reference h1:first-of-type
+    display: none
+
 .page-api
   
   .nav-secondary
@@ -13,22 +16,14 @@
       height: calc(100% - 135px)
       overflow: auto
     
-      ul.unstyled li
-        padding: 10px 0
-        display: block
+      & > ul
+        font-size: $font-small
+        margin-top: 0
+        margin-bottom: 0
 
-        &[role='category'] > a,
-        .section-closed,
-        .section-opened
+        .section-opened,
+        .section-closed
           font-weight: bold
-
-        .active
-          color: black
-
-        &:not(:last-of-type)
-          border-bottom: $ui-border
-
-        .section-closed, .section-opened
           display: block
           padding-left: 20px
 
@@ -41,23 +36,53 @@
         .section-closed:not(.active), .section-opened:not(.active)
           color: $orange
 
-      ul ul.unstyled
-        margin-left: 20px
+          &:hover
+            color: $orange-dark
 
-        li
+          & > code
+            color: $orange
+
+            &:hover
+              color: $orange-dark
+
+        .active
+          color: black
+
+          & > code
+            color: black
+
+        & > li > a
+          font-weight: bold
+
+        a > code
+          font-family: inherit
+          background-color: inherit
           padding: 0
 
-          &:not(:last-of-type)
-            border-bottom: none
+        li
+          display: block
+          list-style-type: none
+          margin-bottom: 0
 
-        a
-          font-size: $font-small
+        & > li:not(:last-of-type)
+          border-bottom: $ui-border
 
-        a:not(.active):not(.section-closed):not(.section-opened)
-          color: $gray-light
+        ul
+          margin-top: 0
+          margin-bottom: 0
 
-          &:hover
-            color: $gray
+          a:not(.active):not(.section-closed):not(.section-opened)
+            color: $gray-light
+
+            &:hover
+              color: $gray
+
+            & > code
+              color: $gray-light
+
+              &:hover
+                color: $gray
+
 
   .tag-list, .tag-list-toggle
     border-radius: 3px
@@ -97,6 +122,7 @@
         border-top-color: $orange
         border-width: 8px
         margin-top: -4px
+        margin-left: 15px
       
       &:hover
         .tag-list-picker, .tag-list-picker li
@@ -132,7 +158,7 @@
   .page-api
     
     .tag-list-toggle
-      width: 100px
+      width: 115px
 
       &:after
         left: 70px
@@ -149,7 +175,7 @@
       width: 100%
 
       &:after
-        left: 90%
+        left: 85%
 
 @media $desktop
 

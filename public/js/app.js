@@ -1,15 +1,11 @@
 /* jshint browser:true */
 /* global $:false */
-// fixed positioning for table of contents
-var toc = $('[role=toc]');
-var navDiv = $('.nav-secondary');
-var banner = $('[role=banner]');
-var win = $(window);
-
 // pin the table of contents
 $(window).on('resize scroll', function () {
 
-    var headerBottom = banner.height();
+    var navDiv = $('.nav-secondary');
+    var win = $(window);
+    var headerBottom = $('[role=banner]').height();
     var top = win.scrollTop();
     var winWidth = win.width();
 
@@ -19,10 +15,8 @@ $(window).on('resize scroll', function () {
             var width = winWidth * 0.8 * 0.3;
 
             navDiv.css({ position: 'fixed', top: 0, left: left, width: width + 'px' });
-            toc.css({ width: (width + 15) + 'px' });
         } else {
             navDiv.css({ position: 'static', width: '30%' });
-            toc.css({ width: '100%' });
         }
     }
 });
@@ -51,36 +45,6 @@ var collapse = function (target) {
     target.next('ul').slideUp();
 };
 
-
-// clicked a link
-$('[role=categories] a').click(function (e) {
-
-    var target = $(e.target);
-
-    if (!target.hasClass('active')) {
-        $('.active').removeClass('active');
-        target.addClass('active');
-    }
-
-    if (target.hasClass('section-closed')) {
-        expand(target);
-    }
-    else if (target.hasClass('section-opened')) {
-        collapse(target);
-    }
-    else {
-        expand(target.closest('ul').prev('a'));
-    }
-
-    collapse($('.section-opened:not(.active)').filter(function () { return $(this).next('ul').find('.active').length === 0; }));
-});
-
-// make sure to expand menu to correct location if they got here with a hash
-if (window.location.hash) {
-    var target = $('[role=categories] [href=' + window.location.hash + ']');
-    expand(target);
-    target.addClass('active');
-}
 
 var ageString = function (then) {
 
@@ -115,6 +79,44 @@ var ageString = function (then) {
 };
 
 $(function () {
-    console.log('testing');
+    var nav = $('.api-reference ul').get(0);
+    $(nav).appendTo('.nav-secondary nav');
+    var links = $(nav).find('a + ul');
+    links.prev().addClass('section-closed');
+    links.hide();
     $('[role=update]').text(ageString($('[role=update]').text()));
+
+    $('.api-description a').each(function () {
+        this.id = this.id.replace(/^user\-content\-/, '');
+    });
+
+    // clicked a link
+    $('.nav-secondary nav a').click(function (e) {
+
+        var target = $(e.target);
+
+        if (!target.hasClass('active')) {
+            $('.active').removeClass('active');
+            target.addClass('active');
+        }
+
+        if (target.hasClass('section-closed')) {
+            expand(target);
+        }
+        else if (target.hasClass('section-opened')) {
+            collapse(target);
+        }
+        else {
+            expand(target.closest('ul').prev('a'));
+        }
+
+        collapse($('.section-opened:not(.active)').filter(function () { return $(this).next('ul').find('.active').length === 0; }));
+    });
+
+    // make sure to expand menu to correct location if they got here with a hash
+    if (window.location.hash) {
+        var target = $('.nav-secondary nav a[href=' + window.location.hash + ']');
+        expand(target);
+        target.addClass('active');
+    }
 });
