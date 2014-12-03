@@ -48,43 +48,106 @@ block content
 
       p Visit us on IRC in <a href='http://webchat.freenode.net/?channels=hapi'>#hapi</a> on <a href='http://freenode.net'>freenode</a>.
     section.getting-started
-      :markdown
-        ## Getting started
+      h2 Getting started
+      p Start by creating a 
+        code package.json
+        | :
 
-        Start by creating a `package.json`:
+      .highlight.highlight-bash
+        pre npm init
 
-        ```bash
-        npm init
-        ```
+      p Install hapi and save it to your 
+        code package.json
+        |  dependencies:
 
-        Install hapi and save it to your `package.json` dependencies:
+      .highlight.highlight-bash
+        pre npm install hapi --save
 
-        ```bash
-        npm install hapi --save
-        ```
+      p Create an 
+        code index.js
+        |  file with the following contents:
 
-        Create an `index.js` file with the following contents:
+      .highlight.highlight-javascript
+        pre
+          span.pl-s var
+          |  Hapi 
+          span.pl-k = 
+          span.pl-s3 require
+          | (
+          span.pl-s1
+            span.pl-pds '
+            | hapi
+            span.pl-pds '
+          | );
+          br
 
-        ```javascript
-        var Hapi = require('hapi');
+          br
+          span.pl-c // Create a server with a host and port
+          br
 
-        // Create a server with a host and port
-        var server = new Hapi.Server('localhost', 8000);
+          span.pl-s var
+          |  server 
+          span.pl-k = 
+          span.pl-k new 
+          span.pl-en Hapi.Server
+          | (
+          span.pl-s1
+            span.pl-pds '
+            | localhost
+            span.pl-pds '
+          | , 
+          span.pl-c1 8000
+          | );
+          br
 
-        // Add the route
-        server.route({
-            method: 'GET',
-            path: '/hello',
-            handler: function (request, reply) {
+          br
+          span.pl-c // Add the route
+          br
 
-                reply('hello world');
-            }
-        });
+          | server.route({
+          |   method
+          span.pl-k : 
+          span.pl-s1
+            span.pl-pds '
+            | GET
+            span.pl-pds '
+          | ,
+          |   path
+          span.pl-k :
+          span.pl-s1
+            span.pl-pds '
+            | /hello
+            span.pl-pds '
+          | , 
+          |   handler
+          span.pl-k : 
+          span.pl-st function 
+          | (
+          span.pl-vpf request
+          | , 
+          span.pl-vpf reply
+          | ) {
+          |    reply(
+          span.pl-s1
+            span.pl-pds '
+            | hello world
+            span.pl-pds '
+          | );
+          |   }
+          | });
+          br
 
-        // Start the server
-        server.start();
-        ```
+          br
+          span.pl-c // Start the server
+          br
 
-        Launch the application by running `node .` and open *localhost:8000/hello* in your browser.
+          | server.start();
+          br
+
+        p Launch the application by running 
+          code node .
+          |  and open 
+          em localhost:8000/hello
+          |  in your browser.
 
       a(href='/tutorials', class='button button-primary') Read more about getting started with hapi
