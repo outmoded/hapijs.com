@@ -140,6 +140,13 @@ When you create a server, a pack object is automatically created and stored as t
 
 For more information about packs, check out the [packs tutorial](/tutorials/packs).
 
+## Make Me Hapi
+
+Learn all about hapi through a series of challenges in your terminal!
+
+* Run: `install -g makemehapi` to install globally.
+* Run: `makemehapi` to start the challenges.
+
 ## Everything else
 
 hapi has many, many other capabilities and only a select few are documented in tutorials here. Please use the list to your right to check them out. Everything else is documented in the [API reference](/api) and, as always, feel free to ask question or just visit us on freenode in [#hapi](http://webchat.freenode.net/?channels=hapi).
