@@ -94,6 +94,9 @@ $(function () {
     $('.nav-secondary nav a').click(function (e) {
 
         var target = $(e.target);
+        if (target.is('code')) {
+            target = target.parent();
+        }
 
         if (!target.hasClass('active')) {
             $('.active').removeClass('active');
