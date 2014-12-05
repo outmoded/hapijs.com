@@ -80,6 +80,70 @@ The `payload` method has the signature `function (request, next)`.
 
 The `next` method here is a callback with the signature `function (err)` and must be called when authentication of the payload is complete. If `err` is null, the payload is successfully authenticated. If it is `false`, it indicates that authentication could not be performed. If it is any other value, that value will be used as the error response to the user (again, recommended to use [boom](https://github.com/hapijs/boom)).
 
+```javascript
+var Hapi   = require('hapi');
+var server = new Hapi.Server(3000);
+
+// authenticate method is required
+var authenticate = function (request, repl) {
+  return reply(null, {
+    credentials: {
+      user: {}
+    }
+  });
+}
+
+var payload_authentication = function (request, next) {
+    payload = request.payload;
+
+    user  = {
+        name: 'johnson'
+    };
+
+    error = ( payload == null );
+
+    if (error) {
+      return next( { error: 'my_error' } );
+    };
+
+    if (user === null) {
+      return next( { error: 'user_not_found' } );
+    };
+
+    // save user credentials
+    request.auth.credentials.user = user;
+
+    return next();
+}
+
+server.auth.scheme( 'my_custom_scheme', function (server, optios) {
+  return {
+    authenticate: authenticate,
+    payload: payload_authentication,
+    options: {
+      payload: true
+    }
+  }
+});
+
+server.auth.strategy( 'payload', 'my_custom_scheme' );
+
+server.route ({
+  method: 'POST',
+  path: '/needs_payload_auth',
+  config: {
+    auth: {
+      strategies: ['payload'],
+      payload: true
+    },
+    handler: function (requst, reply) {
+      // your user here
+      request.auth.credentials.user
+    }
+  }
+});
+```
+
 ### `response`
 
 The `response` method also has the signature `function (request, next)`.
