@@ -1,0 +1,17 @@
+extends layout
+
+block title
+  title= title
+
+block content
+  .content.page-api.cf
+    .column.api-description
+      .reference!= html
+
+    .column.nav-secondary
+      nav
+        h3 Tutorials
+        ul
+          each tutorial in tutorials
+            li
+              a(href='/tutorials/#{tutorial.slug}', class=(tutorial.title === active ? 'active' : '')) #{tutorial.title}
