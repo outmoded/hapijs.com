@@ -13,7 +13,6 @@
     "hoek": "2.x.x",
     "jade": "1.x.x",
     "stylus": "0.49.x",
-    "sync-request": "^1.0.1",
     "wreck": "5.x.x"
   },
   "scripts": {
