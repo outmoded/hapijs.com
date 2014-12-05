@@ -80,6 +80,9 @@ The `payload` method has the signature `function (request, next)`.
 
 The `next` method here is a callback with the signature `function (err)` and must be called when authentication of the payload is complete. If `err` is null, the payload is successfully authenticated. If it is `false`, it indicates that authentication could not be performed. If it is any other value, that value will be used as the error response to the user (again, recommended to use [boom](https://github.com/hapijs/boom)).
 
+
+Let's look at an example of how to authenticate a user using a posted json payload
+
 ```javascript
 var Hapi   = require('hapi');
 var server = new Hapi.Server(3000);
@@ -93,6 +96,8 @@ var authenticate = function (request, repl) {
   });
 }
 
+// please update the user validation code accordingly, the json payload
+// will be available at request.payload
 var payload_authentication = function (request, next) {
     payload = request.payload;
 
@@ -120,9 +125,7 @@ server.auth.scheme( 'my_custom_scheme', function (server, optios) {
   return {
     authenticate: authenticate,
     payload: payload_authentication,
-    options: {
-      payload: true
-    }
+    options: { payload: true }
   }
 });
 
