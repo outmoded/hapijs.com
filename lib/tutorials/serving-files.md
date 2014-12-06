@@ -26,7 +26,15 @@ To simplify things, especially if you have multiple routes that respond with fil
 var Path = require('path');
 var Hapi = require('hapi');
 
-var server = new Hapi.Server('localhost', 3000, { files: { relativeTo: Path.join(__dirname, 'public') } });
+var server = new Hapi.Server({
+    connections: {
+        routes: {
+            files: {
+                relativeTo: Path.join(__dirname, 'public')
+            }
+        }
+    }
+});
 
 server.route({
     method: 'GET',
@@ -36,6 +44,8 @@ server.route({
     }
 });
 ```
+
+As you may have guessed by the option passed to the server, the `relativeTo` parameter can also be set on a per-connection or per-route level.
 
 ## File handler
 
@@ -53,7 +63,7 @@ server.route({
 
 ### File handler options
 
-We can also specify the parameter as a function that accepts the `request` object and returns a string representing the file's path:
+We can also specify the parameter as a function that accepts the `request` object and returns a string representing the file's path (absolute or relative):
 
 ```javascript
 server.route({
@@ -120,4 +130,3 @@ server.route({
 Now a request to `/` will reply with HTML showing the contents of the directory. We can take this static server one step further by also setting the `index` option to `true`, which means that a request to `/` will first attempt to load `/index.html`. This gives us a very simple basic static web server in one route.
 
 When using the directory handler with listing enabled, by default hidden files will not be shown in the listing. That can be changed by setting the `showHidden` option to `true`. Like the file handler, the directory handler also has a `lookupCompressed` option to serve precompressed files when possible. You can also set a `defaultExtension` that will be appended to requests if the original path is not found. This means that a request for `/bacon` will also try the file `/bacon.html`.
-
