@@ -6,35 +6,33 @@ When writing a web application, using cookies is often a necessity. When using h
 
 hapi has several configurable options when dealing with cookies. The defaults are probably good for most cases, but can be changed when needed.
 
-To configure them, pass a `state` object to your server when creating the object such as the following:
-
-```javascript
-{
-    cookies: {
-        parse: true, // parse and store in request.cookies
-        failAction: 'error', // may also be 'ignore' or 'log'
-        clearInvalid: false, // remove invalid cookies
-        strictHeader: true // don't allow violations of RFC 6265
-    }
-}
-```
-
-## Configuring a single cookie
-
-In addition to the global configuration, you may also tell the server how to deal with a specific cookie. This is done via the `server.state()` (or `plugin.state()`) method.
-
-Here's an example of common settings for a cookie:
+To configure them, call `server.state(name, options)` where `name` is the string name of the cookie, and `options` is an object used to configure the specific cookie.
 
 ```javascript
 server.state('data', {
     ttl: null,
     isSecure: true,
     isHttpOnly: true,
-    encoding: 'base64json'
+    encoding: 'base64json',
+    clearInvalid: false, // remove invalid cookies
+    strictHeader: true // don't allow violations of RFC 6265
 });
 ```
 
 This configuration will make it so the cookie named `data` has a session time-life (will be deleted when the browser is closed), is flagged both secure and HTTP only (see [RFC 6265](http://tools.ietf.org/html/rfc6265), specifically sections [4.1.2.5](http://tools.ietf.org/html/rfc6265#section-4.1.2.5) and [4.1.2.6](http://tools.ietf.org/html/rfc6265#section-4.1.2.6) for more details about these flags), and tells hapi that the value is a base64 encoded JSON string. Full documentation for the `server.state()` options can be found in [the API reference](/api#serverstatename-options).
+
+In addition to this, you may pass two parameters to the `config` when adding a route:
+
+```javascript
+{
+    config: {
+        state: {
+            parse: true, // parse and store in request.cookies
+            failAction: 'error' // may also be 'ignore' or 'log'
+        }
+    }
+}
+```
 
 ## Setting a cookie
 
