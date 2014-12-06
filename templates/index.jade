@@ -90,14 +90,20 @@ block content
           span.pl-k = 
           span.pl-k new 
           span.pl-en Hapi.Server
-          | (
+          | ();
+          br
+
+          | server.connection({ 
+          |     host: 
           span.pl-s1
             span.pl-pds '
             | localhost
             span.pl-pds '
           | , 
+          |     port: 
           span.pl-c1 8000
-          | );
+          | 
+          | });
           br
 
           br
