@@ -59,37 +59,41 @@ The `authenticate` method has a signature of `function (request, reply)`, and is
 
 In this context, `request` is the `request` object created by the server. It is the same object that becomes available in a route handler, and is documented in the [API reference](/api#request-object).
 
-`reply` is a callback that must be called when your authentication is complete. It has a signature of `function (err, result)`.
+`reply` is the standard hapi `reply` interface, it accepts `err` and `result` parameters in that order.
 
 If `err` is a non-null value, this indicates a failure in authentication and the error will be used as a reply to the end user. It is advisable to use [boom](https://github.com/hapijs/boom) to create this error to make it simple to provide the appropriate status code and message.
 
 The `result` parameter should be an object, though the object itself as well as all of its keys are optional if an `err` is provided.
 
-If authentication was successful, or if you would simply like to provide more detail in the case of a failure, the `result` object must have a `credentials` property which is an object representing the authenticated user (or the credentials the user attempted to authenticate with).
+If you would like to provide more detail in the case of a failure, the `result` object must have a `credentials` property which is an object representing the authenticated user (or the credentials the user attempted to authenticate with) and should be called like `reply(error, null, result);`.
+
+When authentication is successful, you must call `reply.continue(result)` where result is an object with a `credentials` property.
 
 Additionally, you may also have an `artifacts` key, which can contain any authentication related data that is not part of the user's credentials.
-
-For logging purposes, you may pass a `log` key that can have two properties, `tags` which are additional tags for hapi to associate with the authentication log, and `data` which is any additional data you wish to be logged.
 
 The `credentials` and `artifacts` properties can be accessed later (in a route handler, for example) as part of the `request.auth` object.
 
 ### `payload`
 
-The `payload` method has the signature `function (request, next)`.
+The `payload` method has the signature `function (request, reply)`.
 
-The `next` method here is a callback with the signature `function (err)` and must be called when authentication of the payload is complete. If `err` is null, the payload is successfully authenticated. If it is `false`, it indicates that authentication could not be performed. If it is any other value, that value will be used as the error response to the user (again, recommended to use [boom](https://github.com/hapijs/boom)).
+Again, the standard hapi `reply` interface is available here. To signal a failure call `reply(error, result)` or simply `reply(error)` (again, recommended to use [boom](https://github.com/hapijs/boom)) for errors.
+
+To signal a successful authentication, call `reply.continue()` with no parameters.
 
 ### `response`
 
-The `response` method also has the signature `function (request, next)`.
+The `response` method also has the signature `function (request, reply)` and utilizes the standard `reply` interface.
 
 This method is intended to decorate the response object (`request.response`) with additional headers, before the response is sent to the user.
 
-Once any decoration is complete, you must call `next`, which accepts only an `err` parameter. If `err` is null, decorations were successfully applied and the response will be sent. If `err` is any other value, that value is used as an error response to the user.
+Once any decoration is complete, you must call `reply.continue()`, and the response will be sent.
+
+If an error occurs, you should instead call `reply(error)` where error is recommended to be a [boom](https://github.com/hapijs/boom).
 
 ### Registration
 
-To register a scheme, use either `server.auth.scheme(name, scheme)` or `plugin.auth.scheme(name, scheme)`. The `name` parameter is a string used to identify this specific scheme, the `scheme` parameter is a method as was described above.
+To register a scheme, use either `server.auth.scheme(name, scheme)`. The `name` parameter is a string used to identify this specific scheme, the `scheme` parameter is a method as described above.
 
 ## Strategies
 
@@ -135,7 +139,7 @@ The `mode` parameter may be set to `'required'`, `'optional'`, or `'try'` and wo
 
 When specifying one strategy, you may set the `strategy` property to a string with the name of the strategy. When specifying more than one strategy, the parameter name must be `strategies` and should be an array of strings each naming a strategy to try. The strategies will then be attempted in order until one succeeds, or they have all failed.
 
-Lastly, the `payload` parameter can be set to `false` denoting the payload is not to be authenticated, `'required'` meaning that it *must* be authenticated, or `'optional'` meaning that if the client includes payload authentication information, the authentication must be valid.
+Lastly, the `payload` parameter can be set to `false` denoting the payload is not to be authenticated, `'required'` or `true` meaning that it *must* be authenticated, or `'optional'` meaning that if the client includes payload authentication information, the authentication must be valid.
 
 The `payload` parameter is only possible to use with a strategy that supports the `payload` method in its scheme.
 
