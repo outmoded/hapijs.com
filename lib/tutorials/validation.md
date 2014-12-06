@@ -117,39 +117,3 @@ You may validate incoming headers as well, with a `validate.headers` parameter.
 ### Payload parameters
 
 Also valid is the `validate.payload` parameter, which will validate payload data sent to a route by the user. It works exactly the same way as query parameters, in that if you validate one key, you must validate them all.
-
-## Output
-
-In addition to validating input, you can also validate output. This allows you to make sure that you're sending valid data with every request, and can be done like the following:
-
-```javascript
-server.route({
-    method: 'GET',
-    path: '/test',
-    handler: function (request, reply) {
-        reply({ name: 'test', code: 200 });
-    },
-    config: {
-        response: {
-            schema: Joi.object({
-                name: Joi.string(),
-                code: Joi.number().integer()
-            })
-        }
-    }
-});
-```
-
-Note that response validation is the only validation type that is *not* configured under the `config.validate` parameter.
-
-A request to `/test` will respond with the payload:
-
-```javascript
-{
-    "code": 200,
-    "name": "test"
-}
-```
-
-If, for some reason, your route replies with data that does not match the validator specified in the schema, the user will receive an HTTP `500` error instead of the invalid data. This is a very useful way to make sure that your code is well behaved and will not respond with data that it shouldn't.
-
