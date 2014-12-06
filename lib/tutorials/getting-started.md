@@ -13,19 +13,20 @@ The most basic server looks like the following:
 
 ```javascript
 var Hapi = require('hapi');
-var server = new Hapi.Server(3000);
+
+var server = new Hapi.Server();
+server.connection({ port: 3000 });
 
 server.start(function () {
     console.log('Server running at:', server.info.uri);
 });
 ```
 
-First, we require hapi. Then we create a new hapi server object, passing in a port
-number for the server to listen on. After that, start the server and log that it's
-running.
+First, we require hapi. Then we create a new hapi server object. After that we add a connection to the server,  passing in a port
+number to listen on. After that, start the server and log that it's running.
 
-When creating the server object, we can also provide a hostname, IP address, or even
-a Unix socket file, or Windows named pipe to bind the server to. For more details, see [the API reference](/api/#hapiserver).
+When adding the server connection, we can also provide a hostname, IP address, or even
+a Unix socket file, or Windows named pipe to bind the server to. For more details, see [the API reference](/api/#serverconnectionoptions).
 
 ## Adding routes
 
@@ -33,7 +34,9 @@ Now that we have a server we should add one or two routes so that it actually do
 
 ```javascript
 var Hapi = require('hapi');
-var server = new Hapi.Server(3000);
+
+var server = new Hapi.Server();
+server.connection({ port: 3000 });
 
 server.route({
     method: 'GET',
@@ -60,7 +63,7 @@ Save the above as `server.js` and start the server with the command `node server
 
 Note that we URI encode the name parameter, this is to prevent content injection attacks. Remember, it's never a good idea to render user provided data without output encoding it first!
 
-The `method` parameter can be any valid HTTP method or an asterisk to allow any method. The `path` parameter defines the path including parameters. It can contain optional parameters, numbered parameters, and even wildcards. For more details, see [the routing tutorial](/tutorials/routing).
+The `method` parameter can be any valid HTTP method, array of HTTP methods, or an asterisk to allow any method. The `path` parameter defines the path including parameters. It can contain optional parameters, numbered parameters, and even wildcards. For more details, see [the routing tutorial](/tutorials/routing).
 
 ## Using plugins
 
@@ -78,7 +81,8 @@ Then update your `server.js`:
 var Hapi = require('hapi');
 var Good = require('good');
 
-var server = new Hapi.Server(3000);
+var server = new Hapi.Server();
+server.connection({ port: 3000 });
 
 server.route({
     method: 'GET',
@@ -96,7 +100,7 @@ server.route({
     }
 });
 
-server.pack.register(Good, function (err) {
+server.register(Good, function (err) {
     if (err) {
         throw err; // something bad happened loading the plugin
     }
@@ -121,17 +125,6 @@ And if we visit `http://localhost:3000/` in the browser, you'll see:
 
 Great! This is just one short example of what plugins are capable of, for more information check out the [plugins tutorial](/tutorials/plugins).
 
-## Packs
-
-You may be wondering: what is the `server.pack` property that the register method is attached to?
-
-It's a pack! Packs are a way for hapi to combine multiple servers into a single unit, and are designed to give a unified interface when working with plugins.
-
-When you create a server, a pack object is automatically created and stored as the `server.pack` property. You can also create a pack directly, and add servers to it later.
-
-For more information about packs, check out the [packs tutorial](/tutorials/packs).
-
 ## Everything else
 
 hapi has many, many other capabilities and only a select few are documented in tutorials here. Please use the list to your right to check them out. Everything else is documented in the [API reference](/api) and, as always, feel free to ask question or just visit us on freenode in [#hapi](http://webchat.freenode.net/?channels=hapi).
-
