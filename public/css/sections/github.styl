@@ -97,15 +97,16 @@
 
     li
       width: 100%
-      &:not(:last-child)
-        padding-bottom: 8px
+      list-style-type: none
 
     li > a > strong
       margin-right: 5px
       display: inline-block
 
-    ul.task-list
-      font-size: 80%
+    ul
+      margin-top: 8px
+      font-size: $font-small
+      color: $gray-light
 
 @media $smartphone
 
