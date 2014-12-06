@@ -10,7 +10,7 @@ To get started with views, first we have to configure at least one templating en
 var Path = require('path');
 var Hapi = require('hapi');
 
-var server = new Hapi.Server(3000);
+var server = new Hapi.Server();
 server.views({
     engines: {
         html: require('handlebars')
@@ -70,7 +70,7 @@ Since views can have files in several different locations, hapi allows you to co
 - `partialsPath`: the directory that contains your partials
 - `helpersPath`: the directory that contains your template helpers
 - `layoutPath`: the directory that contains layout templates
-- `basePath`: used as a prefix for other path types, if specified other paths can be relative to this directory
+- `relativeTo`: used as a prefix for other path types, if specified other paths can be relative to this directory
 
 Additionally, there are two settings that alter how hapi will allow you to use paths. By default, absolute paths and traversing outside of the `path` directory is not allowed. This behavior can be changed by setting the `allowAbsolutePaths` and `allowInsecureAccess` settings to true.
 
@@ -92,7 +92,7 @@ server.views({
     engines: {
         html: require('handlebars')
     },
-    basePath: __dirname,
+    relativeTo __dirname,
     path: './views',
     layoutPath: './views/layout',
     helpersPath: './views/helpers'
@@ -154,23 +154,22 @@ handler: {
 
 We've seen how to pass context directly to a view, but what if we have some default context that should *always* be available on all templates?
 
-The simplest way to achieve this is by using an `onPreResponse` handler on your server, that looks like the following:
+The simplest way to achieve this is by using the `context` option when calling `server.views()`:
 
 ```javascript
 var defaultContext = {
     title: 'My personal site'
 };
 
-server.ext('onPreResponse', function (request, reply) {
-    if (request.response.variety === 'view') { 
-        request.response.source.context = Hoek.applyToDefaults(defaultContext, request.response.source.context);
-    }
-
-    reply();
+server.views({
+    engines: {
+        'html': {
+            module: require('handlebars'),
+            compileMode: 'sync' // engine specific
+        }
+    },
+    context: defaultContext
 });
 ```
 
-What this does is check the `response` type to make sure it's a view, since we don't want to modify requests that aren't.
-
-Then, we use [Hoek](https://github.com/hapijs/hoek)'s `applyToDefaults` method to apply the context given explicitly to this view on top of the default context object we defined at the top level.
-
+The default global context will be merged with any local context passed taking the lowest precedence and applied to your view.
