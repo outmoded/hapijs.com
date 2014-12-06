@@ -4,13 +4,13 @@ hapi has an extensive and powerful plugin system that allows you to very easily 
 
 ## Creating a plugin
 
-Plugins are very simple to write. At their core they are an object with a `register` function that has the signature `function (plugin, options, next)`. That `register` function then has an `attributes` object attached to it to provide hapi with some additional information about the plugin, such as name and version.
+Plugins are very simple to write. At their core they are an object with a `register` function that has the signature `function (server, options, next)`. That `register` function then has an `attributes` object attached to it to provide hapi with some additional information about the plugin, such as name and version.
 
 A very simple plugin looks like:
 
 ```javascript
 var myPlugin = {
-    register: function (plugin, options, next) {
+    register: function (server, options, next) {
         next();
     }
 }
@@ -24,7 +24,7 @@ myPlugin.register.attributes = {
 Or when written as an external module:
 
 ```javascript
-exports.register = function (plugin, options, next) {
+exports.register = function (server, options, next) {
     next();
 };
 
@@ -39,32 +39,29 @@ Additionally, the `attributes` object may contain the key `multiple` that when s
 
 ### The register method
 
-As we've seen above, the `register` method accepts three parameters, `plugin`, `options`, and `next`.
+As we've seen above, the `register` method accepts three parameters, `server`, `options`, and `next`.
 
 The `options` parameter is simply whatever options the user passes to your plugin. No changes are made and the object is passed directly to your `register` method.
 
 `next` is a method to be called when your plugin has completed whatever steps are necessary for it to be registered. This method accepts only one parameter, `err`, that should only be defined if an error occurred while registering your plugin.
 
-The `plugin` object is the most interesting of the three, as this is your interface into the `Hapi.Pack` object. You can learn more about the `Hapi.Pack` object at the [packs tutorial](/tutorials/packs).
+The `server` object is a reference to the `server` your plugin is being loaded in.
 
-Most of the methods on the `plugin` object are special versions of the same methods available on the `Hapi.Server` object, such as `plugin.method()`, `plugin.cache()`, `plugin.route()`, `plugin.state()`, `plugin.auth.scheme()`, `plugin.auth.strategy()`, `plugin.ext()`, and `plugin.register()`. Full documentation can be found in the [API reference](/api#plugin-interface).
+#### `server.select()`
 
-Several other methods and properties are available to plugins as well.
-
-#### `plugin.select()`
-
-Servers can be created with a label assigned to them:
+Servers can have connections added with a label assigned to them:
 
 ```javascript
-var server = new Hapi.Server({ labels: 'api' });
+var server = new Hapi.Server();
+server.connection({ labels: ['api'] });
 ```
 
-This label can then be used to apply plugins only to specific servers by using the `plugin.select()` method.
+This label can then be used to apply plugins and other settings only to specific connections by using the `server.select()` method.
 
-For example, to add a route only to servers with a label of `'api'`, you would use:
+For example, to add a route only to connections with a label of `'api'`, you would use:
 
 ```javascript
-var api = plugin.select('api');
+var api = server.select('api');
 
 api.route({
     method: 'GET',
@@ -79,39 +76,39 @@ Multiple labels can be selected at the same time by passing an array of strings,
 
 ```javascript
 // all servers with a label of backend OR api
-var myServers = plugin.select(['backend', 'api']);
+var myServers = server.select(['backend', 'api']);
 
 // servers with a label of api AND admin
-var adminServers = plugin.select('api').select('admin');
+var adminServers = server.select('api').select('admin');
 ```
 
-The return value of `plugin.select()` is a subset of the plugin object that contains only the [selectable methods and properties](/api#selectable-methods-and-properties). In order to use the [root methods and properties](/api#root-methods-and-properties) of the plugin, you must keep a reference to the original plugin object.
+The return value of `server.select()` is a server object that contains only the selected connections.
 
 ## Loading a plugin
 
-Plugins can be loaded one at a time, or in a group, by the `pack.register()` method, for example:
+Plugins can be loaded one at a time, or in a group, by the `server.register()` method, for example:
 
 ```javascript
 // load one plugin
-pack.register(require('myplugin'), function (err) {
+server.register(require('myplugin'), function (err) {
     if (err) {
         console.error('Failed to load plugin:', err);
     }
 });
 
 // load multiple plugins
-pack.register([require('myplugin'), require('yourplugin')], function (err) {
+server.register([require('myplugin'), require('yourplugin')], function (err) {
     if (err) {
         console.error('Failed to load a plugin:', err);
     }
 });
 ```
 
-To pass options to your plugin, we instead create an object with `plugin` and `options` keys, such as:
+To pass options to your plugin, we instead create an object with `register` and `options` keys, such as:
 
 ```javascript
-pack.register({
-    plugin: require('myplugin'),
+server.register({
+    register require('myplugin'),
     options: {
         message: 'hello'
     }
@@ -122,11 +119,11 @@ pack.register({
 These objects can also be passed in an array:
 
 ```javascript
-pack.register([{
-    plugin: require('plugin1'),
+server.register([{
+    register require('plugin1'),
     options: {}
 }, {
-    plugin: require('plugin2'),
+    register require('plugin2'),
     options: {}
 }], function (err) {
 });
@@ -134,15 +131,15 @@ pack.register([{
 
 ### Plugin options
 
-You may also pass an optional parameter to `pack.register()` before the callback. Documentation for this object can be found in the [API reference](/api#packregisterplugins-options-callback).
+You may also pass an optional parameter to `server.register()` before the callback. Documentation for this object can be found in the [API reference](/api#serverregisterplugins-options-callback).
 
 The options object is used by hapi and is *not* passed to the plugin(s) being loaded. It allows you to pre-select servers based on one or more labels, as well as apply `vhost` or `prefix` modifiers to any routes that your plugins register.
 
 For example, let's say we have a plugin that looks like this:
 
 ```javascript
-exports.register = function (plugin, options, next) {
-    plugin.route({
+exports.register = function (server, options, next) {
+    server.route({
         method: 'GET',
         path: '/test',
         handler: function (request, reply) {
@@ -161,7 +158,7 @@ exports.register.attributes = {
 Normally, when this plugin is loaded it will create a `GET` route at `/test`. This can be changed by using the `prefix` setting in the options, which will prepend a string to all routes created in the plugin:
 
 ```javascript
-pack.register(require('myplugin'), {
+server.register(require('myplugin'), {
     route: {
         prefix: '/plugins'
     }
@@ -173,14 +170,14 @@ Now when the plugin is loaded, because of the `prefix` option the `GET` route wi
 
 Similarly the `config.vhost` parameter will assign a default `vhost` configuration to any routes created by the plugins being loaded. More detail about the `vhost` configuration can be found in the [API reference](/api#route-options).
 
-The `select` parameter works exactly the same way as `plugin.select()` does, in that you may pass one label or an array of labels for the plugin to be associated with.
+The `select` parameter works exactly the same way as `server.select()` does, in that you may pass one label or an array of labels for the plugin to be associated with.
 
 ```javascript
-pack.register(require('myplugin'), {
+server.register(require('myplugin'), {
     select: ['webserver', 'admin']
 }, function (err) {
 });
 ```
 
-This allows you to attach a plugin to specific servers in a pack without having to change the code of the plugin.
+This allows you to attach a plugin to specific connections in a server without having to change the code of the plugin.
 
