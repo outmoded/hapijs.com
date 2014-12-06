@@ -31,13 +31,13 @@ server.ext('onPreResponse', function (request, reply) {
     reply.view('error', request.response).code(request.response.output.statusCode);
 });
 
-server.register([
-    require('./lib/npm'),
-    require('./lib/github'),
-    require('./lib/stylus'),
-    require('./lib/uglify'),
-    require('./lib/routes')
-], function (err) {
+server.method(require('./lib/npm').methods);
+server.method(require('./lib/github').methods);
+server.method(require('./lib/markdown').methods);
+
+server.route(require('./lib/routes').routes);
+
+var start = function (err) {
 
     if (err) {
         throw err;
@@ -47,4 +47,11 @@ server.register([
 
         console.log('hapijs.com running at: ' + server.info.uri);
     });
-});
+};
+
+if (Config.getconfig.env === 'dev') {
+    server.register(require('building-static-server'), start);
+}
+else {
+    start();
+}
