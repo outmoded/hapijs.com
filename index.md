@@ -18,8 +18,9 @@ Create an `index.js` file with the following contents:
 ```javascript
 var Hapi = require('hapi');
 
-// Create a server with a host and port
-var server = new Hapi.Server('localhost', 8000);
+// Create a server with a port number
+var server = new Hapi.Server();
+server.connection({ port: 8000 });
 
 // Add the route
 server.route({
