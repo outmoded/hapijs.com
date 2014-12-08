@@ -16,7 +16,7 @@ block content
         p.pull-left Reference version:
         .tag-list-toggle.pull-right= tag
           ul.unstyled.tag-list-picker
-            each available in tags
+            each available in versions
               if tag !== available
                 li
                   a(href='/api/#{available}')= available
