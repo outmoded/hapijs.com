@@ -5,7 +5,11 @@ var Jade = require('jade');
 var Markdown = require('./lib/markdown');
 var Path = require('path');
 
-var server = new Hapi.Server();
+var serverConfig = {};
+if (Config.getconfig.env === 'production') {
+    serverConfig.cache = require('catbox-redis');
+}
+var server = new Hapi.Server(serverConfig);
 
 Jade.filters.markdown = Markdown.parseSync;
 
