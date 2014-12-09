@@ -6,14 +6,12 @@
   "dependencies": {
     "async": "0.9.x",
     "boom": "2.x.x",
-    "building-static-server": "git+https://github.com/nlf/building-static-server#hapi8",
     "catbox-memory": "^1.1.1",
     "catbox-redis": "^1.0.4",
     "getconfig": "1.x.x",
     "hapi": "8.0.0-rc9",
     "hoek": "2.x.x",
     "jade": "1.x.x",
-    "stylus": "0.49.x",
     "wreck": "5.x.x"
   },
   "scripts": {
@@ -31,6 +29,7 @@
   },
   "homepage": "https://github.com/hapijs/hapijs.com",
   "devDependencies": {
+    "building-static-server": "git+https://github.com/nlf/building-static-server#hapi8",
     "glob-cli": "^1.0.0",
     "stylus": "^0.49.3",
     "uglify-js": "^2.4.15"
