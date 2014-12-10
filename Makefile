@@ -2,7 +2,7 @@ SHELL := /bin/bash
 PATH := node_modules/.bin:$(PATH)
 
 STYLUS_FILES := public/css/main.styl $(shell node_modules/.bin/glob-cli public/css/**/*.styl)
-JS_FILES := public/js/jquery.js public/js/responsive-nav.js public/js/app.js
+JS_FILES := public/js/responsive-nav.js public/js/app.js
 FILES := public/css/main.css public/js/app.min.js
 
 all: $(FILES)
