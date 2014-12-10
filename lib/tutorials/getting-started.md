@@ -80,6 +80,7 @@ Then update your `server.js`:
 ```javascript
 var Hapi = require('hapi');
 var Good = require('good');
+var GoodConsole = require('good-console');
 
 var server = new Hapi.Server();
 server.connection({ port: 3000 });
@@ -100,7 +101,10 @@ server.route({
     }
 });
 
-server.register(Good, function (err) {
+server.register({
+    register: Good,
+    options: { reporters: [{ reporter: GoodConsole }] }
+}, function (err) {
     if (err) {
         throw err; // something bad happened loading the plugin
     }
