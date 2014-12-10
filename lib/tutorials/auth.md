@@ -33,7 +33,7 @@ var validate = function (username, password, callback) {
     });
 };
 
-server.pack.register(Basic, function (err) {
+server.register(Basic, function (err) {
     server.auth.strategy('simple', 'basic', { validateFunc: validate });
     server.route({ method: 'GET', path: '/', config: { auth: 'simple' } });
 });
