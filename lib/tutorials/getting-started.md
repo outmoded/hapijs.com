@@ -67,12 +67,13 @@ The `method` parameter can be any valid HTTP method, array of HTTP methods, or a
 
 ## Using plugins
 
-A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [good](https://github.com/hapijs/good) plugin on to our server.
+A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [good](https://github.com/hapijs/good) plugin and its [good-console](https://github.com/hapijs/good-console) reporter on to our server.
 
 The plugin first needs to be installed:
 
 ```bash
 npm install --save good
+npm install --save good-console
 ```
 
 Then update your `server.js`:
@@ -100,7 +101,15 @@ server.route({
     }
 });
 
-server.register(Good, function (err) {
+server.register({
+    register: Good,
+    options: {
+        reporters: [{
+            reporter: require('good-console'),
+            args:[{ log: '*', response: '*' }]
+        }]
+    }
+}, function (err) {
     if (err) {
         throw err; // something bad happened loading the plugin
     }
