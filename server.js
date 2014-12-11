@@ -41,7 +41,22 @@ server.method(require('./lib/markdown').methods);
 
 server.route(require('./lib/routes').routes);
 
-var start = function (err) {
+var plugins = [];
+plugins.push({
+    register: require('good'),
+    options: {
+        reporters: [{
+            reporter: require('good-console'),
+            args: [{ log: '*', response: '*' }]
+        }]
+    }
+});
+
+if (Config.getconfig.env === 'dev') {
+    plugins.push(require('building-static-server'));
+}
+
+server.register(plugins, function (err) {
 
     if (err) {
         throw err;
@@ -51,11 +66,4 @@ var start = function (err) {
 
         console.log('hapijs.com running at: ' + server.info.uri);
     });
-};
-
-if (Config.getconfig.env === 'dev') {
-    server.register(require('building-static-server'), start);
-}
-else {
-    start();
-}
+});

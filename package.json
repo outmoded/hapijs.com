@@ -9,7 +9,9 @@
     "catbox-memory": "^1.1.1",
     "catbox-redis": "^1.0.4",
     "getconfig": "1.x.x",
-    "hapi": "8.0.0-rc9",
+    "good": "^5.0.0",
+    "good-console": "^3.0.1",
+    "hapi": "8.x.x",
     "hoek": "2.x.x",
     "jade": "1.x.x",
     "wreck": "5.x.x"
