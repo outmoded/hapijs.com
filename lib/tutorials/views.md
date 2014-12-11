@@ -92,7 +92,7 @@ server.views({
     engines: {
         html: require('handlebars')
     },
-    relativeTo __dirname,
+    relativeTo: __dirname,
     path: './views',
     layoutPath: './views/layout',
     helpersPath: './views/helpers'
