@@ -11,7 +11,8 @@ var Bcrypt = require('bcrypt');
 var Hapi = require('hapi');
 var Basic = require('hapi-auth-basic');
 
-var server = new Hapi.Server(3000);
+var server = new Hapi.Server();
+server.connection({ port: 3000 });
 
 var users = {
     john: {
