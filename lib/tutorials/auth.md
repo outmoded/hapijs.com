@@ -36,7 +36,20 @@ var validate = function (username, password, callback) {
 
 server.register(Basic, function (err) {
     server.auth.strategy('simple', 'basic', { validateFunc: validate });
-    server.route({ method: 'GET', path: '/', config: { auth: 'simple' } });
+    server.route({
+        method: 'GET',
+        path: '/',
+        config: {
+            auth: 'simple',
+            handler: function (request, reply) {
+                reply('hello, ' + request.auth.credentials.name);
+            }
+        }
+    });
+
+    server.start(function () {
+        console.log('server running at: ' + server.info.uri);
+    });
 });
 ```
 
