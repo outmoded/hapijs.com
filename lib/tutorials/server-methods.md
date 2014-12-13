@@ -20,7 +20,7 @@ var add = function (x, y, next) {
 
 server.method({
     name: 'add',
-    method add,
+    method: add,
     options: {}
 });
 ```
