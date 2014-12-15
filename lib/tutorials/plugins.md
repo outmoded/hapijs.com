@@ -108,7 +108,7 @@ To pass options to your plugin, we instead create an object with `register` and 
 
 ```javascript
 server.register({
-    register require('myplugin'),
+    register: require('myplugin'),
     options: {
         message: 'hello'
     }
@@ -120,10 +120,10 @@ These objects can also be passed in an array:
 
 ```javascript
 server.register([{
-    register require('plugin1'),
+    register: require('plugin1'),
     options: {}
 }, {
-    register require('plugin2'),
+    register: require('plugin2'),
     options: {}
 }], function (err) {
 });
