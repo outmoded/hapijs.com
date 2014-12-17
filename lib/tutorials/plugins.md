@@ -90,14 +90,14 @@ Plugins can be loaded one at a time, or in a group, by the `server.register()` m
 
 ```javascript
 // load one plugin
-server.register(require('myplugin'), function (err) {
+server.register({register: require('myplugin')}, function (err) {
     if (err) {
         console.error('Failed to load plugin:', err);
     }
 });
 
 // load multiple plugins
-server.register([require('myplugin'), require('yourplugin')], function (err) {
+server.register([{register: require('myplugin')},{register: require('yourplugin')}], function (err) {
     if (err) {
         console.error('Failed to load a plugin:', err);
     }
@@ -158,7 +158,7 @@ exports.register.attributes = {
 Normally, when this plugin is loaded it will create a `GET` route at `/test`. This can be changed by using the `prefix` setting in the options, which will prepend a string to all routes created in the plugin:
 
 ```javascript
-server.register(require('myplugin'), {
+server.register({register: require('myplugin')}, {
     route: {
         prefix: '/plugins'
     }
@@ -173,7 +173,7 @@ Similarly the `config.vhost` parameter will assign a default `vhost` configurati
 The `select` parameter works exactly the same way as `server.select()` does, in that you may pass one label or an array of labels for the plugin to be associated with.
 
 ```javascript
-server.register(require('myplugin'), {
+server.register({register: require('myplugin')}, {
     select: ['webserver', 'admin']
 }, function (err) {
 });
