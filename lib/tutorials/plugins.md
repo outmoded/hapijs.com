@@ -159,7 +159,7 @@ Normally, when this plugin is loaded it will create a `GET` route at `/test`. Th
 
 ```javascript
 server.register({register: require('myplugin')}, {
-    route: {
+    routes: {
         prefix: '/plugins'
     }
 }, function (err) {
