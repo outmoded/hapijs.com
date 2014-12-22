@@ -97,7 +97,15 @@ server.register({register: require('myplugin')}, function (err) {
 });
 
 // load multiple plugins
-server.register([{register: require('myplugin')},{register: require('yourplugin')}], function (err) {
+server.register([
+    {
+        register: require('myplugin'),
+        options: {} // options for 'myplugin'
+    },{
+        register: require('yourplugin'),
+        options: {} // options for 'yourplugin'
+    }
+], function (err) {
     if (err) {
         console.error('Failed to load a plugin:', err);
     }
