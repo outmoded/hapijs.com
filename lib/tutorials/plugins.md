@@ -72,7 +72,7 @@ api.route({
 });
 ```
 
-Multiple labels can be selected at the same time by passing an array of strings, this works as a logical OR statement. To accomplish a logical AND, you can chain calls to `plugin.select()` like so:
+Multiple labels can be selected at the same time by passing an array of strings, this works as a logical OR statement. To accomplish a logical AND, you can chain calls to `server.select()` like so:
 
 ```javascript
 // all servers with a label of backend OR api
