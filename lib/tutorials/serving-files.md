@@ -127,6 +127,6 @@ server.route({
 });
 ```
 
-Now a request to `/` will reply with HTML showing the contents of the directory. We can take this static server one step further by also setting the `index` option to `true`, which means that a request to `/` will first attempt to load `/index.html`. This gives us a very simple basic static web server in one route.
+Now a request to `/` will reply with HTML showing the contents of the directory. We can take this static server one step further by also setting the `index` option to `true`, which means that a request to `/` will first attempt to load `/index.html`. The `index` option also accepts a string or array of strings to specify the default file(s) to load. By setting the `index` option to `['index.html', 'default.html']`, a request to `/` will first try to load `/index.html`, then `/default.html`. This gives us a very simple basic static web server in one route.
 
 When using the directory handler with listing enabled, by default hidden files will not be shown in the listing. That can be changed by setting the `showHidden` option to `true`. Like the file handler, the directory handler also has a `lookupCompressed` option to serve precompressed files when possible. You can also set a `defaultExtension` that will be appended to requests if the original path is not found. This means that a request for `/bacon` will also try the file `/bacon.html`.
