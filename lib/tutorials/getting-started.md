@@ -113,10 +113,10 @@ server.register({
     if (err) {
         throw err; // something bad happened loading the plugin
     }
+});
 
-    server.start(function () {
-        server.log('info', 'Server running at: ' + server.info.uri);
-    });
+server.start(function () {
+    server.log('info', 'Server running at: ' + server.info.uri);
 });
 ```
 
