@@ -1,6 +1,6 @@
 # Hapijs.com
 
-This is the home of [hapijs.com](http://hapijs.com). 
+This is the home of [hapijs.com](http://hapijs.com).
 
 ## Running/developing
 
@@ -19,3 +19,6 @@ npm start
 You may now visit `http://localhost:3000` in your browser to view the site.
 
 The server also runs a file watcher that will automatically rebuild content when files are changed.
+
+## Plugins
+hapijs.com maintains a list of community-created plugins [here](http://hapijs.com/plugins). If there are any plugins you have created or one you use often that isn't listed please send a [pull request](https://github.com/hapijs/hapijs.com/blob/beta/lib/plugins.js). Please note the existing categories, but if your plugin does not fit one feel free to create your own. Please keep the plugins in alphabetical order to be fair to all contributors.
