@@ -180,33 +180,65 @@ The default global context will be merged with any local context passed taking t
 JavaScript modules located in the defined `helpersPath` are available in templates.
 For this example, we will create a view helper `fortune` which will pick and print out one element out of an array of strings, when used in a template.
 
-The following snippet is the complete helper function which we will store in a file called `fortune.js` in the `helpers` directory (as defined earlier as the `helpersPath`).
+The following snippet is the complete helper function which we will store in a file called `fortune.js` in the `helpers` directory.
 
 ```javascript
 module.exports = function() {
   var fortunes = [
-    "Reality is that which, when you stop believing in it,
-     doesn't go away",
-    "Those who believe in astrology are living in houses
-     with foundations of Silly Putty.",
-    "Drinking is not a spectator sport.",
-    "If God had really intended men to fly, he'd make it
-     easier to get to the airport.",
-    "I don't want to be young again, I just don't want
-     to get any older."
+    "Heisenberg may have slept here...",
+    "Wanna buy a duck?",
+    "Say no, then negotiate.",
+    "Time and tide wait for no man.",
+    "To teach is to learn.",
+    "Never ask the barber if you need a haircut.",
+    "You will forget that you ever knew me.",
+    "You will be run over by a beer truck.",
+    "Fortune favors the lucky.",
+    "Have a nice day!"
   ];
   var x = Math.floor(Math.random() * fortunes.length);
   return fortunes[x];
 };
 ```
 
-Now we can use the view helper in our templates. Here's a code snippet that show's the helper function in [templates/index.html](https://github.com/manonthemat/hapi-view-helpers-doc/blob/master/templates/index.html) using handlebars as a rendering engine:
+Now we can use the view helper in our templates. Here's a code snippet that show's the helper function in `templates/index.html` using handlebars as a rendering engine:
 
 ```html
 <h1>Your fortune</h1>
 <p>{{fortune}}</p>
 ```
 
-Now when we start the [server](https://github.com/manonthemat/hapi-view-helpers-doc/blob/master/server.js) and point our browser to the route which uses our template (which uses our view helper), we should see a paragraph with a randomly selected fortune right below the header.
+Now when we start the server and point our browser to the route which uses our template (which uses our view helper), we should see a paragraph with a randomly selected fortune right below the header.
 
-For the complete source code, visit [view helpers example project](https://github.com/manonthemat/hapi-view-helpers-doc)
+For reference, here is a complete server script that uses the fortune view helper method in a template.
+
+```javascript
+var Hapi = require("hapi");
+
+var server = new Hapi.Server();
+
+server.connection({
+  port: Number(process.argv[2] || 8080),
+  host: "localhost"
+});
+
+server.views({
+  engines: {
+    html: require("handlebars")
+  },
+  relativeTo: __dirname,
+  path: "templates",
+  helpersPath: "helpers"
+});
+
+server.route({
+  method: "GET",
+  path: "/",
+  handler: function(request, reply) {
+    reply.view("index");
+  }
+});
+
+server.start();
+```
+
