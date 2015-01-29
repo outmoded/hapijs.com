@@ -98,7 +98,7 @@ server.route({
     path: '/hello/{user?}',
     handler: function (request, reply) {
         var user = request.params.user ? encodeURIComponent(request.params.user) : 'stranger';
-        reply('Hello ' + request.params.user + '!');
+        reply('Hello ' + user + '!');
     },
     config: {
         description: 'Say hello!',
