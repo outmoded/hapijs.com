@@ -103,7 +103,7 @@ In Listing 4, we've defined two catbox clients; mongoCache and redisCache. Inclu
 
 ### Policy
 
-[Policy](https://github.com/hapijs/catbox#policy) is high-level interface that you will be using. Lets pretend we are dealing with something more complicated than adding two numbers and we want to cache the results. [server.cache](http://hapijs.com/api#servercacheoptions) creates a new [policy](https://github.com/hapijs/catbox#policy), which is than used in the route handler.
+[Policy](https://github.com/hapijs/catbox#policy) is high-level interface that you will be using. Lets pretend we are dealing with something more complicated than adding two numbers and we want to cache the results. [server.cache](http://hapijs.com/api#servercacheoptions) creates a new [policy](https://github.com/hapijs/catbox#policy), which is then used in the route handler.
 
 ```javascript
 var add = function (a, b, next) {
