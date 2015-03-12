@@ -38,6 +38,7 @@ server.ext('onPreResponse', function (request, reply) {
 server.method(require('./lib/npm').methods);
 server.method(require('./lib/github').methods);
 server.method(require('./lib/markdown').methods);
+server.method(require('./lib/community').methods);
 
 server.route(require('./lib/routes').routes);
 
