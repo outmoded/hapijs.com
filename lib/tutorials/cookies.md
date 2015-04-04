@@ -27,7 +27,7 @@ In addition to this, you may pass two parameters to the `config` when adding a r
 {
     config: {
         state: {
-            parse: true, // parse and store in request.cookies
+            parse: true, // parse and store in request.state
             failAction: 'error' // may also be 'ignore' or 'log'
         }
     }
