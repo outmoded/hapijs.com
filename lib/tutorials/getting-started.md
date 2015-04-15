@@ -50,7 +50,7 @@ server.route({
     method: 'GET',
     path: '/{name}',
     handler: function (request, reply) {
-        reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
+        reply('Hello, ' + decodeURIComponent(request.params.name) + '!');
     }
 });
 
@@ -97,7 +97,7 @@ server.route({
     method: 'GET',
     path: '/{name}',
     handler: function (request, reply) {
-        reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
+        reply('Hello, ' + decodeURIComponent(request.params.name) + '!');
     }
 });
 
