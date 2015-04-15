@@ -107,7 +107,7 @@ server.register({
         reporters: [{
             reporter: require('good-console'),
             events: {
-                request: '*',
+                response: '*',
                 log: '*'
             }
         }]
@@ -126,13 +126,13 @@ server.register({
 Now when the server is started you'll see:
 
 ```
-140625/143008.751, info, Server running at: http://localhost:3000
+140625/143008.751, [log,info], data: Server running at: http://localhost:3000
 ```
 
 And if we visit `http://localhost:3000/` in the browser, you'll see:
 
 ```
-140625/143205.774, request, http://localhost:3000: get / {} 200 (10ms)
+140625/143205.774, [response], http://localhost:3000: get / {} 200 (10ms)
 ```
 
 Great! This is just one short example of what plugins are capable of, for more information check out the [plugins tutorial](/tutorials/plugins).
