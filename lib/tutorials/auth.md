@@ -23,7 +23,7 @@ var users = {
     }
 };
 
-var validate = function (username, password, callback) {
+var validate = function (request, username, password, callback) {
     var user = users[username];
     if (!user) {
         return callback(null, false);
