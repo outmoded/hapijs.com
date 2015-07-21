@@ -242,3 +242,52 @@ server.route({
 server.start();
 ```
 
+### Layouts
+
+Hapi includes built-in support for view layouts. It comes disabled by default, because it may conflict with other layout systems that specific view engines may provide. We recommend choosing only one layout system.
+
+In order to use the built-in layout system, first setup the view engine:
+
+```js
+server.views({
+    ...
+    layout: true,
+    layoutPath: Path.join(__dirname, 'views/layout')
+});
+```
+
+This enables the built-in layouts and defines the default layout page to `views/layout/layout.html` (or whatever other extension you're using). 
+
+Setup a content area in your `layout.html`:
+
+```html
+<html>
+  <body>
+    {{{content}}}
+ </body>
+</html>
+```
+
+And your view should be just the content:
+
+```html
+<div>Content</div>
+```
+
+When rendering the view, the `{{{content}}}` will be replaced by the view contents.
+
+If you want a different default layout, you can set the option globally:
+
+```js
+server.views({
+    ...
+    layout: 'another_default',
+    ...
+});
+```
+
+You can also specify a different layout per view:
+
+````js
+    reply.view('myview', null, { layout: 'another_layout' });
+```
