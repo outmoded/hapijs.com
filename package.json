@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/hapijs/hapijs.com",
   "devDependencies": {
-    "building-static-server": "git+https://github.com/nlf/building-static-server#hapi8",
+    "building-static-server": "3.x.x",
     "glob-cli": "1.x.x",
     "stylus": "0.52.x",
     "uglify-js": "2.x.x"
