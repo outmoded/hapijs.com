@@ -52,8 +52,7 @@ plugins.push({
             events: {
                 log: '*',
                 response: '*',
-                ops: '*',
-                wreck: '*'
+                ops: '*'
             }
         }]
     }
