@@ -18,7 +18,8 @@
   },
   "scripts": {
     "build": "make",
-    "start": "node server.js"
+    "start": "node server.js",
+    "lint:tutorials": "./node_modules/.bin/lab -d -L --lint-options '{\"extensions\":[\".md\"]}'"
   },
   "repository": {
     "type": "git",
@@ -32,7 +33,9 @@
   "homepage": "https://github.com/hapijs/hapijs.com",
   "devDependencies": {
     "building-static-server": "3.x.x",
+    "eslint-plugin-markdown": "git://github.com/eslint/eslint-plugin-markdown.git",
     "glob-cli": "1.x.x",
+    "lab": "^5.15.0",
     "stylus": "0.52.x",
     "uglify-js": "2.x.x"
   }
