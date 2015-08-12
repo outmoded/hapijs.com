@@ -6,7 +6,7 @@ This is the home of [hapijs.com](http://hapijs.com).
 
 * First, obtain a token from github [here](https://github.com/settings/tokens/new)
 
-* Edit the `dev_config.json` file and put your token in the `githubToken` field
+* Edit the `config/default.json` file and put your token in the `githubToken` field
 
 * Run the following commands
 
