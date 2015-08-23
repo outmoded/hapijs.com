@@ -1,5 +1,7 @@
 ## Cookies
 
+_This tutorial is compatible with hapi v9.x.x._
+
 When writing a web application, using cookies is often a necessity. When using hapi, cookies are flexible, safe, and simple.
 
 ## Configuring the server
