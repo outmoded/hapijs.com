@@ -12,21 +12,21 @@ Let's see how we can set this header in hapi:
 
 ```javascript
 server.route({
-   path: '/hapi/{ttl?}',
-   method: 'GET',
-   handler: function (request, reply) {
+    path: '/hapi/{ttl?}',
+    method: 'GET',
+    handler: function (request, reply) {
 
-      var response = reply({be: 'hapi'});
-      if (request.params.ttl) {
-         response.ttl(request.params.ttl);
-      }
-   },
-   config: {
-      cache: {
-         expiresIn: 30 * 1000,
-         privacy: 'private'
-      }
-   }
+        var response = reply({be: 'hapi'});
+        if (request.params.ttl) {
+            response.ttl(request.params.ttl);
+        }
+    },
+    config: {
+        cache: {
+            expiresIn: 30 * 1000,
+            privacy: 'private'
+        }
+    }
 });
 ```
 **Listing 1** Setting Cache-Control header
@@ -158,11 +158,11 @@ var add = function (a, b, next) {
 };
 
 server.method('sum', add, { 
-   cache: { 
-      cache: 'mongoCache', 
-      expiresIn: 30 * 1000,
-      generateTimeout: 100
-   } 
+    cache: { 
+        cache: 'mongoCache', 
+        expiresIn: 30 * 1000,
+        generateTimeout: 100
+    } 
 });
 
 server.route({
