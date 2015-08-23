@@ -1,5 +1,7 @@
 ## Authentication
 
+_This tutorial is compatible with hapi v9.x.x._
+
 Authentication within hapi is based on the concept of `schemes` and `strategies`.
 
 Think of a scheme as a general type of auth, like "basic" or "digest". A strategy on the other hand, is a pre-configured and named instance of a scheme.
@@ -103,7 +105,7 @@ This method is intended to decorate the response object (`request.response`) wit
 
 Once any decoration is complete, you must call `reply.continue()`, and the response will be sent.
 
-If an error occurs, you should instead call `reply(error)` where error is recommended to be a [boom](https://github.com/hapijs/boom).
+If an error occurs, you should instead call `reply(error)` where `error` is recommended to be a [boom](https://github.com/hapijs/boom).
 
 ### Registration
 
