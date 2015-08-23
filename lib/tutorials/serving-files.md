@@ -1,18 +1,35 @@
 ## Serving static files
 
-Inevitably while building any web application, the need arises to serve a simple file from disk. hapi provides a pair of built-in handlers, as well as a reply method, to make doing so very simple.
+_This tutorial is compatible with hapi v9.x.x._
+
+Inevitably while building any web application, the need arises to serve a simple file from disk. There's a hapi plugin called [inert](https://github.com/hapijs/inert) that adds this functionality to hapi through the use of additional handlers.
+
+First you need to install and add inert as a dependency to your project:
+
+`npm install --save inert`
 
 ## reply.file()
 
 First, to use the reply method:
 
 ```javascript
-server.route({
-    method: 'GET',
-    path: '/picture.jpg',
-    handler: function (request, reply) {
-        reply.file('/path/to/picture.jpg');
+server.register(Inert, function (err) {
+
+    if (err) {
+        throw err;
     }
+
+    server.route({
+        method: 'GET',
+        path: '/picture.jpg',
+        handler: function (request, reply) {
+            reply.file('/path/to/picture.jpg');
+        }
+    });
+
+    server.start(function () {
+        console.log('Server running at:', server.info.uri);
+    });
 });
 ```
 
@@ -36,12 +53,23 @@ var server = new Hapi.Server({
     }
 });
 
-server.route({
-    method: 'GET',
-    path: '/picture.jpg',
-    handler: function (request, reply) {
-        reply.file('picture.jpg');
+server.register(Inert, function (err) {
+
+    if (err) {
+        throw err;
     }
+
+    server.route({
+        method: 'GET',
+        path: '/picture.jpg',
+        handler: function (request, reply) {
+            reply.file('path/to/picture.jpg');
+        }
+    });
+
+    server.start(function () {
+        console.log('Server running at:', server.info.uri);
+    });
 });
 ```
 
@@ -49,7 +77,7 @@ As you may have guessed by the option passed to the server, the `relativeTo` par
 
 ## File handler
 
-An alternative to the above route would be to use the built-in `file` handler:
+An alternative to the above route would be to use the `file` handler:
 
 ```javascript
 server.route({
@@ -96,7 +124,7 @@ server.route({
 
 ## Directory handler
 
-In addition to the `file` handler, there is also a `directory` handler that allows you to specify one route to serve multiple files. In order to use it, you must specify a path with a parameter. The name of the parameter does not matter, however. You can use the asterisk extension on the parameter to restrict file depth as well. The most basic usage of the directory handler looks like:
+In addition to the `file` handler, inert also adds a `directory` handler that allows you to specify one route to serve multiple files. In order to use it, you must specify a path with a parameter. The name of the parameter does not matter, however. You can use the asterisk extension on the parameter to restrict file depth as well. The most basic usage of the directory handler looks like:
 
 ```javascript
 server.route({
