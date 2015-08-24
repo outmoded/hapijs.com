@@ -6,7 +6,7 @@ This is the home of [hapijs.com](http://hapijs.com).
 
 * First, obtain a token from github [here](https://github.com/settings/tokens/new)
 
-* Edit the `config/default.json` file and put your token in the `githubToken` field
+* Copy the `config/default.json` file to `config/local.json` and put your token in the `githubToken` field of `local.json`. NOTE: Please do not commit the file that contains your real github token. That would make it public and allow anyone to look at this repo and use your token as though they were you.
 
 * Run the following commands
 
