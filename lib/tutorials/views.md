@@ -1,5 +1,7 @@
 ## Views
 
+_This tutorial is compatible with hapi v9.x.x._
+
 hapi has extensive support for template rendering, including the ability to load and leverage multiple templating engines, partials, helpers (functions used in templates to manipulate data), and layouts.
 
 ## Configuring the server
@@ -13,16 +15,16 @@ var Hapi = require('hapi');
 var server = new Hapi.Server();
 
 server.register(require('vision'), function (err) {
-    if (err) {
-        console.log("Failed to load vision.");
-    }
-});
 
-server.views({
-    engines: {
-        html: require('handlebars')
-    },
-    path: Path.join(__dirname, 'templates')
+    Hoek.assert(!err, err);
+
+    server.views({
+        engines: {
+            html: require('handlebars')
+        },
+        relativeTo: __dirname,
+        path: 'templates'
+    });
 });
 
 ```
@@ -231,21 +233,26 @@ server.connection({
   host: "localhost"
 });
 
-server.views({
-  engines: {
-    html: require("handlebars")
-  },
-  relativeTo: __dirname,
-  path: "templates",
-  helpersPath: "helpers"
-});
+server.register(require('vision'), function (err) {
 
-server.route({
-  method: "GET",
-  path: "/",
-  handler: function(request, reply) {
-    reply.view("index");
-  }
+    Hoek.assert(!err, err);
+
+    server.views({
+      engines: {
+        html: require("handlebars")
+      },
+      relativeTo: __dirname,
+      path: "templates",
+      helpersPath: "helpers"
+    });
+
+    server.route({
+      method: "GET",
+      path: "/",
+      handler: function(request, reply) {
+        reply.view("index");
+      }
+    });
 });
 
 server.start();
