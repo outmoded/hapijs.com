@@ -13,7 +13,7 @@ First you need to install and add inert as a dependency to your project:
 First, to use the reply method:
 
 ```javascript
-server.register(Inert, function (err) {
+server.register(require('inert'), function (err) {
 
     if (err) {
         throw err;
@@ -53,7 +53,7 @@ var server = new Hapi.Server({
     }
 });
 
-server.register(Inert, function (err) {
+server.register(require('inert'), function (err) {
 
     if (err) {
         throw err;
