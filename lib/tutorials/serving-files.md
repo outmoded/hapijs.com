@@ -27,7 +27,12 @@ server.register(require('inert'), function (err) {
         }
     });
 
-    server.start(function () {
+    server.start(function (err) {
+
+        if (err) {
+            throw err;
+        }
+
         console.log('Server running at:', server.info.uri);
     });
 });
@@ -67,7 +72,12 @@ server.register(require('inert'), function (err) {
         }
     });
 
-    server.start(function () {
+    server.start(function (err) {
+
+        if (err) {
+            throw err;
+        }
+
         console.log('Server running at:', server.info.uri);
     });
 });
