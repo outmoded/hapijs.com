@@ -11,6 +11,13 @@ var Path = require('path');
 var Hapi = require('hapi');
 
 var server = new Hapi.Server();
+
+server.register(require('vision'), function (err) {
+    if (err) {
+        console.log("Failed to load vision.");
+    }
+});
+
 server.views({
     engines: {
         html: require('handlebars')
@@ -22,7 +29,9 @@ server.views({
 
 We're doing several things here.
 
-First, we register the `handlebars` module as the engine responsible for rendering templates with an extension of `.html`.
+First, we load the [`vision`](https://github.com/hapijs/vision) module as a plugin. It adds template rendering support to hapi. Since [`vision`](https://github.com/hapijs/vision) is no longer included with hapi, you may need to install it.
+
+Second, we register the `handlebars` module as the engine responsible for rendering templates with an extension of `.html`.
 
 Second, we tell the server that our templates are located in the `templates` directory within the current path. By default, hapi will look for templates in the current working directory. You can set the path parameter to wherever your templates are located.
 
