@@ -25,7 +25,7 @@ This configuration will make it so the cookie named `data` has a session time-li
 
 In addition to this, you may pass two parameters to the `config` when adding a route:
 
-```javascript
+```json5
 {
     config: {
         state: {
