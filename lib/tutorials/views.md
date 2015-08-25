@@ -151,7 +151,7 @@ server.route({
 
 When using the view handler, context is passed in the key `context`, for example:
 
-```javascript
+```json5
 handler: {
     view: {
         template: 'index',
@@ -194,21 +194,21 @@ For this example, we will create a view helper `fortune` which will pick and pri
 The following snippet is the complete helper function which we will store in a file called `fortune.js` in the `helpers` directory.
 
 ```javascript
-module.exports = function() {
-  var fortunes = [
-    "Heisenberg may have slept here...",
-    "Wanna buy a duck?",
-    "Say no, then negotiate.",
-    "Time and tide wait for no man.",
-    "To teach is to learn.",
-    "Never ask the barber if you need a haircut.",
-    "You will forget that you ever knew me.",
-    "You will be run over by a beer truck.",
-    "Fortune favors the lucky.",
-    "Have a nice day!"
-  ];
-  var x = Math.floor(Math.random() * fortunes.length);
-  return fortunes[x];
+module.exports = function () {
+    var fortunes = [
+        'Heisenberg may have slept here...',
+        'Wanna buy a duck?',
+        'Say no, then negotiate.',
+        'Time and tide wait for no man.',
+        'To teach is to learn.',
+        'Never ask the barber if you need a haircut.',
+        'You will forget that you ever knew me.',
+        'You will be run over by a beer truck.',
+        'Fortune favors the lucky.',
+        'Have a nice day!'
+    ];
+    var x = Math.floor(Math.random() * fortunes.length);
+    return fortunes[x];
 };
 ```
 
@@ -224,13 +224,13 @@ Now when we start the server and point our browser to the route which uses our t
 For reference, here is a complete server script that uses the fortune view helper method in a template.
 
 ```javascript
-var Hapi = require("hapi");
+var Hapi = require('hapi');
 
 var server = new Hapi.Server();
 
 server.connection({
-  port: Number(process.argv[2] || 8080),
-  host: "localhost"
+    port: Number(process.argv[2] || 8080),
+    host: 'localhost'
 });
 
 server.register(require('vision'), function (err) {
@@ -238,20 +238,20 @@ server.register(require('vision'), function (err) {
     Hoek.assert(!err, err);
 
     server.views({
-      engines: {
-        html: require("handlebars")
-      },
-      relativeTo: __dirname,
-      path: "templates",
-      helpersPath: "helpers"
+        engines: {
+            html: require('handlebars')
+        },
+        relativeTo: __dirname,
+        path: 'templates',
+        helpersPath: 'helpers'
     });
 
     server.route({
-      method: "GET",
-      path: "/",
-      handler: function(request, reply) {
-        reply.view("index");
-      }
+        method: 'GET',
+        path: '/',
+        handler: function (request, reply) {
+            reply.view('index');
+        }
     });
 });
 
@@ -264,9 +264,9 @@ Hapi includes built-in support for view layouts. It comes disabled by default, b
 
 In order to use the built-in layout system, first setup the view engine:
 
-```js
+```javascript
 server.views({
-    ...
+    // ...
     layout: true,
     layoutPath: Path.join(__dirname, 'views/layout')
 });
@@ -294,16 +294,15 @@ When rendering the view, the `{{{content}}}` will be replaced by the view conten
 
 If you want a different default layout, you can set the option globally:
 
-```js
+```javascript
 server.views({
-    ...
-    layout: 'another_default',
-    ...
+    // ...
+    layout: 'another_default'
 });
 ```
 
 You can also specify a different layout per view:
 
-````js
+```javascript
     reply.view('myview', null, { layout: 'another_layout' });
 ```

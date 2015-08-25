@@ -16,7 +16,7 @@ server.route({
     method: 'GET',
     handler: function (request, reply) {
 
-        var response = reply({be: 'hapi'});
+        var response = reply({ be: 'hapi' });
         if (request.params.ttl) {
             response.ttl(request.params.ttl);
         }
@@ -84,14 +84,14 @@ var server = new Hapi.Server({
             name: 'mongoCache',
             engine: require('catbox-mongodb'),
             host: '127.0.0.1',
-            partition: 'cache',
+            partition: 'cache'
         },
         {
             name: 'redisCache',
             engine: require('catbox-redis'),
             host: '127.0.0.1',
             partition: 'cache'
-       }
+        }
     ]
 });
 
@@ -130,10 +130,10 @@ server.route({
     handler: function (request, reply) {
 
         var id = request.params.a + ':' + request.params.b;
-        sumCache.get({id: id, a: request.params.a, b: request.params.b}, function (err, result) {
+        sumCache.get({ id: id, a: request.params.a, b: request.params.b }, function (err, result) {
 
             reply(result);
-        })
+        });
     }
 });
 ```
@@ -157,12 +157,12 @@ var add = function (a, b, next) {
     return next(null, Number(a) + Number(b));
 };
 
-server.method('sum', add, { 
-    cache: { 
-        cache: 'mongoCache', 
+server.method('sum', add, {
+    cache: {
+        cache: 'mongoCache',
         expiresIn: 30 * 1000,
         generateTimeout: 100
-    } 
+    }
 });
 
 server.route({

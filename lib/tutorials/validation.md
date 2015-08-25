@@ -39,7 +39,7 @@ As you can see here, we've passed a `validate.params` parameter to the `config` 
 
 With this configuration, if we make a request to `/hello/jennifer` we will get the expected `Hello jennifer!` reply, however if we make a request to `/hello/a` we will get an HTTP `400` response that looks like the following:
 
-```javascript
+```json
 {
     "error": "Bad Request",
     "message": "the length of name must be at least 3 characters long",
@@ -55,7 +55,7 @@ With this configuration, if we make a request to `/hello/jennifer` we will get t
 
 Likewise, if we were to make a request to `/hello/thisnameiswaytoolong`, we will get an HTTP `400` that looks like this:
 
-```javascript
+```json
 {
     "error": "Bad Request",
     "message": "the length of name must be less than or equal to 10 characters long",
@@ -80,7 +80,7 @@ server.route({
     method: 'GET',
     path: '/list',
     handler: function (request, reply) {
-        reply(resources.slice(0, request.query.limit);
+        reply(resources.slice(0, request.query.limit));
     },
     config: {
         validate: {
@@ -94,7 +94,7 @@ server.route({
 
 This makes sure that the `limit` query parameter is always an integer between 1 and 100, and if unspecifed defaults to 10. However, if we make a request to `/list?limit=15&offset=15` we get an HTTP `400` response that looks like this:
 
-```javascript
+```json
 {
     "error": "Bad Request",
     "message": "the key offset is not allowed",
