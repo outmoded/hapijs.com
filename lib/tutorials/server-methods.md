@@ -71,13 +71,13 @@ In addition to the above options, you may also pass a custom function used to ge
 
 ```javascript
 var sum = function (array, next) {
-    var sum = 0;
+    var total = 0;
 
     array.forEach(function (item) {
-        sum += item;
+        total += item;
     });
 
-    next(null, sum);
+    next(null, total);
 };
 
 server.method('sum', sum, {
