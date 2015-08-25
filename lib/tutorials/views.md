@@ -1,5 +1,7 @@
 ## Views
 
+_This tutorial is compatible with hapi v9.x.x._
+
 hapi has extensive support for template rendering, including the ability to load and leverage multiple templating engines, partials, helpers (functions used in templates to manipulate data), and layouts.
 
 ## Configuring the server
@@ -11,18 +13,27 @@ var Path = require('path');
 var Hapi = require('hapi');
 
 var server = new Hapi.Server();
-server.views({
-    engines: {
-        html: require('handlebars')
-    },
-    path: Path.join(__dirname, 'templates')
+
+server.register(require('vision'), function (err) {
+
+    Hoek.assert(!err, err);
+
+    server.views({
+        engines: {
+            html: require('handlebars')
+        },
+        relativeTo: __dirname,
+        path: 'templates'
+    });
 });
 
 ```
 
 We're doing several things here.
 
-First, we register the `handlebars` module as the engine responsible for rendering templates with an extension of `.html`.
+First, we load the [`vision`](https://github.com/hapijs/vision) module as a plugin. It adds template rendering support to hapi. Since [`vision`](https://github.com/hapijs/vision) is no longer included with hapi, you may need to install it.
+
+Second, we register the `handlebars` module as the engine responsible for rendering templates with an extension of `.html`.
 
 Second, we tell the server that our templates are located in the `templates` directory within the current path. By default, hapi will look for templates in the current working directory. You can set the path parameter to wherever your templates are located.
 
@@ -222,21 +233,26 @@ server.connection({
   host: "localhost"
 });
 
-server.views({
-  engines: {
-    html: require("handlebars")
-  },
-  relativeTo: __dirname,
-  path: "templates",
-  helpersPath: "helpers"
-});
+server.register(require('vision'), function (err) {
 
-server.route({
-  method: "GET",
-  path: "/",
-  handler: function(request, reply) {
-    reply.view("index");
-  }
+    Hoek.assert(!err, err);
+
+    server.views({
+      engines: {
+        html: require("handlebars")
+      },
+      relativeTo: __dirname,
+      path: "templates",
+      helpersPath: "helpers"
+    });
+
+    server.route({
+      method: "GET",
+      path: "/",
+      handler: function(request, reply) {
+        reply.view("index");
+      }
+    });
 });
 
 server.start();

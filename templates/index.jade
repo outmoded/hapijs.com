@@ -142,7 +142,9 @@ block content
           span.pl-c // Start the server
           br
 
-          | server.start();
+          | server.start(function() {
+          |      console.log('Server running at:', server.info.uri);
+          | });
           br
 
         p Launch the application by running 

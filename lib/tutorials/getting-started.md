@@ -1,5 +1,7 @@
 ## Installing hapi
 
+_This tutorial is compatible with hapi v9.x.x._
+
 Create a new directory `myproject`, and from there:
 
 * Run: `npm init` and follow the prompts, this will generate a package.json file for you.

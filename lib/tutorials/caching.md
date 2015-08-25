@@ -1,30 +1,32 @@
 ## Client side caching
 
+_This tutorial is compatible with hapi v9.x.x._
+
 The HTTP protocol provides several different HTTP headers to control how browsers cache resources. To decide which headers are suitable for your use case check Google developers [guide](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching) or other [resources](https://www.google.com/search?q=HTTP+caching). This tutorial provides overview how to use these techniques with hapi.
 
 ### Cache-Control
 
 The `Cache-Control` header tells the browser and any intermediate cache if a resource is cacheable and for what duration. For example, `Cache-Control:max-age=30, must-revalidate, private` means that the browser can cache the associated resource for thirty seconds and `private` means it should not be cached by intermediate caches, only by the browser. `must-revalidate` means that once it expires it has to request the resource again from the server.
 
-Lets see how we can set this header in hapi:
+Let's see how we can set this header in hapi:
 
 ```javascript
 server.route({
-   path: '/hapi/{ttl?}',
-   method: 'GET',
-   handler: function (request, reply) {
+    path: '/hapi/{ttl?}',
+    method: 'GET',
+    handler: function (request, reply) {
 
-      var response = reply({be: 'hapi'});
-      if (request.params.ttl) {
-         response.ttl(request.params.ttl);
-      }
-   },
-   config: {
-      cache: {
-         expiresIn: 30 * 1000,
-         privacy: 'private'
-      }
-   }
+        var response = reply({be: 'hapi'});
+        if (request.params.ttl) {
+            response.ttl(request.params.ttl);
+        }
+    },
+    config: {
+        cache: {
+            expiresIn: 30 * 1000,
+            privacy: 'private'
+        }
+    }
 });
 ```
 **Listing 1** Setting Cache-Control header
@@ -35,7 +37,7 @@ See [route-options](http://hapijs.com/api#route-options) for more information ab
 
 ### Last-Modified
 
-In some cases the server can provide information when resources were last modified. When using either the `file` or `directory` route configuration option, the underlying module, [inert](https://github.com/hapijs/inert), adds the `Last-Modified` header to every response payload.
+In some cases the server can provide information when resources were last modified. When using the [inert](https://github.com/hapijs/inert) plugin for serving static content, a `Last-Modified` header is added to every response payload.
 
 When the `Last-Modified` header is set on a response, hapi compares it with the `If-Modified-Since` header coming from client to decide if the response status code should be `304`.
 
@@ -71,7 +73,7 @@ Catbox has two interfaces; client and policy.
 
 [Client](https://github.com/hapijs/catbox#client) is a low-level interface that allows you set/get key-value pairs. It is initialized with one of the available adapters: ([Memory](https://github.com/hapijs/catbox-memory), [Redis](https://github.com/hapijs/catbox-redis), [mongoDB](https://github.com/hapijs/catbox-mongodb), [Memcached](https://github.com/hapijs/catbox-memcached), or [Riak](https://github.com/DanielBarnes/catbox-riak)).
 
-hapi always initialize one default [client](https://github.com/hapijs/catbox#client) with [memory](https://github.com/hapijs/catbox-memory) adapter. Lets see how we can define more clients.
+hapi always initialize one default [client](https://github.com/hapijs/catbox#client) with [memory](https://github.com/hapijs/catbox-memory) adapter. Let's see how we can define more clients.
 
 ```javascript
 var Hapi = require('hapi');
@@ -103,7 +105,7 @@ In Listing 4, we've defined two catbox clients; mongoCache and redisCache. Inclu
 
 ### Policy
 
-[Policy](https://github.com/hapijs/catbox#policy) is high-level interface that you will be using. Lets pretend we are dealing with something more complicated than adding two numbers and we want to cache the results. [server.cache](http://hapijs.com/api#servercacheoptions) creates a new [policy](https://github.com/hapijs/catbox#policy), which is then used in the route handler.
+[Policy](https://github.com/hapijs/catbox#policy) is a more high-level interface than Client. Let's pretend we are dealing with something more complicated than adding two numbers and we want to cache the results. [server.cache](http://hapijs.com/api#servercacheoptions) creates a new [policy](https://github.com/hapijs/catbox#policy), which is then used in the route handler.
 
 ```javascript
 var add = function (a, b, next) {
@@ -118,7 +120,8 @@ var sumCache = server.cache({
     generateFunc: function (id, next) {
 
         add(id.a, id.b, next);
-    }
+    },
+    generateTimeout: 100
 });
 
 server.route({
@@ -138,15 +141,15 @@ server.route({
 
 `cache` tells hapi which [client](https://github.com/hapijs/catbox#client) to use.
 
-First parameter of `sumCache.get` function is object with mandatory key `id`, which is a unique item identifier string.
+The first parameter of the `sumCache.get` function is an object with a mandatory key `id`, which is a unique item identifier string.
 
-In addition to **partitions** there are **segments** that allows isolate caches within one [client](https://github.com/hapijs/catbox#client). If you want to cache results from two different methods, you usually don't want mix the results together. In [mongoDB](http://www.mongodb.org/) adapters, `segment` represents a collection and in [redis](http://redis.io/) it's an additional prefix along with the `partition` option.
+In addition to **partitions**, there are **segments** that allow you to isolate caches within one [client](https://github.com/hapijs/catbox#client). If you want to cache results from two different methods, you usually don't want mix the results together. In [mongoDB](http://www.mongodb.org/) adapters, `segment` represents a collection and in [redis](http://redis.io/) it's an additional prefix along with the `partition` option.
 
 The default value for `segment` when [server.cache](http://hapijs.com/api#servercacheoptions) is called inside of a plugin will be `'!pluginName'`. When creating [server methods](http://hapijs.com/tutorials/server-methods), the `segment` value will be `'#methodName'`. If you have a use case for multiple policies sharing one segment there is a [shared](http://hapijs.com/api#servercacheoptions) option available as well.
 
 ### Server methods
 
-But it can get better than that! In 95% cases you will use [server methods](http://hapijs.com/tutorials/server-methods) for caching purposes, because it reduces boilerplate to minimum. Lets rewrite Listing 5 using server methods:
+But it can get better than that! In 95% cases you will use [server methods](http://hapijs.com/tutorials/server-methods) for caching purposes, because it reduces boilerplate to minimum. Let's rewrite Listing 5 using server methods:
 
 ```javascript
 var add = function (a, b, next) {
@@ -154,7 +157,13 @@ var add = function (a, b, next) {
     return next(null, Number(a) + Number(b));
 };
 
-server.method('sum', add, { cache: { cache: 'mongoCache', expiresIn: 30 * 1000 } });
+server.method('sum', add, { 
+    cache: { 
+        cache: 'mongoCache', 
+        expiresIn: 30 * 1000,
+        generateTimeout: 100
+    } 
+});
 
 server.route({
     path: '/add/{a}/{b}',

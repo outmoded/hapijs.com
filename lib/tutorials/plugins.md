@@ -86,26 +86,18 @@ The return value of `server.select()` is a server object that contains only the 
 
 ## Loading a plugin
 
-Plugins can be loaded one at a time, or in a group, by the `server.register()` method, for example:
+Plugins can be loaded one at a time, or as a group in an array, by the `server.register()` method, for example:
 
 ```javascript
 // load one plugin
-server.register({register: require('myplugin')}, function (err) {
+server.register(require('myplugin'), function (err) {
     if (err) {
         console.error('Failed to load plugin:', err);
     }
 });
 
 // load multiple plugins
-server.register([
-    {
-        register: require('myplugin'),
-        options: {} // options for 'myplugin'
-    },{
-        register: require('yourplugin'),
-        options: {} // options for 'yourplugin'
-    }
-], function (err) {
+server.register([require('myplugin'), require('yourplugin')], function (err) {
     if (err) {
         console.error('Failed to load a plugin:', err);
     }
