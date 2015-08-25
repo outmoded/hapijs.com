@@ -1,6 +1,9 @@
 {
-    "extends": "./node_modules/lab/lib/linters/eslint/.eslintrc",
+    "extends": "eslint-config-hapi",
     "plugins": [
         "markdown"
-    ]
+    ],
+    "rules": {
+        "hapi/hapi-scope-start": 0
+    }
 }
