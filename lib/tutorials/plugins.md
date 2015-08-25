@@ -13,7 +13,7 @@ var myPlugin = {
     register: function (server, options, next) {
         next();
     }
-}
+};
 
 myPlugin.register.attributes = {
     name: 'myPlugin',
@@ -151,14 +151,14 @@ exports.register = function (server, options, next) {
 };
 
 exports.register.attributes = {
-    pkg: require('./package.json');
+    pkg: require('./package.json')
 };
 ```
 
 Normally, when this plugin is loaded it will create a `GET` route at `/test`. This can be changed by using the `prefix` setting in the options, which will prepend a string to all routes created in the plugin:
 
 ```javascript
-server.register({register: require('myplugin')}, {
+server.register({ register: require('myplugin') }, {
     routes: {
         prefix: '/plugins'
     }
@@ -173,7 +173,7 @@ Similarly the `config.vhost` parameter will assign a default `vhost` configurati
 The `select` parameter works exactly the same way as `server.select()` does, in that you may pass one label or an array of labels for the plugin to be associated with.
 
 ```javascript
-server.register({register: require('myplugin')}, {
+server.register({ register: require('myplugin') }, {
     select: ['webserver', 'admin']
 }, function (err) {
 });
