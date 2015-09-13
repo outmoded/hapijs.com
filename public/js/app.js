@@ -143,7 +143,157 @@ var ageString = function (then) {
     return age + ' days ago';
 };
 
+// Search engine for the API part
+var SearchEngine = function () {
+
+    // Simple DOM walker
+    var walkTheDOM = function (node, func) {
+        if (func(node)) {
+            // If the function returns true, do not walk the children
+            return;
+        }
+
+        node = node.firstChild;
+        while (node) {
+            walkTheDOM(node, func);
+            node = node.nextSibling;
+        }
+    };
+
+    /**
+     * Crawls the hierarchy looking for the search terms, and eventually hide what doesn't match.
+     * It's supposed to leave alone the nodes that do not directly contain the terms but lead to the ones that do,
+     * this is essential to know in which part of the documentation your are.
+     */
+    var crawlToHide = function (terms) {
+        var children = this.children;
+        var nodes = this.nodes;
+        var found = false;
+        var nodesToHide = [];
+
+        // Both the following loops won't stop even if a match is found, because we need to be able to hide siblings
+        // that don't.
+
+        for (var i = 0, il = children.length; i < il; ++i) {
+            if (crawlToHide.call(children[i], terms)) {
+                found = true;
+            }
+            else {
+                nodesToHide.push(children[i].tag);
+            }
+        }
+
+        for (var i = 0, il = nodes.length; i < il; ++i) {
+            var allFound = true;
+            for (var t = 0, tl = terms.length; t < tl; ++t) {
+                allFound &= nodes[i].textContent.toLowerCase().indexOf(terms[t]) !== -1;
+            }
+
+            // All the words need to be found for that node to match
+            if (allFound) {
+                found = true;
+            }
+            else {
+                nodesToHide.push(nodes[i]);
+            }
+        }
+
+        if (!found) {
+            if (this.parent) { // Don't want to hide the root
+                this.tag.classList.add('hidden');
+            }
+
+            for (var i = 0, il = nodesToHide.length; i < il; ++i) {
+                nodesToHide[i].classList.add('hidden');
+            }
+        }
+
+        return found;
+    };
+
+    var hierarchy; // holds a cache of the hierarchy of the document
+    var search = function () {
+        var terms = searchText.value.toLowerCase().split(' ');
+        var content = document.querySelector('.entry-content');
+
+        // Show all hidden parts prior to hiding them, the performance is good enough without a diff
+        var hiddens = content.querySelectorAll('.hidden');
+        for (var i = 0, il = hiddens.length; i < il; ++i) {
+            hiddens[i].classList.remove('hidden');
+        }
+
+        if (!terms.length) {
+            return;
+        }
+
+        if (!hierarchy) {
+            // Nodes outside of the H* that are considered hierarchical and need to be walked
+            var hierarchicalNodes = ['UL', 'LI'];
+
+            hierarchy = { tag: content, children: [], nodes: [] };
+            var current = hierarchy;
+
+            walkTheDOM(content, function (node) {
+                if (node === content || !node.tagName) { // Skip root and text nodes
+                    return;
+                }
+
+                // We probably just got out of a ul/li, find the correct parent we should be under
+                while (node.parentNode !== current.tag && (hierarchicalNodes.indexOf(current.tag.tagName) !== -1)) {
+                    current = current.parent;
+                }
+
+                if (/^H\d$/.test(node.tagName)) {
+                    // Headers are a specific case that need to be compared to give them the good level in the hierarchy
+
+                    if (current.tag.tagName === node.tagName) {
+                        current.parent.children.push({ tag: node, parent: current.parent, children: [], nodes: [] });
+                        current = current.parent.children[current.parent.children.length - 1];
+                    }
+                    else {
+                        if (/^H\d$/.test(current.tag.tagName) && +current.tag.tagName[1] > +node.tagName[1]) {
+
+                            // That header has a higher level than the current, this means we just ended a section and
+                            // are starting a new one.
+
+                            while (current.tag.tagName !== node.tagName) { // Go up until we find our equal in level
+                                current = current.parent;
+                            }
+
+                            // Then put ourself under the right parent
+                            current = current.parent;
+                            current.children.push({ tag: node, parent: current, children: [], nodes: [] });
+                        }
+                        else {
+                            // This is a sub-section
+                            current.children.push({ tag: node, parent: current, children: [], nodes: [] });
+                        }
+
+                        current = current.children[current.children.length - 1];
+                    }
+                }
+                else if (hierarchicalNodes.indexOf(node.tagName) !== -1) {
+                    current.children.push({ tag: node, parent: current, children: [], nodes: [] });
+                    current = current.children[current.children.length - 1];
+                }
+                else {
+                    current.nodes.push(node);
+                    return true; // Stop walking that, this is a normal node, we can consider it a leaf even if it has children.
+                }
+            });
+        }
+
+        crawlToHide.call(hierarchy, terms);
+    };
+
+    return search;
+};
+
 document.addEventListener('DOMContentLoaded', function () {
+    if (typeof searchText !== 'undefined') {
+        searchText.onkeyup = SearchEngine();
+    }
+
     var nav = document.querySelectorAll('.api-reference ul');
     if (nav.length) {
         // move the first UL to the sidebar
