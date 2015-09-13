@@ -1,6 +1,6 @@
 ## Installing hapi
 
-_This tutorial is compatible with hapi v9.x.x._
+_This tutorial is compatible with hapi v10.x.x._
 
 Create a new directory `myproject`, and from there:
 

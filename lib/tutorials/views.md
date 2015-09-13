@@ -1,6 +1,6 @@
 ## Views
 
-_This tutorial is compatible with hapi v9.x.x._
+_This tutorial is compatible with hapi v10.x.x._
 
 hapi has extensive support for template rendering, including the ability to load and leverage multiple templating engines, partials, helpers (functions used in templates to manipulate data), and layouts.
 
@@ -272,7 +272,7 @@ server.views({
 });
 ```
 
-This enables the built-in layouts and defines the default layout page to `views/layout/layout.html` (or whatever other extension you're using). 
+This enables the built-in layouts and defines the default layout page to `views/layout/layout.html` (or whatever other extension you're using).
 
 Setup a content area in your `layout.html`:
 

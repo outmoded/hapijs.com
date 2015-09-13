@@ -1,6 +1,6 @@
 ## Authentication
 
-_This tutorial is compatible with hapi v9.x.x._
+_This tutorial is compatible with hapi v10.x.x._
 
 Authentication within hapi is based on the concept of `schemes` and `strategies`.
 
@@ -158,4 +158,3 @@ When specifying one strategy, you may set the `strategy` property to a string wi
 Lastly, the `payload` parameter can be set to `false` denoting the payload is not to be authenticated, `'required'` or `true` meaning that it *must* be authenticated, or `'optional'` meaning that if the client includes payload authentication information, the authentication must be valid.
 
 The `payload` parameter is only possible to use with a strategy that supports the `payload` method in its scheme.
-

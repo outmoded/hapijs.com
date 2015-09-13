@@ -1,6 +1,6 @@
 ## Serving static files
 
-_This tutorial is compatible with hapi v9.x.x._
+_This tutorial is compatible with hapi v10.x.x._
 
 Inevitably while building any web application, the need arises to serve a simple file from disk. There's a hapi plugin called [inert](https://github.com/hapijs/inert) that adds this functionality to hapi through the use of additional handlers.
 
