@@ -5,12 +5,16 @@ block title
 
 block content
 
-  .content.page-api.cf 
+  .content.page-api.cf
 
     .column.api-description.api-reference
       .reference !{html}
 
     .column.nav-secondary
+
+      .search
+        span Search :
+        input.search-input(id="searchText", placeholder="Type in a few words")
 
       .tag-list.cf
         p.pull-left Reference version:
