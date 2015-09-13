@@ -192,6 +192,14 @@ var SearchEngine = function () {
             // All the words need to be found for that node to match
             if (allFound) {
                 found = true;
+
+                // If something was found directly in that LI, we need to see all the children
+                if (this.tag.tagName === 'LI') {
+                    var children = this.tag.querySelectorAll('.hidden');
+                    for (var i = 0, il = children.length; i < il; ++i) {
+                        children[i].classList.remove('hidden');
+                    }
+                }
             }
             else {
                 nodesToHide.push(nodes[i]);
