@@ -204,7 +204,9 @@ var SearchEngine = function () {
             }
 
             for (var i = 0, il = nodesToHide.length; i < il; ++i) {
-                nodesToHide[i].classList.add('hidden');
+                if (!(nodesToHide[i] instanceof Text)) {
+                    nodesToHide[i].classList.add('hidden');
+                }
             }
         }
 
@@ -234,7 +236,7 @@ var SearchEngine = function () {
             var current = hierarchy;
 
             walkTheDOM(content, function (node) {
-                if (node === content || !node.tagName) { // Skip root and text nodes
+                if (node === content) { // Skip root
                     return;
                 }
 
