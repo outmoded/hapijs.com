@@ -3,6 +3,8 @@ for milestone, i in milestones
     h2
       a(href=milestone.html_url, title=milestone.title)
         strong= milestone.title
+      if (milestone.release_notes)
+        a.release-notes(href=milestone.release_notes.html_url) release notes
 
     ul.milestone-issues
       each issue in changelog[milestone.title]

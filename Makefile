@@ -11,4 +11,7 @@ public/css/main.css: $(STYLUS_FILES)
 	stylus -c public/css/main.styl
 
 public/js/app.min.js: $(JS_FILES)
-	uglifyjs -c --source-map public/js/app.min.js.map --source-map-url /public/js/app.min.js.map --source-map-root / -o $@ $(JS_FILES) 
+	uglifyjs -c --source-map public/js/app.min.js.map --source-map-url /public/js/app.min.js.map --source-map-root / -o $@ $(JS_FILES)
+
+clean:
+	rm -rf public/css/main.css public/js/app.min.js public/js/app.min.js.map
