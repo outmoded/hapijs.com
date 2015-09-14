@@ -1,6 +1,11 @@
 # Hapijs.com
 
+<a href="https://andyet.com"><img src="https://s3.amazonaws.com/static.andyet.com/images/%26yet-logo.svg" align="right" /></a>
 This is the home of [hapijs.com](http://hapijs.com).
+
+Lead Maintainer: [Nathan LaFreniere](https://github.com/nlf)
+
+**hapijs.com** is sponsored by [&yet](https://andyet.com).
 
 ## Running/developing
 

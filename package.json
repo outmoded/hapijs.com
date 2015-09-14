@@ -27,7 +27,7 @@
     "url": "git://github.com/hapijs/hapijs.com.git"
   },
   "author": "&yet <team@andyet.net>",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/hapijs/hapijs.com/issues"
   },
