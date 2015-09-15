@@ -53,23 +53,16 @@ var windowHandler = function () {
             var left = (winWidth * 0.1) + (winWidth * 0.8 * 0.7);
             var width = winWidth * 0.8 * 0.3;
 
-            var contentCol = document.querySelector('.column');
-            var height = contentCol.offsetHeight - (top - headerBottom);
-
             navDiv.style.position = 'fixed';
             navDiv.style.top = 0;
             navDiv.style.left = left + 'px';
             navDiv.style.width = width + 'px';
-            navDiv.style.height = height + 'px';
-            navDiv.style.minHeight = height + 'px';
         }
         else {
             navDiv.style.position = '';
             navDiv.style.top = '';
             navDiv.style.left = '';
             navDiv.style.width = '';
-            navDiv.style.height = '';
-            navDiv.style.minHeight = '';
         }
     }
 };
