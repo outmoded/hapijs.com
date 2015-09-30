@@ -11,6 +11,7 @@ To get started with views, first we have to configure at least one templating en
 ```javascript
 var Path = require('path');
 var Hapi = require('hapi');
+var Hoek = require('hoek');
 
 var server = new Hapi.Server();
 
