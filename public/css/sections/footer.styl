@@ -7,7 +7,6 @@ footer
   color: $gray-light
   font-size: $font-small
   text-align: center
-  width: 70%
 
   nav
     margin: 20px 0
@@ -20,3 +19,11 @@ footer
 
     &:last-of-type
       font-size: $font-smaller
+
+.page-api + footer
+  width: 70%
+
+@media $mobile-devices
+
+  .page-api + footer
+    width: 100%
