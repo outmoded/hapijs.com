@@ -6,7 +6,7 @@ header
 
   p
     margin: 0
-  
+
   nav
     padding: 20px 0
 
@@ -28,7 +28,7 @@ header
           opacity: .8
 
   .introduction
-    
+
     .latest-update p,
     .latest-update em,
       display: inline-block
@@ -131,27 +131,64 @@ header
 @media $desktop
 
   header
+
+    nav
+      ul, li
+        width: 100%
+
+      ul.unstyled
+        margin-top: 120px
+        float: none
+
+      li
+        display: block
+        border-bottom: $ui-border
+
+      a
+        padding: 10px 20px
+
+        &.logo
+          height: 75px
+          width: 100px
+
+      .nav-toggle
+        float: right
+        margin-top: 40px
+        width: 30px
+        height: 40px
+        padding: 0
+        background: url('/public/img/icon-menu.svg') 0 0 no-repeat
+        background-size: contain
+
+@media $desktop-wide
+
+  header
     ul
       line-height: 150px
-      
-  nav 
 
-    a
-      padding-right: 20px
+    nav
+      ul.unstyled
+        float: right
+        margin: 0
 
-      &.logo
-        height: 150px
-        width: 201px
-  
-  .js .nav-collapse 
+      ul, li
+        width: auto
+
+      li
+        border-bottom: 0
+
+      a
+        padding: 0 20px 0 0;
+
+        &.logo
+          height: 150px
+          width: 201px
+
+  .js .nav-collapse
     position: relative
-  
-  .js .nav-collapse.closed 
+
+  .js .nav-collapse.closed
     max-height: none
 
   .nav-toggle
     display: none
-
-  .introduction
-    margin: 0 auto
-    max-width: 100%
