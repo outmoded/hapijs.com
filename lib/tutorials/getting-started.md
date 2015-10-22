@@ -103,7 +103,7 @@ Create a folder called `public` at the root of your directory with a file called
 
 Inert will serve whatever content is saved to your hard drive when the request is made, which is what leads to this live reloading behavior. Customize the page at `/hello` to your liking.
 
-More details on how static content is served are detailed on [Serving Static Content](/tutorials/serving-files). This techniques is commonly used to serve images, stylesheets, and static pages in your web application.
+More details on how static content is served are detailed on [Serving Static Content](/tutorials/serving-files). This technique is commonly used to serve images, stylesheets, and static pages in your web application.
 
 ## Using plugins
 
