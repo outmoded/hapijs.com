@@ -1,6 +1,7 @@
 Copyright (c) 2011-2015, Eran Hammer and other contributors.
 Copyright (c) 2011-2014, Walmart.
 Copyright (c) 2011, Yahoo Inc.
+Copyright (c) 2015, Google Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -27,6 +28,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
                                   *   *   *
 
-The complete list of contributors can be found at: https://github.com/hapijs/hapi/graphs/contributors
+The complete list of contributors can be found at: https://github.com/hapijs/hapijs.com/graphs/contributors
 Portions of this project were initially based on the Yahoo! Inc. Postmile project,
 published at https://github.com/yahoo/postmile.
