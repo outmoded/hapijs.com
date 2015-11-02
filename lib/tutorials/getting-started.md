@@ -93,7 +93,7 @@ server.register(require('inert'), function (err) {
 
 ```
 
-The `server.register()` command above adds the inert plugin to your Hapi application. If something goes wrong, we want to know, so we've passed in an anonymous function which if invoked will receive `err` and throw that error. `err` is used instead of `error` because `error` is a reserved word in JavaScript. This callback function is required when registering plugins.
+The `server.register()` command above adds the inert plugin to your Hapi application. If something goes wrong, we want to know, so we've passed in an anonymous function which if invoked will receive `err` and throw that error. This callback function is required when registering plugins.
 
 The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file. We've put the routing callback function inside of registering inert because we need to insure that inert is registered _before_ we use it to render the static page. It is generally wise to run code that depends on a plugin within the callback that registers that plugin so that you can be absolutely sure that plugin exists when your code runs.
 
