@@ -64,7 +64,15 @@ block content
 
       .highlight.highlight-javascript
         pre
-          span.pl-s var
+          span.pl-s1
+            span.pl-pds '
+            | use strict
+            span.pl-pds '
+          | ;
+          br
+
+          br
+          span.pl-s const
           |  Hapi 
           span.pl-k = 
           span.pl-s3 require
@@ -80,7 +88,7 @@ block content
           span.pl-c // Create a server with a host and port
           br
 
-          span.pl-s var
+          span.pl-s const
           |  server 
           span.pl-k = 
           span.pl-k new 
@@ -128,7 +136,10 @@ block content
           | , 
           span.pl-vpf reply
           | ) {
-          |         reply(
+          br
+          br
+          span.pl-s         return 
+          | reply(
           span.pl-s1
             span.pl-pds '
             | hello world
@@ -142,8 +153,22 @@ block content
           span.pl-c // Start the server
           br
 
-          | server.start(function () {
-          |     console.log('Server running at:', server.info.uri);
+          | server.start((err) => {
+          br
+          
+          br
+          span.pl-s     if 
+          | (err) {
+          br
+          span.pl-s         throw 
+          | err;
+          |     }
+          |     console.log(
+          span.pl-s1
+            span.pl-pds '
+            | Server running at:
+            span.pl-pds '
+          | , server.info.uri);
           | });
           br
 
