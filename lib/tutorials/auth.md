@@ -1,12 +1,13 @@
-## Authentication
+## Autenticação
 
-_This tutorial is compatible with hapi v10.x.x._
+_Este tutorial é compatível com o hapi v10.x.x_
 
-Authentication within hapi is based on the concept of `schemes` and `strategies`.
+A autenticação no hapi tem como base um conceito de esquemas (`schemes`) e estratégias (`strategies`).
 
-Think of a scheme as a general type of auth, like "basic" or "digest". A strategy on the other hand, is a pre-configured and named instance of a scheme.
+Pense num esquema como um tipo geral de autenticação, como "basic" ou "digest". Por outro lado, uma estratégia é uma instância pré-configurada e nomeada de um esquema.
 
-First, let's look at an example of how to use [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic):
+Para começar, der uma olhada num exemplo de como utilizar [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic):
+
 
 ```javascript
 var Bcrypt = require('bcrypt');
@@ -19,7 +20,7 @@ server.connection({ port: 3000 });
 var users = {
     john: {
         username: 'john',
-        password: '$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Tm',   // 'secret'
+        password: '$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Tm',   // 'secreto'
         name: 'John Doe',
         id: '2133d32a'
     }
@@ -55,106 +56,111 @@ server.register(Basic, function (err) {
 });
 ```
 
-First, we define our `users` database, which is a simple object in this example. Then we define a validation function, which is a feature specific to [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) and allows us to verify that the user has provided valid credentials.
+Neste exemplo, primeiro definimos nossa base de dados `users` com um simples objeto javascript. Então definimos uma função de validação,
+First, we define our `users` database, which is a simple object in this example. Then we define a validation function, que é uma funcionalidade específica de [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) que nos permite verificar se as crendenciais fornecidas pelo usuário são válidas.
 
-Next, we register the plugin, which creates a scheme with the name of `basic`. This is done within the plugin via [server.auth.scheme()](/api#serverauthschemename-scheme).
+Em seguida, registramos o plugin que cria um esquema com o nome de `basic`
+Next, we register the plugin, which creates a scheme with the name of `basic`. Isto é feito dentro do plugin via [server.auth.scheme()](/api#serverauthschemename-scheme).
 
-Once the plugin has been registered, we use [server.auth.strategy()](/api#serverauthstrategyname-scheme-mode-options) to create a strategy with the name of `simple` that refers to our scheme named `basic`. We also pass an options object that gets passed to the scheme and allows us to configure its behavior.
+Uma vez que o plugin foi registrado, nos utilizamos [server.auth.strategy()](/api#serverauthstrategyname-scheme-mode-options) para criar uma estratégia com o nome de `simple` que faz referência ao nosso esquema chamado `basic`. Também passamos um objeto de opções que são repassadas para o esquema; essas opções permitem configurar o comportamento deste esquema.
 
-The last thing we do is tell a route to use the strategy named `simple` for authentication.
+Por último, definimos uma rota que utiliza a estratégia denominada `simple` para a autenticação.
 
-## Schemes
 
-A `scheme` is a method with the signature `function (server, options)`. The `server` parameter is a reference to the server the scheme is being added to, while the `options` parameter is the configuration object provided when registering a strategy that uses this scheme.
+## Esquemas (`Schemes`)
 
-This method must return an object with *at least* the key `authenticate`. Other optional methods that can be used are `payload` and `response`.
+Um esquema (`scheme`) é um método com a assinatura `function (server, options)`. O parâmetros `server` é uma referência ao servidor em que o esquema está sendo adicionado, e o parâmetro `options` é o objeto de configuração fornecido quando a estratégia que utiliza este esquema foi registrada.
+
+Este método precisa retornar um objeto com *pelo menos* a chave `authenticate`. Outros métodos que podem ser utilizados opcionalmente são `payload` e `response`.
 
 ### `authenticate`
 
-The `authenticate` method has a signature of `function (request, reply)`, and is the only *required* method in a scheme.
+O método `authenticate` tem a assinatura `function (request, reply)`, e é um único método *obrigatório* em um esquema.
 
-In this context, `request` is the `request` object created by the server. It is the same object that becomes available in a route handler, and is documented in the [API reference](/api#request-object).
+Neste contexto, `request` é o objeto de requisição criado pelo servidor. É o mesmo objeto que se torna disponível para um manipulador de rota (`route handler`) e está documentado na [referência da API](/api#request-object).
 
-`reply` is the standard hapi `reply` interface, it accepts `err` and `result` parameters in that order.
 
-If `err` is a non-null value, this indicates a failure in authentication and the error will be used as a reply to the end user. It is advisable to use [boom](https://github.com/hapijs/boom) to create this error to make it simple to provide the appropriate status code and message.
 
-The `result` parameter should be an object, though the object itself as well as all of its keys are optional if an `err` is provided.
+`reply` é a interface de resposta padrão do hapi, e aceita `err` e `result` como parâmetros (nesta ordem).
 
-If you would like to provide more detail in the case of a failure, the `result` object must have a `credentials` property which is an object representing the authenticated user (or the credentials the user attempted to authenticate with) and should be called like `reply(error, null, result);`.
+Se `err` não é um valor null, isto indica uma falha da autenticação e o error poderá ser enviado como uma resposta ao usuário final. É aconselhável utilizar [boom](https://github.com/hapijs/boom) para criar este erro e simplificar o fornecimento de um apropriado `status code` e menssagem de erro.
 
-When authentication is successful, you must call `reply.continue(result)` where result is an object with a `credentials` property.
+O parâmetro `result` deve ser um objeto. No entanto, se `err` é fornecido, o parâmetro `result` bem como suas chaves serão opcionais.
 
-Additionally, you may also have an `artifacts` key, which can contain any authentication related data that is not part of the user's credentials.
+Mas se você quiser fornecer mais detalhes em caso de uma falha, o objeto `result` pode ser utilizado e deverá ter uma propriedade `credentials` que é um objeto representando o usuário autenticado (ou as credenciais que o usuário tentou utilizar para a autenticação) e deve ser chamado como `reply(error, null, result);`.
 
-The `credentials` and `artifacts` properties can be accessed later (in a route handler, for example) as part of the `request.auth` object.
+Quando a autenticação é bem sucedida, você precisa chamar `reply.continue(result)` onde _result_ é um objeto com uma propriedade `credentials`.
+
+Adicionalmente, você também pode ter uma chave `artifacts`, que pode conter qualquer dado relacionado à autenticação. Os dados em `artifacts` não são parte das credenciais do usuário.
+
+As propriedades `credentials` e `artifacts` podem ser acessados depois (em um manipulador de rota, por exemplo) como parte do objeto `request.auth`.
 
 ### `payload`
 
-The `payload` method has the signature `function (request, reply)`.
+O método `payload` tem a assinatura `function (request, reply)`.
 
-Again, the standard hapi `reply` interface is available here. To signal a failure call `reply(error, result)` or simply `reply(error)` (again, recommended to use [boom](https://github.com/hapijs/boom)) for errors.
+Novamente a interface `reply`, padrão do hapi, está disponível aqui. Para sinalizar uma falha chame `reply(error, result)` ou simplesmente `reply(error)` (Mais uma vez recomendamos a utilização de [boom](https://github.com/hapijs/boom)) para erros.
 
-To signal a successful authentication, call `reply.continue()` with no parameters.
+Para sinalizar uma autenticação bem sucedida, chame ll `reply.continue()` sem nenhum parâmetro.
 
 ### `response`
 
-The `response` method also has the signature `function (request, reply)` and utilizes the standard `reply` interface.
+O método `response` também tem a assinatura `function (request, reply)` e utiliza a interface padrão `reply`.
 
-This method is intended to decorate the response object (`request.response`) with additional headers, before the response is sent to the user.
+Este método é usado para "decorar" o objeto de requisição (`request.response`) com cabeçalhos adicionais, antes da resposta ser enviada para o usuário.
 
-Once any decoration is complete, you must call `reply.continue()`, and the response will be sent.
+Uma vez que toda a decoração está completa, você precisa chamar `reply.continue()`, e a resposta será enviada.
 
-If an error occurs, you should instead call `reply(error)` where `error` is recommended to be a [boom](https://github.com/hapijs/boom).
+Se ocorrer algum erro, você deve preferencialmente chamar `reply(error)` onde é recomendado que `error` seja um [boom](https://github.com/hapijs/boom).
 
-### Registration
+### Registro de um esquema
 
-To register a scheme, use either `server.auth.scheme(name, scheme)`. The `name` parameter is a string used to identify this specific scheme, the `scheme` parameter is a method as described above.
+Para registrar um esquema, use `server.auth.scheme(name, scheme)`. O parâmetro `name` é uma string usada para identificar este esquema específico. O parâmetro `scheme` é um método como descrito acima.
 
-## Strategies
+## Estratégias
 
-Once you've registered your scheme, you need a way to use it. This is where strategies come in.
+Uma vez que seu esquema foi registrado, você precisa utilizá-lo de algum modo. É aqui que entram as estratégias.
 
-As mentioned above, a strategy is essentially a pre-configured copy of a scheme.
+Como mencionado acima, uma estratégia é essencialmente uma cópia pré-configurada de um esquema.
 
-To register a strategy, we must first have a scheme registered. Once that's complete, use `server.auth.strategy(name, scheme, [mode], [options])` to register your strategy.
+Para registrar uma estratégia, precisamos primeiramente ter um esquema registrado. Uma vez que você já tenha registrado um esquema, utilize `server.auth.strategy(name, scheme, [mode], [options])` para registrar sua estratégia.
 
-The `name` parameter must be a string, and will be used later to identify this specific strategy. `scheme` is also a string, and is the name of the scheme this strategy is to be an instance of.
+O parâmetro `name` deve ser uma string que será utilizada posteriormente para identificar esta estratégia específica.  `scheme` também é uma string que é o nome do esquema cuja instância será usada na estratégia.
 
 ### Mode
 
-`mode` is the first optional parameter, and may be either `true`, `false`, `'required'`, `'optional'`, or `'try'`.
+`mode` é o primeiro parâmetro opcional, e poderá ser `true`, `false`, `'required'`, `'optional'`, ou `'try'`.
 
-The default mode is `false`, which means that the strategy will be registered but not applied anywhere until you do so manually.
+O valor padrão é `false`, o que significa que a estratégia será registrada mas não aplicada em lugar algum até que você faça isso manualmente.
 
-If set to `true` or `'required'`, which are the same, the strategy will be automatically assigned to all routes that don't contain an `auth` config. This setting means that in order to access the route, the user must be authenticated, and their authentication must be valid, otherwise they will receive an error.
+Se mode é definido como `true` ou `'required'`, que são iguais, a estratégia será automaticamente assinalada para todas as rotas que não contenham uma configuração `auth`. Essa configuração significa que para acessar uma rota o usuário precisa ser autenticado, e a autenticação precisa ser válida, caso contrário o usuário receberá um erro.
 
-If mode is set to `'optional'` the strategy will still be applied to all routes lacking `auth` config, but in this case the user does *not* need to be authenticated. Authentication data is optional, but must be valid if provided.
+Se mode é definido como `'optional'` a estratégia será aplicada mesmo em rotas sem configuração `auth`, mas nesse caso o usuário *não* necessita ser autenticado. Os dados de autenticação são opcionais, mas se forem fornecidos precisam ser válidos.
 
-The last mode setting is `'try'` which, again, applies to all routes lacking an `auth` config. The difference between `'try'` and `'optional'` is that with `'try'` invalid authentication is accepted, and the user will still reach the route handler.
+A última configuração de mode é `'try'` que também é aplicada em todas as rotas sem uma configuração `auth`. A diferença entre `'try'` e `'optional'` é que com o uso de `'try'` autenticações inválidas também são aceitas, e o usuário ainda chegará no manipulador de rota (route handler).
 
 ### Options
 
-The final optional parameter is `options`, which will be passed directly to the named scheme.
+O último parâmetro (opcional) é `options`, que será repassado diretamente para o esquema nomeado.
 
-### Setting a default strategy
+### Configurando uma estratégia padrão
 
-As previously mentioned, the `mode` parameter can be used with `server.auth.strategy()` to set a default strategy. You may also set a default strategy explicitly by using `server.auth.default()`.
+Como previamente mencionado, o parâmetro `mode` pode ser usado com `server.auth.strategy()` para definir uma estratégia padrão. Você pode também definir explicitamente uma estatégia padrão com o uso de `server.auth.default()`.
 
-This method accepts one parameter, which may be either a string with the name of the strategy to be used as default, or an object in the same format as the route handler's [auth options](#route-configuration).
+Este método aceita um parâmetro, que pode ser uma string com o nome da estratégia a ser utilizada por padrão, ou um objeto formatado da mesma forma como os manipuladores de rota [auth options](#route-configuration).
 
-Note that any routes added *before* `server.auth.default()` is called will not have the default applied to them. If you need to make sure that all routes have the default strategy applied, you must either call `server.auth.default()` before adding any of your routes, or set the default mode when registering the strategy.
+Note que qualquer rota adicionada *antes* de `server.auth.default()` ser chamado não terá a estratégia padrão aplicada. Se você precisa que todas as rotas tenham a estratégia padrão aplicada, é preciso chamar `server.auth.default()` antes de adicionar qualquer uma de suas rotas, ou então definir mode quando registrar a estratégia.
 
-## Route configuration
+## Configuração de rota
 
-Authentication can also be configured on a route, by the `config.auth` parameter. If set to `false`, authentication is disabled for the route.
+A autenticação também pode ser configurada em uma rota, pelo parâmetro `config.auth`. Se definido para `false`, a autenticação é desabilitada para a rota.
 
-It may also be set to a string with the name of the strategy to use, or an object with `mode`, `strategies`, and `payload` parameters.
+Também podemos definir com uma string com o nome da estratégia a ser utilizada, ou um objeto com os parâmetros `mode`, `strategies`, e `payload`.
 
-The `mode` parameter may be set to `'required'`, `'optional'`, or `'try'` and works the same as when registering a strategy.
+O parâmetro `mode` pode ser definido para `'required'`, `'optional'`, ou `'try'` e funciona da mesma forma como quando registramos uma estratégia.
 
-When specifying one strategy, you may set the `strategy` property to a string with the name of the strategy. When specifying more than one strategy, the parameter name must be `strategies` and should be an array of strings each naming a strategy to try. The strategies will then be attempted in order until one succeeds, or they have all failed.
+Ao especificar uma estratégia, você pode definir a propriedade `strategy` para uma string com o nome da estratégia. Para especificar mais que uma estratégia, o nome do parâmetro precisa ser `strategies` e deve ser um array de strings com o nome das estratégias para tentar. As estratégias serão então tentadas na ordem de sucessão até que uma tenha sucesso, ou que todas falhem.
 
-Lastly, the `payload` parameter can be set to `false` denoting the payload is not to be authenticated, `'required'` or `true` meaning that it *must* be authenticated, or `'optional'` meaning that if the client includes payload authentication information, the authentication must be valid.
+Finalmente, o parâmetro `payload` pode ser definido como `false` indicando que o payload não será autenticado, `'required'` ou `true` indica que payload *precisa* ser autenticado, ou `'optional'` indica que se o cliente incluir informações para autenticação do payload, essa autenticação precisa ser válida.
 
-The `payload` parameter is only possible to use with a strategy that supports the `payload` method in its scheme.
+O parâmetro `payload` só pode ser utilizado com uma estratégia que dê suporte ao método `payload` no seu esquema.
