@@ -1,17 +1,17 @@
-## Installing hapi
+## Instalando o hapi
 
-_This tutorial is compatible with hapi v10.x.x._
+_Este tutorial é compatível com o hapi v10.x.x._
 
-Create a new directory `myproject`, and from there:
+Crie um novo diretório `meuprojeto`, entre nele e:
 
-* Run: `npm init` and follow the prompts, this will generate a package.json file for you.
-* Run: `npm install --save hapi` this installs hapi, and saves it in your package.json as a dependency of your project.
+* Execute: `npm init` e siga as instruções, esse comando irá gerar o arquivo package.json para você.
+* Execute: `npm install --save hapi` esse comando instalará o hapi e irá salvá-lo no package.json como uma dependência do seu projeto.
 
-That's it! You now have everything you need in order to create a server using hapi.
+É isso! Agora você tem tudo que precisa para criar um servidor usando hapi.
 
-## Creating a server
+## Criando um servidor
 
-The most basic server looks like the following:
+O servidor mais simples é semelhante ao seguinte:
 
 ```javascript
 var Hapi = require('hapi');
@@ -20,19 +20,16 @@ var server = new Hapi.Server();
 server.connection({ port: 3000 });
 
 server.start(function () {
-    console.log('Server running at:', server.info.uri);
+    console.log('Servidor rodando no:', server.info.uri);
 });
 ```
+Primeiro, precisamos do hapi. Então, criamos um novo objeto do servidor hapi. Em seguida, adicionamos uma conexão ao servidor, passando o número da porta a ser escutada. E então, o servidor é iniciado e o log indicará que ele está sendo executado.
 
-First, we require hapi. Then we create a new hapi server object. After that we add a connection to the server,  passing in a port
-number to listen on. After that, start the server and log that it's running.
+Ao adicionar a conexão ao servidor, podemos informar um hostname, o endereço IP, ou até mesmo um arquivo de socket Unix ou uma pipe nomeada do Windows para vincular ao servidor. Para mais detalhes, veja [a API de referência](/api/#serverconnectionoptions).
 
-When adding the server connection, we can also provide a hostname, IP address, or even
-a Unix socket file, or Windows named pipe to bind the server to. For more details, see [the API reference](/api/#serverconnectionoptions).
+## Adicionando rotas
 
-## Adding routes
-
-Now that we have a server we should add one or two routes so that it actually does something. Let's see what that looks like:
+Agora que temos um servidor, vamos acrescentar uma ou duas rotas para que ele realmente faça alguma coisa. Vamos ver como ficaria:
 
 ```javascript
 var Hapi = require('hapi');
@@ -44,7 +41,7 @@ server.route({
     method: 'GET',
     path: '/',
     handler: function (request, reply) {
-        reply('Hello, world!');
+        reply('Olá, mundo!');
     }
 });
 
@@ -52,28 +49,28 @@ server.route({
     method: 'GET',
     path: '/{name}',
     handler: function (request, reply) {
-        reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
+        reply('Olá, ' + encodeURIComponent(request.params.name) + '!');
     }
 });
 
 server.start(function () {
-    console.log('Server running at:', server.info.uri);
+    console.log('Servidor rodando no:', server.info.uri);
 });
 ```
 
-Save the above as `server.js` and start the server with the command `node server.js`. Now you'll find that if you visit http://localhost:3000 in your browser, you'll see the text `Hello, world!`, and if you visit http://localhost:3000/stimpy you'll see `Hello, stimpy!`.
+Salve o código acima como `server.js` e inicie o servidor com o comando `node server.js`. Agora, se você acessar o endereço http://localhost:3000 no seu navegador, verá o texto `Olá, mundo!`, e se acessar http://localhost:3000/stimpy verá `Olá, stimpy!`.
 
-Note that we URI encode the name parameter, this is to prevent content injection attacks. Remember, it's never a good idea to render user provided data without output encoding it first!
+Perceba que nós codificamos o parâmetro name na URI, isso é para evitar ataques de injeção de conteúdo. Lembre-se, não é uma boa prática exibir os dados para o usuário sem antes codificá-lo!
 
-The `method` parameter can be any valid HTTP method, array of HTTP methods, or an asterisk to allow any method. The `path` parameter defines the path including parameters. It can contain optional parameters, numbered parameters, and even wildcards. For more details, see [the routing tutorial](/tutorials/routing).
+O parâmetro `method` pode ser qualquer método HTTP válido, uma coleção de métodos, ou ainda um asterisco (*), para permitir qualquer método. Já o `path` define o caminho com a inclusão de parâmetros. Ele pode conter parâmetros opcionais, numerados e até mesmo coringas. Para mais detalhes, veja [o tutorial sobre rotas](/tutorials/routing).
 
-## Creating static pages and content
+## Criando páginas estáticas e conteúdo
 
-We've proven that we can start a simple Hapi app with our Hello World application. Next, we'll use a plugin called **inert** to serve a static page. Before you begin, stop the server with **CTRL + C**.
+Provamos que podemos iniciar uma simples aplicação Hapi com o nosso Alô Mundo. A seguir, vamos usar um plugin chamado **inert** para servir uma página estática. Antes de começar, pare o servidor com **CTRL + C**.
 
-To install inert run this command at the command line: `npm install --save inert` This will download inert and add it to your `package.json`, which documents which packages are installed.
+Para instalar o inert, execute o comando no terminal: `npm install --save inert`. Esse comando baixará o inert e o adicionará ao `package.json`, que é o arquivo que indica quais pacotes estão instalados.
 
-Add the following to your `server.js` file:
+Adicione o código abaixo ao seu arquivo `server.js`:
 
 ``` javascript
 server.register(require('inert'), function (err) {
@@ -93,30 +90,30 @@ server.register(require('inert'), function (err) {
 
 ```
 
-The `server.register()` command above adds the inert plugin to your Hapi application. If something goes wrong, we want to know, so we've passed in an anonymous function which if invoked will receive `err` and throw that error. This callback function is required when registering plugins.
+O comando `server.register()` adiciona o plugin inert na sua aplicação Hapi. Se algo de errado acontecer, queremos saber. Então, passamos uma função anônima que, se invocada, receberá `err` e em seguida lançará esse erro. Essa função de retorno é necessária quando registramos os plugins.
 
-The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file. We've put the routing callback function inside of registering inert because we need to insure that inert is registered _before_ we use it to render the static page. It is generally wise to run code that depends on a plugin within the callback that registers that plugin so that you can be absolutely sure that plugin exists when your code runs.
+O comando `server.route()` registra a rota `/hello`, que informa ao seu servidor para aceitar requisições GET para `/hello` e responder com o conteúdo do arquivo `hello.html`. Colocamos a função de retorno do roteamento dentro do registro do plugin inert, pois precisamos garantir que inert seja registrado _antes_ de usá-lo para processar a página estática. Em geral, é recomandável executar o código que depende do plugin dentro da função de retorno responsável por registrá-lo, assim teremos a garantia da existência do plugin quando nosso código for executado.
 
-Start up your server with `npm start` and go to `http://localhost:3000/hello` in your browser. Oh no! We're getting a 404 error because we never created a `hello.html` file. You need to create the missing file to get rid of this error.
+Inicie o seu servidor com `npm start` e acesse a url `http://localhost:3000/hello` no seu navegador. Ah não! Recebemos o erro 404, pois nunca criamos o arquivo `hello.html`. Você precisa criar o arquivo para que o erro não volte a acontecer.
 
-Create a folder called `public` at the root of your directory with a file called `hello.html` within it. Inside `hello.html` put the following HTML: `<h2>Hello World.</h2>`. Then reload the page in your browser. You should see a header reading "Hello World."
+Crie um diretório chamado `public` na raiz do seu projeto. Depois, crie um arquivo chamado `hello.html`, dentro desse diretório, com o HTML a seguir: `<h2>Olá mundo.</h2>`.  Em seguida, recarregue a página no seu navegador. Você deverá ler a expressão "Olá mundo.".
 
-Inert will serve whatever content is saved to your hard drive when the request is made, which is what leads to this live reloading behavior. Customize the page at `/hello` to your liking.
+Inert exibirá qualquer conteúdo salvo no seu disco rígido quando a requisição for feita, isto é o que leva a carregar em tempo real. Você pode personalizar a página `/hello` ao seu gosto.
 
-More details on how static content is served are detailed on [Serving Static Content](/tutorials/serving-files). This technique is commonly used to serve images, stylesheets, and static pages in your web application.
+Para mais detalhes sobre como o conteúdo estático funciona acesse [Servindo Conteúdo Estático](/tutorials/serving-files). Essa técnica é comumente usada para imagens, folhas de estilos e páginas estáticas em aplicações web.
 
-## Using plugins
+## Usando plugins
 
-A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [good](https://github.com/hapijs/good) plugin and its [good-console](https://github.com/hapijs/good-console) reporter on to our server.
+Um desejo comum na criação de qualquer aplicação web é um log de acesso. Para adicionar um log básico na nossa aplicação, vamos carregar o plugin [good](https://github.com/hapijs/good) e o seu relator [good-console](https://github.com/hapijs/good-console) no nosso servidor.
 
-The plugin first needs to be installed:
+Primeiro precisamos instalar o plugin:
 
 ```bash
 npm install --save good
 npm install --save good-console
 ```
 
-Then update your `server.js`:
+Depois, atualize o seu `server.js`:
 
 ```javascript
 var Hapi = require('hapi');
@@ -129,7 +126,7 @@ server.route({
     method: 'GET',
     path: '/',
     handler: function (request, reply) {
-        reply('Hello, world!');
+        reply('Olá, mundo!');
     }
 });
 
@@ -137,7 +134,7 @@ server.route({
     method: 'GET',
     path: '/{name}',
     handler: function (request, reply) {
-        reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
+        reply('Olá, ' + encodeURIComponent(request.params.name) + '!');
     }
 });
 
@@ -154,29 +151,28 @@ server.register({
     }
 }, function (err) {
     if (err) {
-        throw err; // something bad happened loading the plugin
+        throw err; // algo de errado aconteceu ao carregar o plugin
     }
 
     server.start(function () {
-        server.log('info', 'Server running at: ' + server.info.uri);
+        server.log('info', 'Servidor rodando no: ' + server.info.uri);
     });
 });
 ```
 
-Now when the server is started you'll see:
+Agora, ao iniciar o servidor, você verá:
 
 ```
-140625/143008.751, [log,info], data: Server running at: http://localhost:3000
+140625/143008.751, [log,info], data: Servidor rodando no: http://localhost:3000
 ```
-
-And if we visit `http://localhost:3000/` in the browser, you'll see:
+E acessando `http://localhost:3000/` no navegador, você verá:
 
 ```
 140625/143205.774, [response], http://localhost:3000: get / {} 200 (10ms)
 ```
 
-Great! This is just one short example of what plugins are capable of, for more information check out the [plugins tutorial](/tutorials/plugins).
+Ótimo! Este é apenas um pequeno exemplo da capacidade dos plugins, para mais informações confira o [tutorial dos plugins](/tutorials/plugins).
 
-## Everything else
+## Outras informações
 
-hapi has many, many other capabilities and only a select few are documented in tutorials here. Please use the list to your right to check them out. Everything else is documented in the [API reference](/api) and, as always, feel free to ask question or just visit us on freenode in [#hapi](http://webchat.freenode.net/?channels=hapi).
+Hapi tem muitos outros recursos e somente alguns são documentados em tutoriais aqui. Por favor, use a lista da direita para vê-los. Ademais, o restante da documentação pode ser vista na [API de referência](/api) e, como sempre, sinta-se a vontade para fazer perguntas ou visite-nos no freenode em [#hapi](http://webchat.freenode.net/?channels=hapi).
