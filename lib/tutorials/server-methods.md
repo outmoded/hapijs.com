@@ -1,17 +1,17 @@
-## Server methods
+## Métodos de Servidor
 
-Server methods are a useful way of sharing functions by attaching them to your server object rather than requiring a common module everywhere it is needed. To register a server method, you need access to the `server` object. Two different forms are available, either passing separate parameters:
+Métodos de servidor são uma maneira útil para compartilhar funções. Eles são anexados no seu objeto servidor em vez de exigirem um módulo comum em todos os lugares necessários. Para registrar um método de servidor, você precisa acessar o objeto `server`. Há duas formas diferentes de fazer isso, uma delas é a passagem de parâmetros separados:
 
 ```javascript
 var add = function (x, y, next) {
-    // note that the 'next' callback must be used to return values
+    // note que a função 'next' é utilizada para retornar valores
     next(null, x + y);
 };
 
 server.method('add', add, {});
 ```
 
-Or an object with `name`, `method`, and `options` parameters (note that you may also pass an array of these objects):
+Ou um objeto com os parâmetros `name`, `method`, and `options` (perceba que você também pode passar uma coleção desses objetos):
 
 ```javascript
 var add = function (x, y, next) {
@@ -27,21 +27,21 @@ server.method({
 
 ## Name
 
-The `name` parameter is a string used to retrieve the method from the server later, via `server.methods[name]`. Note that if you specify a `name` with a `.` character, it is registered as a nested object rather than the literal string. As in:
+O parâmetro `name` é uma string usada para recuperar o método a ser utilizado pelo servidor, através de `server.methods[name]`. Note que se você nomear o parâmetro `name` com um carácter `.`, ele será registrado como um objeto aninhado em vez de uma string literal. Por exemplo:
 
 ```javascript
 server.method('math.add', add);
 ```
 
-becomes accessible as server.methods.math.add
+será acessível como server.methods.math.add
 
-## Function
+## Função
 
-The `method` parameter is the actual function to call when the method is invoked. It can take any number of arguments but *must* accept a callback as its last parameter. The callback accepts three parameters: `err`, `result`, and `ttl`. If an error occurs in your method, pass it as the first argument. If there was no error, the first argument should be undefined or null and the return value passed as the second argument. The `ttl` argument is used to tell hapi how long the return value can be cached; if it is specified as `0` then the value will never be cached.
+O parâmetro `method` é na verdade a função que será chamada quando o método é invocado. Ele pode receber qualquer quantidade de argumentos, mas o seu *último* parâmetro deve ser a função de retorno. A função de retorno aceita três parâmetros: `err`, `result`, and `ttl`. Caso ocorra algum erro no seu método, ele será passado como o primeiro argumento. Se não ocorrer erro, o primeiro argumento deve ser indefinido ou nulo e o valor de retorno será passado como o segundo argumento. O argumento `ttl` é usado para informar ao hapi quanto tempo o valor de retorno pode ser armazenado em cache; se ele for especificado como `0`, então o valor nunca será armazenado em cache.
 
 ## Caching
 
-Speaking of caching, another major advantage of server methods is that they may leverage hapi's native caching. The default is to not cache, however if a valid configuration is passed when registering the method, the return value will be cached and served from there instead of re-running your method every time it is called. The configuration looks like the following:
+Falando de caching, outra grande vantagem dos métodos de servidor é que eles podem incrementar o cache nativo do hapi. O padrão é sem cache, entretanto se uma configuração válida é passada ao registrar um método, o valor de retorno será armazenado em cache e disponibilizado a partir daí em vez de re-executar o seu método todas as vezes que ele for chamado. A configuração é semelhante a seguinte:
 
 ```javascript
 server.method('add', add, {
@@ -54,20 +54,20 @@ server.method('add', add, {
 });
 ```
 
-The parameters mean:
+Os parâmetros são:
 
-* `expiresIn`: milliseconds since the item was created to keep in cache
-* `expiresAt`: MM:HH notation for a specific time to invalidate the cache, this cannot be used at the same time as expiresIn
-* `staleIn`: milliseconds to wait before a cached item is marked stale, this must be *less* than expiresIn
-* `staleTimeout`: milliseconds to wait for a response before serving a stale value
-* `segment`: an optional segment name used to isolate cache items.
-* `cache`: an optional string with the name of the cache connection configured on your server to use
+* `expiresIn`: o tempo em milisegundos para ser mantido em cache, a partir do momento que foi criado
+* `expiresAt`: notação em MM:HH, serve para informar o prazo para invalidar o cache. Não pode ser utilizado ao mesmo tempo que expiresIn
+* `staleIn`: informa em milisegundos quanto tempo o item deve aguardar para ser marcado como velho no cache, deve ser *menor* que o expiresIn
+* `staleTimeout`: milissegundos para aguardar uma resposta antes de informar um valor obsoleto
+* `segment`: um nome de segmento opcional usado para isolar itens do cache.
+* `cache`: um nome da conexão do cache que foi configurada para uso no servidor, esse parâmetro é opcional
 
-More information on the caching options can be found in the [API Reference](/api#servermethodmethod) as well as the documentation for [catbox](https://github.com/hapijs/catbox#policy).
+Mais informações sobre as opções de cache podem ser encontradas na [API de Referência](/api#servermethodmethod), bem como na documentação do [catbox](https://github.com/hapijs/catbox#policy).
 
-## Generate a custom key
+## Gerando uma chave customizada
 
-In addition to the above options, you may also pass a custom function used to generate a key based on the parameters passed to your method. If your method only accepts some combination of string, number, and boolean values hapi will generate a sane key for you. However, if your method accepts an object parameter, you should specify a function that will generate a key similar to the following:
+Além das opções acima, você também pode passar uma função personalizada. Ela será usada para gerar uma chave com base nos parâmetros passados para seu método. Se o seu método só aceita uma combinação de string, número e valores booleanos, o hapi irá gerar uma chave para você. Porém, se o seu método aceita um objeto como parâmetro, você deve informar uma função que irá gerar a chave similar ao exemplo abaixo:
 
 ```javascript
 var sum = function (array, next) {
@@ -87,15 +87,15 @@ server.method('sum', sum, {
 });
 ```
 
-Any arguments that are passed to your method are available to the generateKey method, but *not* the callback.
+Todos os argumentos passados para o seu método são acessíveis através do método generateKey, com *exceção* da função de retorno.
 
 ## Bind
 
-The last option available to server methods is `bind`. The `bind` option changes the `this` context within the method. It defaults to the current active context when the method is added. This can be useful for passing in a database client without needing to pass it as a parameter and requiring a custom `generateKey` function, as in:
+A última opção disponvível para métodos de servidor é o `bind`. Essa opção altera o contexto `this` dentro do método. O padrão é o contexto atual ativo quando o método é criado. Isto pode ser útil para a passagem de um cliente de banco de dados sem a necessidade de passá-lo como um parâmetro e exigindo uma função customizada de `generateKey`, como em:
 
 ```javascript
 var lookup = function (id, next) {
-    // calls myDB.getOne
+    // chama myDB.getOne
     this.getOne({ id: id }, function (err, value) {
         next(err, value);
     });
@@ -103,4 +103,3 @@ var lookup = function (id, next) {
 
 server.method('lookup', lookup, { bind: myDB });
 ```
-
