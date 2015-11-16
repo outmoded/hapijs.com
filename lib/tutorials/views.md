@@ -1,12 +1,12 @@
 ## Views
 
-_This tutorial is compatible with hapi v10.x.x._
+_Este tutorial é compativel com hapi v10.x.x._
 
-hapi has extensive support for template rendering, including the ability to load and leverage multiple templating engines, partials, helpers (functions used in templates to manipulate data), and layouts.
+hapi tem um extenso suporte para renderização de template, incluindo a habilidade de carregar e alavancar múltiplos motores de templates, partials, helpers (funções usada no templates para manipular dados), e layouts.
 
-## Configuring the server
+## Configurando o servidor
 
-To get started with views, first we have to configure at least one templating engine on the server. This is done by using the `server.views` method:
+Para inicar com a views, primeiro nós temos que configurar pelo menos um motor de template no servidor. Este é feito pelo método `server.views`:
 
 ```javascript
 var Path = require('path');
@@ -30,63 +30,65 @@ server.register(require('vision'), function (err) {
 
 ```
 
-We're doing several things here.
+Nós estamos fazendo várias coisas aqui.
 
-First, we load the [`vision`](https://github.com/hapijs/vision) module as a plugin. It adds template rendering support to hapi. Since [`vision`](https://github.com/hapijs/vision) is no longer included with hapi, you may need to install it.
+Primeiro, nós carregamos o modulo [`vision`](https://github.com/hapijs/vision) como um plugin. Isto adiciona um suporte de renderização de template para o hapi. O [`vision`](https://github.com/hapijs/vision) não está incluso no hapi, você precisa instalar ele.
 
-Second, we register the `handlebars` module as the engine responsible for rendering templates with an extension of `.html`.
+Segundo, no registramos o módulo `handlebars` como o motor responsável pela renderização do templete que contendo a extenção `.html`.
 
-Second, we tell the server that our templates are located in the `templates` directory within the current path. By default, hapi will look for templates in the current working directory. You can set the path parameter to wherever your templates are located.
+Terceiro, nós dizemos ao servidor que seus templates estam localizacos no diretório `templates` dentro do caminho atual. Por padrão, hapi irá olhar para templates no diretório de trabalho atual. Você pode adicionar um parâmetro com o diretório que os templates estão localizados.
 
-### View options
+### Opções da View
 
-There are many options available to the views engine in hapi. Full documentation can be found in the [API reference](/api/#server-options), but we'll go over some of them here as well.
+Temos algumas opções habilitadas para o motor de views no hapi. Toda documentação pode ser encontrada nas [referência da API](/api/#server-options), mas vamos mostrar alguns deles aqui também.
 
-Note that all options may be set either globally, which configures them for all registered engines, or local to one specific engine, for example:
+Note que todas opções pode ser definidas de forma global, que configura todos os motores registrados, ou direcionada para um motor específico, por exemplo:
 
 ```javascript
 server.views({
     engines: {
         'html': {
             module: require('handlebars'),
-            compileMode: 'sync' // engine specific
+            compileMode: 'sync' // motor específica
         }
     },
-    compileMode: 'async' // global setting
+    compileMode: 'async' // configuração global
 });
 ```
 
-#### Engines
+#### Motores
 
-In order to use views in hapi, you must register at least one templating engine with the server. Templating engines may be either synchronous, or asynchronous, and should be an object with an export named `compile`.
+Para utilizar views no hapi, você tem que registrar pelo menos um motor de template no servidor. Motor de templates pode ser síncronos, ou assíncronos, e deve ser um objecto quem contém um método com o nome `compile`.
 
-The signature of the `compile` method for synchronous engines is `function (template, options)` and that method should return a function with the signature `function (context, options)` which should either throw an error, or return the compiled html.
+A assinatura do método `compile` para motor síncronos é `function (template, options)` e o método deve retorna uma função com a assinatura `function (context, options)` que deve disparar um erro, ou retornar o html compilado.
 
-Asynchronous template engines should have a `compile` method with the signature `function (template, options, callback)` which calls `callback` in standard error first format and returns a new method with the signature `function (context, options, callback)`. The returned method should also call `callback` in error first format, with the compiled html being the second parameter.
+Motores de templete assíncronos deve ter um método `compile` com a assinatura `function (template, options, callback)` que chamam `callback` por padrão primeiro formatar o erro e retorna um novo método com a assinatura `function (context, options, callback)`. O método retonado também deve chamar `callback` primeiro formatar erro, e com o html compilado sendo o segundo parâmetro.
 
-By default, hapi assumes that template engines are synchronous (i.e. `compileMode` defaults to `sync`), to use an asynchronous engine you must set `compileMode` to `async`.
+Por padrão, hapi assume que o motor de template é síncrono (i.e. `compileMode` o padrão é `sync`), par usar um motor assíncrono você deve definir `compileMode` para `async`.
 
-Leveraging the `options` parameter in both the `compile` method, and the method it returns, is done via the `compileOptions` and `runtimeOptions` settings. Both of these options default to the empty object `{}`.
+Aproveitando o parâmetro `options` tanto o método `compile`, e o método que retornado, é através da configuração do `compileOptions` e `runtimeOptions`. As duas opções tem por padrão um objeto vazio `{}`.
 
-`compileOptions` is the object passed as the second parameter to `compile`, while `runtimeOptions` is passed to the method that `compile` returns.
+`compileOptions` é o objeto passado no segunda parâmetro pelo `compile`, enquando `runtimeOptions` é passado pelo método que `compile` retorna.
 
-If only one templating engine is registered, it automatically becomes the default allowing you to leave off the file extension when requesting a view. However, if more than one engine is registered, you must either append the file extension, or set the `defaultExtension` to the engine you use most frequently. For any views that do not use the default engine, you'll still need to specify a file extension.
+Se somente um motor de template é registardo, torna-se automaticamento padrão, permitindo que você deixe de fora a extenção do arquivo ao solicitar a view. Contudo, se mais de um motor for registardo, você deve adiciona a extensão do arquvio, ou definir o `defaultExtension` para o motor que você usa com mais frenquente. Para qualquer views que não usa o motor padrão, você ainda precisa especificar o extenção do arquivo.
 
-Another useful options is `isCached`. If set to `false`, hapi will not cache the result of templates and will instead read the template from file on each use. When developing your application, this can be very handy as it prevents you from having to restart your app while working on templates. It is recommended that you leave `isCached` to its default value of `true` in production, however.
+
+Outro opção util é `isCached`. Se definida como `false`, hapi não irá cachear o resultado do template e em vez disso vai ler o template do arquivo tada vez que usar. Quando desenvolver sua aplicação, isto pode ser bastante útil pois evita que você reinicie a sua aplicação toda vez que alterar o templete. É recomentdado que você deixe o `isCached` com o valor padrão `true` em produção.
 
 #### Paths
 
-Since views can have files in several different locations, hapi allows you to configure several paths to help find things. Those options are:
+As views pode ter varios arquivos em difrente locais, hapi permite que você configure varios caminhos para ajudar encontrar os arquvios.
+As opções são:
 
-- `path`: the directory that contains your main templates
-- `partialsPath`: the directory that contains your partials
-- `helpersPath`: the directory that contains your template helpers
-- `layoutPath`: the directory that contains layout templates
-- `relativeTo`: used as a prefix for other path types, if specified other paths can be relative to this directory
+- `path`:  o diretório que contém seus principais templates
+- `partialsPath`: o diretório que contém suas partials
+- `helpersPath`: o diretório que contém suas templates helpers
+- `layoutPath`: o diretório que contém templates layout
+- `relativeTo`: usado como prefixo dos outros caminhos, os outros caminho podem ser relativo a este diretório
 
-Additionally, there are two settings that alter how hapi will allow you to use paths. By default, absolute paths and traversing outside of the `path` directory is not allowed. This behavior can be changed by setting the `allowAbsolutePaths` and `allowInsecureAccess` settings to true.
+Adicionalmente, existem duas configurações que alteram como o hapi ira permitir que você use os caminhos. Por padrão, os caminhos absolutos e sair fora do dirtório `path` não é permitido. Este comportamento pode ser mudado configurando o `allowAbsolutePaths` e `allowInsecureAccess` para true.
 
-For example, if you have a directory structure like:
+Por exemplo, se você tiver uma estrutura de diretório tipo:
 
 ```
 views\
@@ -98,7 +100,7 @@ views\
     fortune.js
 ```
 
-Your configuration might look like:
+Sua configuração pode parecer isso:
 
 ```javascript
 server.views({
@@ -112,13 +114,13 @@ server.views({
 });
 ```
 
-## Rendering a view
+## Rederizando uma view
 
-There are two options for rendering a view, you can use either the `reply.view()` interface, or the view handler.
+Temos duas opções para rederizar uma view, você pode usar o `reply.view()`, ou o monipulador da view.
 
 ### `reply.view()`
 
-The first method of rendering a view we'll look at is `reply.view()`. Here's what a route using this method would look like:
+O primeiro método que renderiza um view que vamos olhar é `reply.view()`. Aqui mostra como é usado este método em um rota:
 
 ```javascript
 server.route({
@@ -129,16 +131,15 @@ server.route({
     }
 });
 ```
-
-In order to pass context to `reply.view()`, you pass an object as the second parameter, for example:
+Podemos passar o contexto para o `reply.view()`, você passa um objeto no segundo parâmetro, por exemplo:
 
 ```javascript
 reply.view('index', { title: 'My home page' });
 ```
 
-### View handler
+### Manipuladro de view 
 
-The second method of rendering a view, is using hapi's built in view handler. That route would look like:
+O segundo método para renderizar a view, é usando um objeto com a propriedade view no handler. A rota seria algo como:
 
 ```javascript
 server.route({
@@ -150,7 +151,7 @@ server.route({
 });
 ```
 
-When using the view handler, context is passed in the key `context`, for example:
+Quando usado o view handler, o contexto é passdo pela chave `context`, por exemplo:
 
 ```json5
 handler: {
@@ -163,11 +164,11 @@ handler: {
 }
 ```
 
-### Global context
+### Contexto global
 
-We've seen how to pass context directly to a view, but what if we have some default context that should *always* be available on all templates?
+Nós estamos vendo como passar o contexto direto para uma view, mas como é que temos alguns contextos padrão que deve *sempre* estar disponível em todos os templates?
 
-The simplest way to achieve this is by using the `context` option when calling `server.views()`:
+O mais simplete caminho para alcançar isso é usando a opção `context` ao chamar `server.views()`:
 
 ```javascript
 var defaultContext = {
@@ -178,21 +179,21 @@ server.views({
     engines: {
         'html': {
             module: require('handlebars'),
-            compileMode: 'sync' // engine specific
+            compileMode: 'sync' // motor específico
         }
     },
     context: defaultContext
 });
 ```
 
-The default global context will be merged with any local context passed taking the lowest precedence and applied to your view.
+O contexto global padrão se fundido com qualquer contexto local, pegando a menor precedência e aplicando para sua view.
 
 ### View helpers
 
-JavaScript modules located in the defined `helpersPath` are available in templates.
-For this example, we will create a view helper `fortune` which will pick and print out one element out of an array of strings, when used in a template.
+Os modulos de JavaScript definidos no `helpersPath` fica disponivel nos templates.
+Por exemplo, nós criamos uma view helper `fortune` que irá escolher e imprimir um elemento de uma array de strings, quando usada em um tempalte.
 
-The following snippet is the complete helper function which we will store in a file called `fortune.js` in the `helpers` directory.
+O código a seguir é uma função helper que irá armazerna em um arquivo chamado `fortune.js` dentro do diretório `helpers`.
 
 ```javascript
 module.exports = function () {
@@ -213,16 +214,16 @@ module.exports = function () {
 };
 ```
 
-Now we can use the view helper in our templates. Here's a code snippet that show's the helper function in `templates/index.html` using handlebars as a rendering engine:
+Agora nos podemos usar o view helper dentro do nosso template. Aqui está um trecho de código para mostrar a função helper no `templates/index.html` usando handlebars como o motor de renderização:
 
 ```html
 <h1>Your fortune</h1>
 <p>{{fortune}}</p>
 ```
 
-Now when we start the server and point our browser to the route which uses our template (which uses our view helper), we should see a paragraph with a randomly selected fortune right below the header.
+Agora quando nós iniciamos o servidor e apontar o seu browser para a rota que utiliza seu template (que usa nossa view helper), devemos ver um parágrafo com um frase escolhida randomicamente logo abaixo do cabeçalho.
 
-For reference, here is a complete server script that uses the fortune view helper method in a template.
+Para referência, este é um script de servidor complete para usar o método fortune view helper em um template.
 
 ```javascript
 var Hapi = require('hapi');
@@ -261,9 +262,9 @@ server.start();
 
 ### Layouts
 
-Hapi includes built-in support for view layouts. It comes disabled by default, because it may conflict with other layout systems that specific view engines may provide. We recommend choosing only one layout system.
+Hapi inclui suporte embutido para view layouts. Isto vem desabilitado por padrão, porque isto pode entrar em conflito com outros sistemas de layout que alguns motores podem disponibilizar. Nós recomendamos escolher somente um sistema de layout.
 
-In order to use the built-in layout system, first setup the view engine:
+Podemos usar o sistema de layout embutido, primeiro configure a view:
 
 ```javascript
 server.views({
@@ -273,9 +274,9 @@ server.views({
 });
 ```
 
-This enables the built-in layouts and defines the default layout page to `views/layout/layout.html` (or whatever other extension you're using).
+Isto permite os layouts embutidos e definidos o layout de páginas padrão para `views/layout/layout.html` (ou qualquer outra extensão que você estiver utilizando).
 
-Setup a content area in your `layout.html`:
+Estabelecer uma área de conteúdo em seu `layout.html`:
 
 ```html
 <html>
@@ -285,15 +286,15 @@ Setup a content area in your `layout.html`:
 </html>
 ```
 
-And your view should be just the content:
+E seu view deve ter somente o conteúdo:
 
 ```html
 <div>Content</div>
 ```
 
-When rendering the view, the `{{{content}}}` will be replaced by the view contents.
+Quando renderizamos a view, o `{{{content}}}` irá replicar pelo conteúdo da view.
 
-If you want a different default layout, you can set the option globally:
+Se você quiser uma layout padrão diferente, você pode definir uma opção globalmente:
 
 ```javascript
 server.views({
@@ -301,8 +302,7 @@ server.views({
     layout: 'another_default'
 });
 ```
-
-You can also specify a different layout per view:
+Você também pode especificar um layout diferente por view:
 
 ```javascript
     reply.view('myview', null, { layout: 'another_layout' });
