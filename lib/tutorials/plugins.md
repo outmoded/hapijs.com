@@ -1,12 +1,12 @@
 ## Plugins
 
-hapi has an extensive and powerful plugin system that allows you to very easily break your application up into isolated pieces of business logic, and reusable utilities.
+hapi possui um poderoso e extensível sistema de plugins que permite que você facilmente divida sua aplicação em pedaços isolados contendo lógica de negócios, e utilitários reutilizáveis.
 
-## Creating a plugin
+## Criando um plugin
 
-Plugins are very simple to write. At their core they are an object with a `register` function that has the signature `function (server, options, next)`. That `register` function then has an `attributes` object attached to it to provide hapi with some additional information about the plugin, such as name and version.
+Plugins são muito fáceis de escrever. Em sua essência eles são um objeto contendo uma função `register` com a seguinte declaração `function (server, options, next)`. Essa função `register` possui também um objeto `attributes` em sua estrutura que fornece ao hapi informações adicionais sobre o plugin, como o nome e a versão.
 
-A very simple plugin looks like:
+Um plugin básico pode ser definido da seguinte forma:
 
 ```javascript
 var myPlugin = {
@@ -21,7 +21,7 @@ myPlugin.register.attributes = {
 };
 ```
 
-Or when written as an external module:
+Ou quando escrito como módulo externo:
 
 ```javascript
 exports.register = function (server, options, next) {
@@ -33,32 +33,32 @@ exports.register.attributes = {
 };
 ```
 
-Note that in the first example, we set the `name` and `version` attributes specifically, however in the second we set a `pkg` parameter with the contents of package.json as its value. Either method is acceptable.
+Note que no primeiro exemplo, nós definimos a propriedade `name` e `version` especificamente, entretanto no segundo exemplo nós definimos um atributo `pkg` com o conteúdo do package.json e os seus valores. Ambos os métodos são aceitáveis.
 
-Additionally, the `attributes` object may contain the key `multiple` that when set to `true` tells hapi that it is safe to register your plugin more than once in the same server.
+Adicionamente, o objeto `attributes` pode conter uma chave `multiple` que quando definida como `true` informa ao hapi que é seguro registrar o plugin mais de uma vez no mesmo servidor.
 
-### The register method
+### O método `register`
 
-As we've seen above, the `register` method accepts three parameters, `server`, `options`, and `next`.
+Como nós vimos anteriormente, o método `register` aceita três parâmetro, `server`, `options`, e `next`.
 
-The `options` parameter is simply whatever options the user passes to your plugin. No changes are made and the object is passed directly to your `register` method.
+O parâmetro `options` é simplesmente qualquer opção que o usuário passa para o seu plugin. Nenhuma mudança é feita e o objeto é passado diretamente para o seu método `register`.
 
-`next` is a method to be called when your plugin has completed whatever steps are necessary for it to be registered. This method accepts only one parameter, `err`, that should only be defined if an error occurred while registering your plugin.
+`next` é o método a ser chamado quando o seu plugin já finalizou todas as atividades necessárias para estar registrado. Esse método aceita somente um único parâmetro, `err`, que deve somente ser definido se algum erro aconteceu no processo de registro do seu plugin.
 
-The `server` object is a reference to the `server` your plugin is being loaded in.
+O objeto `server` é uma referência ao `server` que está carregando e registrando o seu plugin.
 
 #### `server.select()`
 
-Servers can have connections added with a label assigned to them:
+Servidores podem ter conexões adicionadas com um label definido à elas:
 
 ```javascript
 var server = new Hapi.Server();
 server.connection({ labels: ['api'] });
 ```
 
-This label can then be used to apply plugins and other settings only to specific connections by using the `server.select()` method.
+Esse label pode então ser utilizado para aplicar plugins e outras configuração somente para conexões específicas utilizando o método `server.select()`.
 
-For example, to add a route only to connections with a label of `'api'`, you would use:
+Por exemplo, para adicionar uma rota somente para as conexões com o label `'api'`, você utilizaria:
 
 ```javascript
 var api = server.select('api');
@@ -72,31 +72,32 @@ api.route({
 });
 ```
 
-Multiple labels can be selected at the same time by passing an array of strings, this works as a logical OR statement. To accomplish a logical AND, you can chain calls to `server.select()` like so:
+Múltiplos labels podem ser seleciondos ao mesmo tempo passando um array de strings, a seleção é feita com uma lógica OU(OR).
+Para definir uma lógica E(AND), você pode realizar chamadas sucessivas ao `server.select()` da seguinte forma:
 
 ```javascript
-// all servers with a label of backend OR api
+// todos os servidores com a label backend OU api
 var myServers = server.select(['backend', 'api']);
 
-// servers with a label of api AND admin
+// servidores com a label api E admin
 var adminServers = server.select('api').select('admin');
 ```
 
-The return value of `server.select()` is a server object that contains only the selected connections.
+O método `server.select()` retorna um objeto server contendo somente as conexões selecionadas.
 
-## Loading a plugin
+## Carregando um plugin
 
-Plugins can be loaded one at a time, or as a group in an array, by the `server.register()` method, for example:
+Plugins podem ser carregados individualmente, ou como parte de um grupo definido em um array, pelo método `server.register()`, por exemplo:
 
 ```javascript
-// load one plugin
+// carrega um plugin
 server.register(require('myplugin'), function (err) {
     if (err) {
         console.error('Failed to load plugin:', err);
     }
 });
 
-// load multiple plugins
+// carrega múltiplos plugins
 server.register([require('myplugin'), require('yourplugin')], function (err) {
     if (err) {
         console.error('Failed to load a plugin:', err);
@@ -104,7 +105,7 @@ server.register([require('myplugin'), require('yourplugin')], function (err) {
 });
 ```
 
-To pass options to your plugin, we instead create an object with `register` and `options` keys, such as:
+Para passar opções para o seu plugin, cria-se um objeto com as chaves `register` e `options`, por exemplo:
 
 ```javascript
 server.register({
@@ -116,7 +117,7 @@ server.register({
 });
 ```
 
-These objects can also be passed in an array:
+Esses objetos podem também ser passados como itens de um array
 
 ```javascript
 server.register([{
@@ -129,13 +130,13 @@ server.register([{
 });
 ```
 
-### Plugin options
+### Opções dos plugins
 
-You may also pass an optional parameter to `server.register()` before the callback. Documentation for this object can be found in the [API reference](/api#serverregisterplugins-options-callback).
+Você pode também passar um parâmetro opcional para `server.register()` antes do callback. Documentação para esse objeto pode ser encontrado [API reference](/api#serverregisterplugins-options-callback).
 
-The options object is used by hapi and is *not* passed to the plugin(s) being loaded. It allows you to pre-select servers based on one or more labels, as well as apply `vhost` or `prefix` modifiers to any routes that your plugins register.
+O objeto de opções é utilizado pelo hapi e *não* é passado para o plugin(s) sendo carregado(s). Isso permite que você pré-selecione os servidores baseados em uma ou mais labels, como também aplique modificadores `vhost` ou `prefix` em qualquer rota que o seu plugin registrar.
 
-For example, let's say we have a plugin that looks like this:
+Por exemplo, vamos dizer que temos um plugin definido da seguinte forma:
 
 ```javascript
 exports.register = function (server, options, next) {
@@ -155,7 +156,7 @@ exports.register.attributes = {
 };
 ```
 
-Normally, when this plugin is loaded it will create a `GET` route at `/test`. This can be changed by using the `prefix` setting in the options, which will prepend a string to all routes created in the plugin:
+Normalmente, quando esse plugin é carregado ele cria uma rota `GET` em `/test`. Isso pode ser alterado utilizando a configuração `prefix` do objeto de opcões, que irá concatenar uma string como prefixo para todas as rotas definidas por esse plugin:
 
 ```javascript
 server.register({ register: require('myplugin') }, {
@@ -166,11 +167,11 @@ server.register({ register: require('myplugin') }, {
 });
 ```
 
-Now when the plugin is loaded, because of the `prefix` option the `GET` route will be created at `/plugins/test`.
+Agora, quando este plugin for carregado, por causa da opção `prexix` a rota `GET` será criada em `/plugins/test`.
 
-Similarly the `config.vhost` parameter will assign a default `vhost` configuration to any routes created by the plugins being loaded. More detail about the `vhost` configuration can be found in the [API reference](/api#route-options).
+De forma análoga o parâmetro `config.vhost` irá designar uma configuração `vhost` padrão para qualquer rota criada pelo plugin sendo carregado. Mais detalhes sobre a configuração `vhost` pode ser encontrado na [API reference](/api#route-options).
 
-The `select` parameter works exactly the same way as `server.select()` does, in that you may pass one label or an array of labels for the plugin to be associated with.
+O parâmetro `select` funciona exatamente do mesmo jeito que `server.select()` funciona, de forma que você pode passar uma label ou um array de labels para o plugin para o plugins se associar.
 
 ```javascript
 server.register({ register: require('myplugin') }, {
@@ -179,5 +180,5 @@ server.register({ register: require('myplugin') }, {
 });
 ```
 
-This allows you to attach a plugin to specific connections in a server without having to change the code of the plugin.
+Isso permite que você defina plugins para conexões específicas em um server sem precisar alterar o código do plugin.
 

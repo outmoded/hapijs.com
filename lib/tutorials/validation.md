@@ -1,20 +1,20 @@
-## Validation
+## Validação
 
-Validating data can be very helpful in making sure that your application is stable and secure. hapi allows this functionality by using the module `joi`.
+Validação de dados é uma ferramenta muito útil para garantir que a sua aplicação é estável e segura. hapi permite essa funcionalidade utilizando o módulo `joi`.
 
-By default, all available validators are set to `true` which means that no validation will be performed.
+Por padrão, todos os validadores disponíveis são definidos como `true`, o que significa que nenhuma validação será executada.
 
-If the validation parameter is set to `false` it signifies that no value is allowed for that parameter.
+Se o parâmetro de validação é definido como `false` isso significa que nenhum valor é permitido para esse parâmetro.
 
-You may also pass a function with the signature `function (value, options, next)` where `value` is the data to be validated, `options` is the validation options as defined on the server object, and `next` is the callback method (with the signature `function (err, value)`) to be called once validation is complete.
+Você pode também passar uma função com a declaração padrão `function (value, options, next)` aonde `value` é dado a ser validado, `options` são as opções de validação definidas no objeto server, e `next` é o método callback (com a declaração padrão `function (err, value)`) a ser chamado ao final da validação.
 
-The last available setting for the validation parameters, is a [Joi](https://github.com/hapijs/joi) object, which allows you to create your validations with a simple and clear object syntax.
+A última configuração disponível dos parâmetros de validação, é um objeto [Joi](https://github.com/hapijs/joi), que permite a criação de validações com uma sintaxe simples e clara.
 
 ## Input
 
-The first type of validation hapi can perform is input validation. This is defined in the `config` object on a route, and is able to validate headers, path parameters, query parameters, and payload data.
+O primeiro tipo de validação que o hapi pode executar é a validação de input. Ela é definida no objeto `config` em uma rota, e é capaz de validar cabeçalhos, parâmetros de rota (path), parâmetros de query, e payloads.
 
-Let's look at an example:
+Vamos observar um exemplo:
 
 ```javascript
 server.route({
@@ -33,11 +33,11 @@ server.route({
 });
 ```
 
-### Path parameters
+### Parâmetros de Rota (path)
 
-As you can see here, we've passed a `validate.params` parameter to the `config` object, this is how we tell hapi that the named parameter specified in the path should be validated. Joi's syntax is very simple and clear to read, the validator we passed here makes sure that the parameter is a string with a minimum length of 3 and a maximum length of 10.
+Como você pode ver acima, nós passamos um parâmetro `validate.params` para o objeto `config`, essa é a forma que nós informamos ao hapi que um determinado parâmetro especificado na rota deve ser validado. A sintaxe do Joi é muito simples e clara de ler, o validador que nós passamos garante que o parâmetro é uma string, com um tamanho mínimo de 3 caracteres e um tamanho máximo de 10 caracteres.
 
-With this configuration, if we make a request to `/hello/jennifer` we will get the expected `Hello jennifer!` reply, however if we make a request to `/hello/a` we will get an HTTP `400` response that looks like the following:
+Com essa configuração, se nós fizermos uma requisição para `/hello/jennifer` nós vamos obter a resposta esperada `Hello jennifer!`, entretanto se nós fizermos uma requisição para `/hello/a` nós vamos obter uma resposta HTTP `400` com o seguinte formato:
 
 ```json
 {
@@ -53,7 +53,7 @@ With this configuration, if we make a request to `/hello/jennifer` we will get t
 }
 ```
 
-Likewise, if we were to make a request to `/hello/thisnameiswaytoolong`, we will get an HTTP `400` that looks like this:
+Da memsa forma, se nós fizermos uma requisição para `/hello/thisnameiswaytoolong`, nós vamos obter uma resposta HTTP `400` com o seguinte formato:
 
 ```json
 {
@@ -69,11 +69,11 @@ Likewise, if we were to make a request to `/hello/thisnameiswaytoolong`, we will
 }
 ```
 
-### Query parameters
+### Parâmetros de Query
 
-To validate query parameters, we simply specify a `validate.query` parameter in the route's config, and we will get similar effects. By default hapi will not validate anything. If you specify a validator for even one query parameter, that means you *must* specify a validator for all possible query parameters that you would like to accept.
+Para validar parâmetros de query, nós simplesmente especificamos um parâmetro `validate.query` na configuração de rota, e nós vamos obter efeitos similares. Por padrão hapi não irá validar nenhum parâmetro. Se você especificar um validador para um parâmetro de query qualquer, isso significa que você *deve* especificar validadores para todos os parâmetros de query que você gostaria de aceitar.
 
-For example, if you have a route that lists resources and you would like the user to limit their result set by count, you could use the following configuration:
+Por exemplo, se você tem uma rota que lista todos os recursos e você gostaria que o usuário pudesse limitar a quantidade total do resultado, você poderia utilizar a seguinte configuração:
 
 ```javascript
 server.route({
@@ -92,7 +92,7 @@ server.route({
 });
 ```
 
-This makes sure that the `limit` query parameter is always an integer between 1 and 100, and if unspecifed defaults to 10. However, if we make a request to `/list?limit=15&offset=15` we get an HTTP `400` response that looks like this:
+Essa configuração garante que o parâmetro de query `limit` é sempre um inteiro entre 1 e 100, e se não especificado um valor assume o valor padrão 10. Entretanto, se nós fizermos uma requisição para `/list?limit=15&offset=15` nós vamos obter uma resposta HTTP `400` com o seguinte formato:
 
 ```json
 {
@@ -108,12 +108,13 @@ This makes sure that the `limit` query parameter is always an integer between 1 
 }
 ```
 
-As you can see in the error, the `offset` parameter isn't allowed. That's because we didn't provide a validator for it, but we did provide one for the `limit` parameter. If you validate one key, by default you must validate them all.
+Como você pode ver no objeto de erro, o parâmetro `offset` não é permitido. Isso é porque nós não definimos um validador específico para `offset`, mas definimos um validador para `limit`. Se você validar uma chave, por padrão, você deve validar todas as chaves.
 
-### Headers
+### Cabeçalhos
 
-You may validate incoming headers as well, with a `validate.headers` parameter.
+Você pode validar cabeçalhos das requisições, com o parâmetro `validate.headers`.
 
-### Payload parameters
+### Parâmetros payload
 
-Also valid is the `validate.payload` parameter, which will validate payload data sent to a route by the user. It works exactly the same way as query parameters, in that if you validate one key, you must validate them all.
+Também válido é o parâmetro `validate.payload`, que irá validar todos os dados enviados à uma rota pelo usuário. Funciona da mesma forma que a validação de parâmetro de query, em que se você validar uma chave, você deve validar todas as chaves.
+
