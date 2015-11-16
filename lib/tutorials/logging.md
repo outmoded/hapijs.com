@@ -1,35 +1,34 @@
-## Built-in methods
+## Métodos nativos
 
-As with any server software, logging is very important. Hapi has some built in logging methods, as well as some limited capability for viewing these logs.
+Como todo programa de servidor, o log é muito importante. O Hapi possui alguns métodos nativos de log, bem como uma capacidade limitada para visualização destes logs.  
 
-There are two nearly identical logging methods, `server.log`, and `request.log`. The difference between the two is in what event they emit, what object emits the event, and what data is automatically associated. The `server.log` method emits a `log` event on the server, and has the server's URI associated with it. `request.log` emits a `request` event on the `server` and has the request's internal id associated with it.
+Existem dois métodos bem parecidos de log, `server.log`, e `request.log`. A diferença entre os dois está em qual evento eles emitem, qual objeto emite o evento, e qual dado é automaticamente associado. O método `server.log` emite um evento de `log` no server, e possui a URI do server associada a ele. O `request.log` emite um evento de `request` no `server` e tem o id interno da requisição (`request`) associado a ele.
 
-They both accept up to three parameters. They are, in order, `tags`, `data`, and `timestamp`.
+Os dois aceitam até três parâmetros. Sendo eles `tags`, `data` e `timestamp`, respectivamente.
 
-`tags` is a string or array of strings used to briefly identify the event. Think of them like log levels, but far more expressive. For example, you could tag an error retrieving data from your database like the following:
+`tags` é uma string ou um array de strings usado para identificar brevemente o evento. Pense nelas como níveis de log, mas muito mais expressivas. Por exemplo, você pode usar uma tag para um erro ao tentar recuperar dados da sua base de dados da seguinte maneira:
 
 ```javascript
 server.log(['error', 'database', 'read']);
 ```
 
-Any log events that hapi generates internally will always have the `hapi` tag associated with them.
+Qualquer evento de log que o hapi gera internamente sempre terá a tag `hapi` associada a ele. É através deste parâmetro que você deve passar coisas como uma mensagem de erro, ou algum outro detalhe que você deseja que vá com a suas tags. O evento de log terá automaticamente a URI do server o qual ele é associado como uma propriedade.
 
-The second parameter, data, is an optional string or object to log with the event. This is where you would pass in things like an error message, or any other details that you wish to go along with your tags. The log event will automatically have the uri of the server it's associated with as a property.
 
-Last is the timestamp parameter. This defaults to `Date.now()`, and should only be passed in if you need to override the default for some reason.
+Por último o parâmetro timestamp. O valor padrão (*default*) dele é `Date.now()`, e somente deve ser passado se você precisa sobrescrever o valor padrão por algum motivo.
 
-### Retrieving request logs
+### Recuperando logs de *request*
 
-Hapi also provides a method (`request.getLog`) to retrieve log events from a request, assuming you still have access to the request object. If called with no parameters it will return an array of all log events associated with the request. You may also pass a tag or array of tags to filter the result set. This can be useful for retrieving a history of all logged events on a request when an error occurs for analysis.
+O Hapi também possui um método (`request.getLog`) para recuperar eventos de log de um request, assumindo que você ainda tem acesso ao objeto de request. Se chamado sem parâmetros ele ira retornar um array com todos os eventos de log associados ao request. Você também pode passar uma tag ou um array de tags para filtrar o retorno. Isto pode ser útil para recuperar o histórico de todos os eventos de log em um request quando ocorrer um erro para análise.
 
-### Configuration
+### Configuração
 
-By default, the only errors hapi will print to console are uncaught errors in external code, and runtime errors from incorrect implementation of hapi's API. You can configure your server to print request events based on tag, however. For example, if you wanted to print any error in a request you would configure your server as follows:
+Por padrão, os únicos erros que o hapi irá apresentar no console são os erros não tratados em códigos externos, e erros de execução devida a uso incorreto da API do hapi. Porém, você pode configurar o server para apresentar os eventos de request baseados em tag. Por exemplo, se você deseja apresentar qualquer erro em uma requisição você deve configurar seu server da seguinte maneira:
 
 ```javascript
 var server = new Hapi.Server({ debug: { request: ['error'] } });
 ```
 
-## Logging plugins
+## Plugins de log
 
-The built-in methods are fairly minimal, however, and for more thorough logging you should really look into using a plugin like [good](https://github.com/hapijs/good) or [bucker](https://github.com/nlf/bucker).
+Os métodos nativos são mínimos, no entando, para um log mais completo você realmente deveria pensar em usar um plugin como [good](https://github.com/hapijs/good) or [bucker](https://github.com/nlf/bucker).
