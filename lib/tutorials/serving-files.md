@@ -1,16 +1,16 @@
-## Serving static files
+## Servicos arquivos estáticos
 
-_This tutorial is compatible with hapi v10.x.x._
+_Este tutorial é compátivel com a versão v10.x.x do hapi_
 
-Inevitably while building any web application, the need arises to serve a simple file from disk. There's a hapi plugin called [inert](https://github.com/hapijs/inert) that adds this functionality to hapi through the use of additional handlers.
+Inevitavelmente quando desenvolvemos algumas aplicações web, surge a necessidade de servir simples arquivos do disco. Há um plugin chamado [inert](https://github.com/hapijs/inert) que adiciona essa funcionalidade para o hapi atráves de manipuladores adicionais.
 
-First you need to install and add inert as a dependency to your project:
+Primeiro você precisa instalar e adicinar o inert como uma dependência para seu projeto:
 
 `npm install --save inert`
 
 ## reply.file()
 
-First, to use the reply method:
+Primeiro, para usar o método reply:
 
 ```javascript
 server.register(require('inert'), function (err) {
@@ -38,11 +38,11 @@ server.register(require('inert'), function (err) {
 });
 ```
 
-As I'm sure you've guessed, in its simplest form you pass a path to `reply.file()` and you're done.
+Como eu tenho certeza que você adivinhou, em sua forma mais simples vocês passa um caminho para `reply.file()` e está feito.
 
-### Relative paths
+### Caminhos relativos
 
-To simplify things, especially if you have multiple routes that respond with files, you can configure a base path in your server and only pass relative paths to `reply.file()`
+Para simplificar as coisas, especialemten se você tiver várias rotas que respondem com arquivos, você pode configurar um caminho base no seu servidor e passar apenas os caminhos relativos para `reply.file()`
 
 ```javascript
 var Path = require('path');
@@ -83,11 +83,11 @@ server.register(require('inert'), function (err) {
 });
 ```
 
-As you may have guessed by the option passed to the server, the `relativeTo` parameter can also be set on a per-connection or per-route level.
+Como você pode ter adivinhado pela opção passada para o servidor, o parâmetro `relativeTo` também pode ser definido em um nível por conexão ou por rota.
 
-## File handler
+## Manipulador de arquivo
 
-An alternative to the above route would be to use the `file` handler:
+Uma alternativa para a rota acima seria o uso do manipulador `file`:
 
 ```javascript
 server.route({
@@ -99,9 +99,9 @@ server.route({
 });
 ```
 
-### File handler options
+### Opções do manipulador de arquivo
 
-We can also specify the parameter as a function that accepts the `request` object and returns a string representing the file's path (absolute or relative):
+Nós também podemos especificar o parâmetro como uma função que aceita o objeto `request` e retorna uma string que representa o caminho do arquivo (absoluto ou relativo):
 
 ```javascript
 server.route({
