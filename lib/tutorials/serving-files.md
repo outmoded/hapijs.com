@@ -1,4 +1,4 @@
-## Servicos arquivos estáticos
+## Servindo arquivos estáticos
 
 _Este tutorial é compátivel com a versão v10.x.x do hapi_
 
