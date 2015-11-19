@@ -115,7 +115,7 @@ server.route({
 });
 ```
 
-Isso pode ser um objeto com a propriedade `path`. Ao usar o objeto formulário do manipulador,
+Isso também pode ser um objeto com a propriedade `path`. Ao usar o objeto formulário do manipulador,
 nós podemos fazer algumas coisas adicionais, como o ajuste do cabeçalho `Content-Disposition` e permitir arquivos compactados, como:
 
 ```javascript
