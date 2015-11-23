@@ -1,14 +1,14 @@
 ## Cookies
 
-_This tutorial is compatible with hapi v10.x.x._
+_Esse tutorial é compatível com o hapi v10.x.x._
 
-When writing a web application, using cookies is often a necessity. When using hapi, cookies are flexible, safe, and simple.
+Quando estamos desenvolvendo uma aplicação web, usar cookies é com bastante frequência uma necessidade. Ao utilizar o hapi, cookies são flexíveis, seguros e simples.
 
-## Configuring the server
+## Configurando o servidor
 
-hapi has several configurable options when dealing with cookies. The defaults are probably good for most cases, but can be changed when needed.
+O hapi possui várias opções configuráveis ​​ao lidar com cookies. Os padrões são bons para a maioria dos casos, mas podem ser alterados quando necessário.
 
-To configure them, call `server.state(name, options)` where `name` is the string name of the cookie, and `options` is an object used to configure the specific cookie.
+Para configurá-los, digite `server.state (nome, opções)` onde `nome` é o nome em string do cookie e `opções` é um objeto usado para configurar o cookie específico.
 
 ```javascript
 server.state('data', {
@@ -16,39 +16,38 @@ server.state('data', {
     isSecure: true,
     isHttpOnly: true,
     encoding: 'base64json',
-    clearInvalid: false, // remove invalid cookies
-    strictHeader: true // don't allow violations of RFC 6265
+    clearInvalid: false, // remove cookies inválidos
+    strictHeader: true // não permite violações da RFC 6265
 });
-```
 
-This configuration will make it so the cookie named `data` has a session time-life (will be deleted when the browser is closed), is flagged both secure and HTTP only (see [RFC 6265](http://tools.ietf.org/html/rfc6265), specifically sections [4.1.2.5](http://tools.ietf.org/html/rfc6265#section-4.1.2.5) and [4.1.2.6](http://tools.ietf.org/html/rfc6265#section-4.1.2.6) for more details about these flags), and tells hapi that the value is a base64 encoded JSON string. Full documentation for the `server.state()` options can be found in [the API reference](/api#serverstatename-options).
+Esta configuração fará com que o cookie chamado `data` tenha o tempo de vida da sessão(será apagado quando o navegador for fechado), e seja sinalizado como seguro e apenas HTTP (veja [RFC 6265](http://tools.ietf.org/html/rfc6265), especificamente as seções [4.1.2.5](http://tools.ietf.org/html/rfc6265#section-4.1.2.5) e [4.1.2.6](http://tools.ietf.org/html/rfc6265#section-4.1.2.6) para mais informações), e informa ao hapi que o valor é um JSON String codificado em base64. A documentação completa para as opções do ` server.state ()` podem ser encontradas em [referência da API](api#serverstatename-options).
 
-In addition to this, you may pass two parameters to the `config` when adding a route:
+Além disso, você pode passar dois parâmetros para o `config` ao adicionar uma rota:
 
 ```json5
 {
     config: {
         state: {
-            parse: true, // parse and store in request.state
-            failAction: 'error' // may also be 'ignore' or 'log'
+            parse: true, // analisa e armazena em request.state
+            failAction: 'error' // também pode ser 'ignore' ou 'log'
         }
     }
 }
 ```
 
-## Setting a cookie
+## Definindo um cookie
 
-Setting a cookie is done via the [`reply()` interface](/api#reply-interface) in a request handler, pre-requisite, or request lifecycle extension point and looks like the following:
+A definição de um cookie é feita através da [interface `reply()`](/api#reply-interface) em um manipulador de requisição, pré-requisito, ou ponto de extensão do ciclo de vida da requisição e se parece com o seguinte:
 
 ```javascript
 reply('Hello').state('data', { firstVisit: false });
 ```
 
-In this example, hapi will reply with the string `Hello` as well as set a cookie named `data` to a base64 encoded string representation of the given object.
+Neste exemplo, o hapi irá responder com a string `Hello`, bem como definir um cookie chamado` data` a uma string codificada em base64 cuja representação é o objetivo especificado. 
 
-### Overriding options
+### Sobrescrevendo opções
 
-When setting a cookie, you may also pass the same options available to `server.state()` as a third parameter, such as:
+Ao definir um cookie, você também pode passar as mesmas opções disponíveis para `server.state ()` como um terceiro parâmetro, tais como:
 
 ```javascript
 reply('Hello').state('data', 'test', { encoding: 'none' });
