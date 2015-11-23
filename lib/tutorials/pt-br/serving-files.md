@@ -1,16 +1,16 @@
-## Serving static files
+## Servindo arquivos estáticos
 
-_This tutorial is compatible with hapi v10.x.x._
+_Este tutorial é compátivel com a versão v10.x.x do hapi_
 
-Inevitably while building any web application, the need arises to serve a simple file from disk. There's a hapi plugin called [inert](https://github.com/hapijs/inert) that adds this functionality to hapi through the use of additional handlers.
+Inevitavelmente quando desenvolvemos algumas aplicações web, surge a necessidade de servir simples arquivos do disco. Há um plugin chamado [inert](https://github.com/hapijs/inert) que adiciona essa funcionalidade para o hapi atráves de manipuladores adicionais.
 
-First you need to install and add inert as a dependency to your project:
+Primeiro você precisa instalar e adicinar o inert como uma dependência para seu projeto:
 
 `npm install --save inert`
 
 ## reply.file()
 
-First, to use the reply method:
+Primeiro, para usar o método reply:
 
 ```javascript
 server.register(require('inert'), function (err) {
@@ -38,11 +38,11 @@ server.register(require('inert'), function (err) {
 });
 ```
 
-As I'm sure you've guessed, in its simplest form you pass a path to `reply.file()` and you're done.
+Como eu tenho certeza que você adivinhou, em sua forma mais simples você passa um caminho para `reply.file()` e está feito.
 
-### Relative paths
+### Caminhos relativos
 
-To simplify things, especially if you have multiple routes that respond with files, you can configure a base path in your server and only pass relative paths to `reply.file()`
+Para simplificar as coisas, especialmente se você tiver várias rotas que respondem com arquivos, você pode configurar um caminho base no seu servidor e passar apenas os caminhos relativos para `reply.file()`
 
 ```javascript
 var Path = require('path');
@@ -83,11 +83,11 @@ server.register(require('inert'), function (err) {
 });
 ```
 
-As you may have guessed by the option passed to the server, the `relativeTo` parameter can also be set on a per-connection or per-route level.
+Como você pode ter adivinhado pela opção passada para o servidor, o parâmetro `relativeTo` também pode ser definido em um nível por conexão ou por rota.
 
-## File handler
+## Manipulador de arquivo
 
-An alternative to the above route would be to use the `file` handler:
+Uma alternativa para a rota acima seria o uso do manipulador `file`:
 
 ```javascript
 server.route({
@@ -99,9 +99,9 @@ server.route({
 });
 ```
 
-### File handler options
+### Opções do manipulador de arquivo
 
-We can also specify the parameter as a function that accepts the `request` object and returns a string representing the file's path (absolute or relative):
+Nós também podemos especificar o parâmetro como uma função que aceita o objeto `request` e retorna uma string que representa o caminho do arquivo (absoluto ou relativo):
 
 ```javascript
 server.route({
@@ -115,7 +115,8 @@ server.route({
 });
 ```
 
-It can also be an object with a `path` property. When using the object form of the handler, we can do a few additional things, like setting the `Content-Disposition` header and allowing compressed files like so:
+Isso também pode ser um objeto com a propriedade `path`. Ao usar o objeto formulário do manipulador,
+nós podemos fazer algumas coisas adicionais, como o ajuste do cabeçalho `Content-Disposition` e permitir arquivos compactados, como:
 
 ```javascript
 server.route({
@@ -124,17 +125,17 @@ server.route({
     handler: {
         file: {
             path: 'script.js',
-            filename: 'client.js', // override the filename in the Content-Disposition header
-            mode: 'attachment', // specify the Content-Disposition is an attachment
-            lookupCompressed: true // allow looking for script.js.gz if the request allows it
+            filename: 'client.js', // sobreescreve o nome do arquivo no cabeçalho Content-Disposition
+            mode: 'attachment', // especifica o Content-Disposition com um anexo
+            lookupCompressed: true // permite olhar para script.js.gz se a requisição permitir isso
         }
     }
 });
 ```
 
-## Directory handler
+## Diretório de manipuladores
 
-In addition to the `file` handler, inert also adds a `directory` handler that allows you to specify one route to serve multiple files. In order to use it, you must specify a path with a parameter. The name of the parameter does not matter, however. You can use the asterisk extension on the parameter to restrict file depth as well. The most basic usage of the directory handler looks like:
+Além do manipulador `file`, inert também adiciona um manipulador de `directory` que permite que você especifique um caminho para servir multiplos arquivos. Para usá-lo, você deve especificar um caminho como um parâmetro. O nome do paramâmetro não importa, no entanto. Você pode usar a extensão asterísco para restringir a profundidade do arquivo também. O uso mais básico do manipulador de diretório se parece com:
 
 ```javascript
 server.route({
@@ -148,9 +149,9 @@ server.route({
 });
 ```
 
-### Directory handler options
+### Opções do manipulador de diretório
 
-The above route will respond to any request by looking for a matching filename in the `public` directory. Note that a request to `/` in this configuration will reply with an HTTP `403` because by default the handler will not allow file listing. You can change that by setting the `listing` property to `true` like so:
+A rota acima responderá qualquer requisição procurando por um arquivo correspondente no diretório `public`. Note que a requisição para `/` nessa configuração, responderá com um HTTP `403` por que, por padrão, o manipulador não permitirá uma lista de arquivos. Você pode alterar isso definindo a propriedade `listing` para `true`, assim:
 
 ```javascript
 server.route({
@@ -165,6 +166,6 @@ server.route({
 });
 ```
 
-Now a request to `/` will reply with HTML showing the contents of the directory. We can take this static server one step further by also setting the `index` option to `true`, which means that a request to `/` will first attempt to load `/index.html`. The `index` option also accepts a string or array of strings to specify the default file(s) to load. By setting the `index` option to `['index.html', 'default.html']`, a request to `/` will first try to load `/index.html`, then `/default.html`. This gives us a very simple basic static web server in one route.
+Agora a requisição para `\` responderá com um HTML exbindo com o conteúdo do diretório. Nós podemos aproveitar esse servidor estático e ir um passo adiante definindo a opção `index` para `true`, o que siginifica que uma requisição para `/` vai tentar carregar primeiro `index.html`. A opção `index` também aceita uma string ou um array de strings para especificar o arquivo(s) padrão. Por definição, a opção `index` para `['index.html', 'default.html']`, uma requisição para `/` primeiramente tenta carregar `/index.html` e então `default.html`. Isso nos dá, em uma rota, um servidor web estático muito básico e simples.
 
-When using the directory handler with listing enabled, by default hidden files will not be shown in the listing. That can be changed by setting the `showHidden` option to `true`. Like the file handler, the directory handler also has a `lookupCompressed` option to serve precompressed files when possible. You can also set a `defaultExtension` that will be appended to requests if the original path is not found. This means that a request for `/bacon` will also try the file `/bacon.html`.
+Quando usamos um manipulador de diretório com a listagem habilitada, por padrão, arquivos ocultos não serão exibidos na lista. Isso pode ser alterado definindo a opção `showHidden` para `true`. Como o manipulador de arquivo, o manipulador de diretório também tem uma opção `lookupCompressed` para servir arquivos pré compactados, quando possível. Você também pode definir um `defaultExtension` que será anexado as requisições se o caminho do arquivo original não for encontrado. Isso significa que a requisição para `/bacon` também tentará o arquivo `/bacon.html`.
