@@ -1,6 +1,6 @@
-## Routes
+## Rotas
 
-When defining a route in hapi, as in other frameworks, you need three basic elements: the path, the method, and a handler. These are passed to your server as an object, and can be as simple as the following:
+Quando definimos uma rota no Hapi, assim como em outros frameworks, são necessários três elementos básicos: o caminho, o método e o manipulador. Estes elementos são passados para o servidor como um objeto, e pode ser tão simples quanto o exemplo seguinte:
 
 ```javascript
 server.route({
@@ -12,9 +12,9 @@ server.route({
 });
 ```
 
-## Methods
+## Métodos
 
-This route responds to a `GET` request to `/` with the string `Hello!`. The method option can be any valid HTTP method, or an array of methods. Let's say you want the same response when your user sends either a `PUT` or a `POST` request, you could do that with the following:
+Está rota responde a um método `GET`  com a `string` 'Hello!'. A opção `method` pode ser qualquer qualquer método http válido, ou uma `array` de métodos. Você dizer que você deseja a mesma resposta quando o usuário envia tanto um pedido `PUT` quanto o `POST`, você poderia fazer isso da seguinte forma:
 
 ```javascript
 server.route({
@@ -26,9 +26,9 @@ server.route({
 });
 ```
 
-## Path
+## Caminho
 
-The path option must be a string, though it can contain named parameters. To name a parameter in a path, simply wrap it with `{}`. For example:
+A opção `path` deve ser uma `string` e também poderá conter parâmetros nomeados. Para indicar o parâmetro na `string` basta involve-lo com `{}`. Por exemplo: 
 
 ```javascript
 server.route({
@@ -40,11 +40,11 @@ server.route({
 });
 ```
 
-As you can see above, we have the string `{user}` in our path, which means we're asking for that segment of the path to be assigned to a named parameter. These parameters are stored in the object `request.params` within the handler. Since we named our parameter `user` we are able to access the value with the property `request.params.user`, after URI encoding it so as to prevent content injection attacks.
+Como você pode ver acima, temos o parâmetro `{user}` no nosso caminho, isso significa que estamos atribuindo este segmento do caminho a um parâmetro nomeado. Estes parâmetros são armazenados no objeto `request.params` junto com o manipulador. Desde que nomeamos nosso parâmetro `user` podemos acessar seu valor com a propriedade `request.params.user` depois da codificação da URI de modo a evitar ataques de injeção de conteúdo.
 
-### Optional parameters
+### Parâmetros Opcionais
 
-In this example the user parameter is required: a request to `/hello/bob` or `/hello/susan` will work, but a request to `/hello` will not. In order to make a parameter optional, put a question mark at the end of the parameter's name. Here is the same route, but updated to make the `user` parameter optional:
+Neste exemplo, o parâmetro `user` é obrigatório: uma requisição a `/hello/bob` ou `/hello/susan` irá funcionar, porém uma requisição a `/hello` não funcionará. Para criar um parâmetro opcional, basta colocar um ponto de interrogação no final do nome do parâmetro. Veja o mesmo exemplo anterior alterado para o parâmetro `user` ser adicional: 
 
 ```javascript
 server.route({
@@ -57,11 +57,11 @@ server.route({
 });
 ```
 
-Now a request to `/hello/mary` will reply with `Hello mary!` and a request to just `/hello` will reply with `Hello stranger!`. It is important to be aware that only the *last* named parameter in a path can be optional. That means that `/{one?}/{two}/` is an invalid path, since in this case there is another parameter after the optional one. You may also have a named parameter covering only part of a segment of the path, but you may only have one named parameter per segment. That means that `/{filename}.jpg` is valid while `/{filename}.{ext}` is not.
+Agora uma requisição para `/hello/mary` irá responder com `Hello mary!` e a requisição para `/hello` irá responder com `Hello stranger!`. É importante estar ciente que apenas o *último* parâmetro em um caminho pode ser opcional. Isso significa que `/{one?}/{two}/` é um caminho inválido, isso porque existe outro parâmetro após um opcional. Você também pode ter um parâmetro nomeado parcial em um segmento do caminho, mas você só pode ter um parâmetro por segmento. Isso significa que `/{filename}.jpg` é valido, enquando `/{filename}.{ext}` é inválido.
 
-### Multi-segment parameters
+### Parâmetros de multisegmentos
 
-Along with optional path parameters, you can also allow parameters that match multiple segments. In order to do this, we use an asterisk and a number. For example:
+Junto com o parâmetro de caminho opcional, você também pode permitir que esses parâmetros correspodam com vários segmentos. Para fazer isso, utilizamos um asterisco e um número. Por Exemplo: 
 
 ```javascript
 server.route({
@@ -74,23 +74,23 @@ server.route({
 });
 ```
 
-With this configuration, a request to `/hello/john/doe` will reply with the string `Hello john doe!`. The important thing to note here is that the parameter is a string containing the `/` character. That's why we did a split on that character to get the two separate parts. The number after the asterisk represents how many path segments should be assigned to the parameter. You can also omit the number entirely, and the parameter will match any number of segments available. Like the optional parameters, a wildcard parameter (for example `/{files*}`) may *only* appear as the last parameter in your path.
+Com essa configuração, uma requisição para `/hello/john/doe` responderá com a string `Hello john doe!`. É importante notar que o parâmetro possui uma sequencia de caracteres com `/`. E por isso que fizemos um split no parâmetro para obter o usuário em duas partes separadas. O número após o asterisco indica quantos segmentos de caminho deve ser atribuído ao parâmetro. Você também pode omitir o numero, nesse caso o parâmetro irá coincidir com qualquer numero de segmentos. Como os parâmetros opcionais, um parâmetro curinga pode apenas aparecer no último parâmetro em seu caminho.
 
-When determining what handler to use for a particular request, hapi searches paths in order from most specific to least specific. That means if you have two routes, one with the path `/filename.jpg` and a second route `/filename.{ext}` a request to `/filename.jpg` will match the first route, and not the second. This also means that a route with the path `/{files*}` will be the *last* route tested, and will only match if all other routes fail.
+Ao determinar o manipulador a ser utilizado em um requisição em particular, o hapi pesquisa caminhos do menos específico para o mais específico. Isso significa que caso você tenha duas rotas, uma com o caminho `/filename.jpg` e a outra com o caminho `/filename.{ext}` a requisição para `/filename.jpg` irá coincidir com o primeiro caminho e não o segundo. Da mesma forma que uma rota para `/{files*}` será a ultima rota testada, e só corresponderá se todas as outras rotas falharem.
 
-## Handler method
+## Método manipulador
 
-The handler option is a function that accepts two parameters, `request`, and `reply`.
+A opção `handler` é uma função que aceita dois parâmetros, `request` e `reply`.   
 
-The `request` parameter is an object with details about the end user's request, such as path parameters, an associated payload, authentication information, headers, etc. Full documentation on what the `request` object contains can be found in the [API reference](/api#request-properties).
+O parâmetro `request` é um objeto com detalhes sobre a solicitação do usuário final, como parâmetros de caminho, carga associada, informações de autenticação, cabeçalhos, etc... Toda a documentação sobre o que o objeto `request` contem pode ser encontrado na [referência de API](/api#request-properties).
 
-The second parameter, `reply`, is the method used to respond to the request. As you've seen in the previous examples, if you wish to respond with a payload you simply pass the payload as a parameter to `reply`. The payload may be a string, a buffer, a JSON serializable object, or a stream. The result of `reply` is a response object, that can be chained with additional methods to alter the response before it is sent. For example `reply('created').code(201)` will send a payload of `created` with an HTTP status code of `201`. You may also set headers, content type, content length, send a redirection response, and many other things that are documented in the [API reference](/api#response-object).
+O segundo parâmetro, `reply`, é um método usado para responder as requisições. Como você viu nos exemplos anteriores, se você deseja responder com uma carga útil, você precisa simplesmente passar como um parâmetro para o `reply`. A resposta pode ser uma string, um buffer um objeto serializado em json ou uma stream. O resultado de  `reply` é um objeto de resposta, que pode ser encadeado com métodos adicionais para alterar a resposta antes de serem enviados. Por exemplo `reply('created').code(201)` enviará uma carga de trabalho `created` com um código de status `201`. Você também pode atribuir valores aos `header`, `content-type`, `content-lenght`, enviar uma resposta direta, e muitas outras coisas que são documentadas na [referência de API](/api#response-object).
 
-## Config
+## Configuração
 
-Aside from these three basic elements, you may also specify a `config` parameter for each route. This is where you configure things like [validation](/tutorials/validation), [authentication](/tutorials/auth), prerequisites, payload processing, and caching options. More details can be found in the linked tutorials, as well as the [API reference](/api#route-options).
+Além desses três elementos basicos, você também pode especificar um parâmetro `config` para cada rota. É onde você configura coisas como [validação](/tutorials/validation), [autenticação](/tutorials/auth), pré-requisitos, processo de carga, e opções de `cache`. Mais detalhes podem ser encontrados nos tutoriais, assim como na [referência de API](/api#route-options).
 
-Here we will look at a couple of options designed to help generate documentation.
+Aqui vamos exemplificar um par de opções concebidas para ajudar a gerar a documentação:
 
 ```javascript
 server.route({
@@ -108,5 +108,4 @@ server.route({
 });
 ```
 
-Functionally speaking these options have no effect, however they can be very valuable when using a plugin like [lout](https://github.com/hapijs/lout) to generate documentation for your API. The metadata is associated with the route, and becomes available for inspection or display later.
-
+Em aspecto de funcionalidades isso não tem nenhum efeito, entretando eles podem ser muito valiosos ao utilizar plugins como [lout](https://github.com/hapijs/lout) para gerar a documentação de sua API. O `metadate` é associado com esta rota, e logo depois se torna disponível para inspeção ou visualização.  
