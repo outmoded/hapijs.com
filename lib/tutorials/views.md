@@ -9,7 +9,6 @@ hapi has extensive support for template rendering, including the ability to load
 To get started with views, first we have to configure at least one templating engine on the server. This is done by using the `server.views` method:
 
 ```javascript
-var Path = require('path');
 var Hapi = require('hapi');
 var Hoek = require('hoek');
 
@@ -34,7 +33,7 @@ We're doing several things here.
 
 First, we load the [`vision`](https://github.com/hapijs/vision) module as a plugin. It adds template rendering support to hapi. Since [`vision`](https://github.com/hapijs/vision) is no longer included with hapi, you may need to install it.
 
-Second, we register the `handlebars` module as the engine responsible for rendering templates with an extension of `.html`.
+Second, we install `handlebars` with `npm install --save handlebars` and register the module as the engine responsible for rendering templates with an extension of `.html`.
 
 Second, we tell the server that our templates are located in the `templates` directory within the current path. By default, hapi will look for templates in the current working directory. You can set the path parameter to wherever your templates are located.
 
