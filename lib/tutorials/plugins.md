@@ -9,7 +9,7 @@ Plugins are very simple to write. At their core they are an object with a `regis
 A very simple plugin looks like:
 
 ```javascript
-var myPlugin = {
+const myPlugin = {
     register: function (server, options, next) {
         next();
     }
@@ -52,7 +52,7 @@ The `server` object is a reference to the `server` your plugin is being loaded i
 Servers can have connections added with a label assigned to them:
 
 ```javascript
-var server = new Hapi.Server();
+const server = new Hapi.Server();
 server.connection({ labels: ['api'] });
 ```
 
@@ -61,7 +61,7 @@ This label can then be used to apply plugins and other settings only to specific
 For example, to add a route only to connections with a label of `'api'`, you would use:
 
 ```javascript
-var api = server.select('api');
+const api = server.select('api');
 
 api.route({
     method: 'GET',
@@ -76,10 +76,10 @@ Multiple labels can be selected at the same time by passing an array of strings,
 
 ```javascript
 // all servers with a label of backend OR api
-var myServers = server.select(['backend', 'api']);
+const myServers = server.select(['backend', 'api']);
 
 // servers with a label of api AND admin
-var adminServers = server.select('api').select('admin');
+const adminServers = server.select('api').select('admin');
 ```
 
 The return value of `server.select()` is a server object that contains only the selected connections.
@@ -90,14 +90,14 @@ Plugins can be loaded one at a time, or as a group in an array, by the `server.r
 
 ```javascript
 // load one plugin
-server.register(require('myplugin'), function (err) {
+server.register(require('myplugin'), (err) => {
     if (err) {
         console.error('Failed to load plugin:', err);
     }
 });
 
 // load multiple plugins
-server.register([require('myplugin'), require('yourplugin')], function (err) {
+server.register([require('myplugin'), require('yourplugin')], (err) => {
     if (err) {
         console.error('Failed to load a plugin:', err);
     }
@@ -112,7 +112,7 @@ server.register({
     options: {
         message: 'hello'
     }
-}, function (err) {
+}, (err) => {
 });
 ```
 
@@ -125,7 +125,7 @@ server.register([{
 }, {
     register: require('plugin2'),
     options: {}
-}], function (err) {
+}], (err) => {
 });
 ```
 
@@ -162,7 +162,7 @@ server.register({ register: require('myplugin') }, {
     routes: {
         prefix: '/plugins'
     }
-}, function (err) {
+}, (err) => {
 });
 ```
 
@@ -175,9 +175,8 @@ The `select` parameter works exactly the same way as `server.select()` does, in 
 ```javascript
 server.register({ register: require('myplugin') }, {
     select: ['webserver', 'admin']
-}, function (err) {
+}, (err) => {
 });
 ```
 
 This allows you to attach a plugin to specific connections in a server without having to change the code of the plugin.
-

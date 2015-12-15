@@ -1,6 +1,6 @@
 ## Client side caching
 
-_This tutorial is compatible with hapi v10.x.x._
+_This tutorial is compatible with hapi v11.x.x._
 
 The HTTP protocol provides several different HTTP headers to control how browsers cache resources. To decide which headers are suitable for your use case check Google developers [guide](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching) or other [resources](https://www.google.com/search?q=HTTP+caching). This tutorial provides overview how to use these techniques with hapi.
 
@@ -16,7 +16,7 @@ server.route({
     method: 'GET',
     handler: function (request, reply) {
 
-        var response = reply({ be: 'hapi' });
+        const response = reply({ be: 'hapi' });
         if (request.params.ttl) {
             response.ttl(request.params.ttl);
         }
@@ -76,9 +76,9 @@ Catbox has two interfaces; client and policy.
 hapi always initialize one default [client](https://github.com/hapijs/catbox#client) with [memory](https://github.com/hapijs/catbox-memory) adapter. Let's see how we can define more clients.
 
 ```javascript
-var Hapi = require('hapi');
+const Hapi = require('hapi');
 
-var server = new Hapi.Server({
+const server = new Hapi.Server({
     cache: [
         {
             name: 'mongoCache',
@@ -108,12 +108,12 @@ In Listing 4, we've defined two catbox clients; mongoCache and redisCache. Inclu
 [Policy](https://github.com/hapijs/catbox#policy) is a more high-level interface than Client. Let's pretend we are dealing with something more complicated than adding two numbers and we want to cache the results. [server.cache](http://hapijs.com/api#servercacheoptions) creates a new [policy](https://github.com/hapijs/catbox#policy), which is then used in the route handler.
 
 ```javascript
-var add = function (a, b, next) {
+const add = function (a, b, next) {
 
     return next(null, Number(a) + Number(b));
 };
 
-var sumCache = server.cache({
+const sumCache = server.cache({
     cache: 'mongoCache',
     expiresIn: 20 * 1000,
     segment: 'customSegment',
@@ -129,8 +129,8 @@ server.route({
     method: 'GET',
     handler: function (request, reply) {
 
-        var id = request.params.a + ':' + request.params.b;
-        sumCache.get({ id: id, a: request.params.a, b: request.params.b }, function (err, result) {
+        const id = request.params.a + ':' + request.params.b;
+        sumCache.get({ id: id, a: request.params.a, b: request.params.b }, (err, result) => {
 
             reply(result);
         });
@@ -152,7 +152,7 @@ The default value for `segment` when [server.cache](http://hapijs.com/api#server
 But it can get better than that! In 95% cases you will use [server methods](http://hapijs.com/tutorials/server-methods) for caching purposes, because it reduces boilerplate to minimum. Let's rewrite Listing 5 using server methods:
 
 ```javascript
-var add = function (a, b, next) {
+const add = function (a, b, next) {
 
     return next(null, Number(a) + Number(b));
 };
@@ -170,7 +170,7 @@ server.route({
     method: 'GET',
     handler: function (request, reply) {
 
-        server.methods.sum(request.params.a, request.params.b, function (err, result) {
+        server.methods.sum(request.params.a, request.params.b, (err, result) => {
 
             reply(result);
         });
@@ -198,9 +198,9 @@ server.route({
     method: 'GET',
     handler: function (request, reply) {
 
-        server.methods.sum(request.params.a, request.params.b, function (err, result, cached, report) {
+        server.methods.sum(request.params.a, request.params.b, (err, result, cached, report) => {
 
-            var lastModified = cached ? new Date(cached.stored) : new Date();
+            const lastModified = cached ? new Date(cached.stored) : new Date();
             return reply(result).header('last-modified', lastModified.toUTCString());
         });
     }

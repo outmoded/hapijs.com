@@ -1,6 +1,6 @@
 ## Installing hapi
 
-_This tutorial is compatible with hapi v10.x.x._
+_This tutorial is compatible with hapi v11.x.x._
 
 Create a new directory `myproject`, and from there:
 
@@ -14,12 +14,12 @@ That's it! You now have everything you need in order to create a server using ha
 The most basic server looks like the following:
 
 ```javascript
-var Hapi = require('hapi');
+const Hapi = require('hapi');
 
-var server = new Hapi.Server();
+const server = new Hapi.Server();
 server.connection({ port: 3000 });
 
-server.start(function () {
+server.start(() => {
     console.log('Server running at:', server.info.uri);
 });
 ```
@@ -35,9 +35,9 @@ a Unix socket file, or Windows named pipe to bind the server to. For more detail
 Now that we have a server we should add one or two routes so that it actually does something. Let's see what that looks like:
 
 ```javascript
-var Hapi = require('hapi');
+const Hapi = require('hapi');
 
-var server = new Hapi.Server();
+const server = new Hapi.Server();
 server.connection({ port: 3000 });
 
 server.route({
@@ -56,7 +56,7 @@ server.route({
     }
 });
 
-server.start(function () {
+server.start(() => {
     console.log('Server running at:', server.info.uri);
 });
 ```
@@ -76,7 +76,7 @@ To install inert run this command at the command line: `npm install --save inert
 Add the following to your `server.js` file:
 
 ``` javascript
-server.register(require('inert'), function (err) {
+server.register(require('inert'), (err) => {
     if (err) {
         throw err;
     }
@@ -119,10 +119,10 @@ npm install --save good-console
 Then update your `server.js`:
 
 ```javascript
-var Hapi = require('hapi');
-var Good = require('good');
+const Hapi = require('hapi');
+const Good = require('good');
 
-var server = new Hapi.Server();
+const server = new Hapi.Server();
 server.connection({ port: 3000 });
 
 server.route({
@@ -152,12 +152,12 @@ server.register({
             }
         }]
     }
-}, function (err) {
+}, (err) => {
     if (err) {
         throw err; // something bad happened loading the plugin
     }
 
-    server.start(function () {
+    server.start(() => {
         server.log('info', 'Server running at: ' + server.info.uri);
     });
 });

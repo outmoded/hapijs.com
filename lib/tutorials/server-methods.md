@@ -3,7 +3,7 @@
 Server methods are a useful way of sharing functions by attaching them to your server object rather than requiring a common module everywhere it is needed. To register a server method, you need access to the `server` object. Two different forms are available, either passing separate parameters:
 
 ```javascript
-var add = function (x, y, next) {
+const add = function (x, y, next) {
     // note that the 'next' callback must be used to return values
     next(null, x + y);
 };
@@ -14,7 +14,7 @@ server.method('add', add, {});
 Or an object with `name`, `method`, and `options` parameters (note that you may also pass an array of these objects):
 
 ```javascript
-var add = function (x, y, next) {
+const add = function (x, y, next) {
     next(null, x + y);
 };
 
@@ -70,10 +70,10 @@ More information on the caching options can be found in the [API Reference](/api
 In addition to the above options, you may also pass a custom function used to generate a key based on the parameters passed to your method. If your method only accepts some combination of string, number, and boolean values hapi will generate a sane key for you. However, if your method accepts an object parameter, you should specify a function that will generate a key similar to the following:
 
 ```javascript
-var sum = function (array, next) {
-    var total = 0;
+const sum = function (array, next) {
+    const total = 0;
 
-    array.forEach(function (item) {
+    array.forEach((item) => {
         total += item;
     });
 
@@ -94,13 +94,12 @@ Any arguments that are passed to your method are available to the generateKey me
 The last option available to server methods is `bind`. The `bind` option changes the `this` context within the method. It defaults to the current active context when the method is added. This can be useful for passing in a database client without needing to pass it as a parameter and requiring a custom `generateKey` function, as in:
 
 ```javascript
-var lookup = function (id, next) {
+const lookup = function (id, next) {
     // calls myDB.getOne
-    this.getOne({ id: id }, function (err, value) {
+    this.getOne({ id: id }, (err, value) => {
         next(err, value);
     });
 };
 
 server.method('lookup', lookup, { bind: myDB });
 ```
-

@@ -1,6 +1,6 @@
 ## Authentication
 
-_This tutorial is compatible with hapi v10.x.x._
+_This tutorial is compatible with hapi v11.x.x._
 
 Authentication within hapi is based on the concept of `schemes` and `strategies`.
 
@@ -9,14 +9,14 @@ Think of a scheme as a general type of auth, like "basic" or "digest". A strateg
 First, let's look at an example of how to use [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic):
 
 ```javascript
-var Bcrypt = require('bcrypt');
-var Hapi = require('hapi');
-var Basic = require('hapi-auth-basic');
+const Bcrypt = require('bcrypt');
+const Hapi = require('hapi');
+const Basic = require('hapi-auth-basic');
 
-var server = new Hapi.Server();
+const server = new Hapi.Server();
 server.connection({ port: 3000 });
 
-var users = {
+const users = {
     john: {
         username: 'john',
         password: '$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Tm',   // 'secret'
@@ -25,18 +25,18 @@ var users = {
     }
 };
 
-var validate = function (request, username, password, callback) {
-    var user = users[username];
+const validate = function (request, username, password, callback) {
+    const user = users[username];
     if (!user) {
         return callback(null, false);
     }
 
-    Bcrypt.compare(password, user.password, function (err, isValid) {
+    Bcrypt.compare(password, user.password, (err, isValid) => {
         callback(err, isValid, { id: user.id, name: user.name });
     });
 };
 
-server.register(Basic, function (err) {
+server.register(Basic, (err) => {
     server.auth.strategy('simple', 'basic', { validateFunc: validate });
     server.route({
         method: 'GET',
@@ -49,7 +49,7 @@ server.register(Basic, function (err) {
         }
     });
 
-    server.start(function () {
+    server.start(() => {
         console.log('server running at: ' + server.info.uri);
     });
 });

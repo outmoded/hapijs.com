@@ -27,7 +27,7 @@ Hapi also provides a method (`request.getLog`) to retrieve log events from a req
 By default, the only errors hapi will print to console are uncaught errors in external code, and runtime errors from incorrect implementation of hapi's API. You can configure your server to print request events based on tag, however. For example, if you wanted to print any error in a request you would configure your server as follows:
 
 ```javascript
-var server = new Hapi.Server({ debug: { request: ['error'] } });
+const server = new Hapi.Server({ debug: { request: ['error'] } });
 ```
 
 ## Logging plugins
