@@ -1,6 +1,6 @@
 ## Serving static files
 
-_This tutorial is compatible with hapi v10.x.x._
+_This tutorial is compatible with hapi v11.x.x._
 
 Inevitably while building any web application, the need arises to serve a simple file from disk. There's a hapi plugin called [inert](https://github.com/hapijs/inert) that adds this functionality to hapi through the use of additional handlers.
 
@@ -13,7 +13,7 @@ First you need to install and add inert as a dependency to your project:
 First, to use the reply method:
 
 ```javascript
-server.register(require('inert'), function (err) {
+server.register(require('inert'), (err) => {
 
     if (err) {
         throw err;
@@ -27,7 +27,7 @@ server.register(require('inert'), function (err) {
         }
     });
 
-    server.start(function (err) {
+    server.start((err) => {
 
         if (err) {
             throw err;
@@ -45,10 +45,12 @@ As I'm sure you've guessed, in its simplest form you pass a path to `reply.file(
 To simplify things, especially if you have multiple routes that respond with files, you can configure a base path in your server and only pass relative paths to `reply.file()`
 
 ```javascript
-var Path = require('path');
-var Hapi = require('hapi');
+'use strict';
 
-var server = new Hapi.Server({
+const Path = require('path');
+const Hapi = require('hapi');
+
+const server = new Hapi.Server({
     connections: {
         routes: {
             files: {
@@ -58,7 +60,7 @@ var server = new Hapi.Server({
     }
 });
 
-server.register(require('inert'), function (err) {
+server.register(require('inert'), (err) => {
 
     if (err) {
         throw err;
@@ -72,7 +74,7 @@ server.register(require('inert'), function (err) {
         }
     });
 
-    server.start(function (err) {
+    server.start((err) => {
 
         if (err) {
             throw err;

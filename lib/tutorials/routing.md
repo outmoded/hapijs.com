@@ -51,7 +51,7 @@ server.route({
     method: 'GET',
     path: '/hello/{user?}',
     handler: function (request, reply) {
-        var user = request.params.user ? encodeURIComponent(request.params.user) : 'stranger';
+        const user = request.params.user ? encodeURIComponent(request.params.user) : 'stranger';
         reply('Hello ' + user + '!');
     }
 });
@@ -68,7 +68,7 @@ server.route({
     method: 'GET',
     path: '/hello/{user*2}',
     handler: function (request, reply) {
-        var userParts = request.params.user.split('/');
+        const userParts = request.params.user.split('/');
         reply('Hello ' + encodeURIComponent(userParts[0]) + ' ' + encodeURIComponent(userParts[1]) + '!');
     }
 });
@@ -97,7 +97,7 @@ server.route({
     method: 'GET',
     path: '/hello/{user?}',
     handler: function (request, reply) {
-        var user = request.params.user ? encodeURIComponent(request.params.user) : 'stranger';
+        const user = request.params.user ? encodeURIComponent(request.params.user) : 'stranger';
         reply('Hello ' + user + '!');
     },
     config: {
@@ -109,4 +109,3 @@ server.route({
 ```
 
 Functionally speaking these options have no effect, however they can be very valuable when using a plugin like [lout](https://github.com/hapijs/lout) to generate documentation for your API. The metadata is associated with the route, and becomes available for inspection or display later.
-

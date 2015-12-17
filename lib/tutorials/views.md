@@ -1,6 +1,6 @@
 ## Views
 
-_This tutorial is compatible with hapi v10.x.x._
+_This tutorial is compatible with hapi v11.x.x._
 
 hapi has extensive support for template rendering, including the ability to load and leverage multiple templating engines, partials, helpers (functions used in templates to manipulate data), and layouts.
 
@@ -9,13 +9,15 @@ hapi has extensive support for template rendering, including the ability to load
 To get started with views, first we have to configure at least one templating engine on the server. This is done by using the `server.views` method:
 
 ```javascript
-var Path = require('path');
-var Hapi = require('hapi');
-var Hoek = require('hoek');
+'use strict';
 
-var server = new Hapi.Server();
+const Path = require('path');
+const Hapi = require('hapi');
+const Hoek = require('hoek');
 
-server.register(require('vision'), function (err) {
+const server = new Hapi.Server();
+
+server.register(require('vision'), (err) => {
 
     Hoek.assert(!err, err);
 
@@ -170,7 +172,7 @@ We've seen how to pass context directly to a view, but what if we have some defa
 The simplest way to achieve this is by using the `context` option when calling `server.views()`:
 
 ```javascript
-var defaultContext = {
+const defaultContext = {
     title: 'My personal site'
 };
 
@@ -196,7 +198,7 @@ The following snippet is the complete helper function which we will store in a f
 
 ```javascript
 module.exports = function () {
-    var fortunes = [
+    const fortunes = [
         'Heisenberg may have slept here...',
         'Wanna buy a duck?',
         'Say no, then negotiate.',
@@ -208,7 +210,7 @@ module.exports = function () {
         'Fortune favors the lucky.',
         'Have a nice day!'
     ];
-    var x = Math.floor(Math.random() * fortunes.length);
+    const x = Math.floor(Math.random() * fortunes.length);
     return fortunes[x];
 };
 ```
@@ -225,16 +227,18 @@ Now when we start the server and point our browser to the route which uses our t
 For reference, here is a complete server script that uses the fortune view helper method in a template.
 
 ```javascript
-var Hapi = require('hapi');
+'use strict';
 
-var server = new Hapi.Server();
+const Hapi = require('hapi');
+
+const server = new Hapi.Server();
 
 server.connection({
     port: Number(process.argv[2] || 8080),
     host: 'localhost'
 });
 
-server.register(require('vision'), function (err) {
+server.register(require('vision'), (err) => {
 
     Hoek.assert(!err, err);
 
