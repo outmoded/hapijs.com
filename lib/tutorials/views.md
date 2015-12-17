@@ -9,6 +9,8 @@ hapi has extensive support for template rendering, including the ability to load
 To get started with views, first we have to configure at least one templating engine on the server. This is done by using the `server.views` method:
 
 ```javascript
+'use strict';
+
 const Path = require('path');
 const Hapi = require('hapi');
 const Hoek = require('hoek');
@@ -225,6 +227,8 @@ Now when we start the server and point our browser to the route which uses our t
 For reference, here is a complete server script that uses the fortune view helper method in a template.
 
 ```javascript
+'use strict';
+
 const Hapi = require('hapi');
 
 const server = new Hapi.Server();

@@ -9,6 +9,8 @@ Plugins are very simple to write. At their core they are an object with a `regis
 A very simple plugin looks like:
 
 ```javascript
+'use strict';
+
 const myPlugin = {
     register: function (server, options, next) {
         next();
@@ -24,6 +26,8 @@ myPlugin.register.attributes = {
 Or when written as an external module:
 
 ```javascript
+'use strict';
+
 exports.register = function (server, options, next) {
     next();
 };
@@ -138,6 +142,8 @@ The options object is used by hapi and is *not* passed to the plugin(s) being lo
 For example, let's say we have a plugin that looks like this:
 
 ```javascript
+'use strict';
+
 exports.register = function (server, options, next) {
     server.route({
         method: 'GET',

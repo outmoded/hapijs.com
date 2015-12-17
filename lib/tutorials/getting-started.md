@@ -14,6 +14,8 @@ That's it! You now have everything you need in order to create a server using ha
 The most basic server looks like the following:
 
 ```javascript
+'use strict';
+
 const Hapi = require('hapi');
 
 const server = new Hapi.Server();
@@ -35,6 +37,8 @@ a Unix socket file, or Windows named pipe to bind the server to. For more detail
 Now that we have a server we should add one or two routes so that it actually does something. Let's see what that looks like:
 
 ```javascript
+'use strict';
+
 const Hapi = require('hapi');
 
 const server = new Hapi.Server();
@@ -119,6 +123,8 @@ npm install --save good-console
 Then update your `server.js`:
 
 ```javascript
+'use strict';
+
 const Hapi = require('hapi');
 const Good = require('good');
 

@@ -76,6 +76,8 @@ Catbox has two interfaces; client and policy.
 hapi always initialize one default [client](https://github.com/hapijs/catbox#client) with [memory](https://github.com/hapijs/catbox-memory) adapter. Let's see how we can define more clients.
 
 ```javascript
+'use strict';
+
 const Hapi = require('hapi');
 
 const server = new Hapi.Server({

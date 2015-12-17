@@ -9,6 +9,8 @@ Think of a scheme as a general type of auth, like "basic" or "digest". A strateg
 First, let's look at an example of how to use [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic):
 
 ```javascript
+'use strict';
+
 const Bcrypt = require('bcrypt');
 const Hapi = require('hapi');
 const Basic = require('hapi-auth-basic');

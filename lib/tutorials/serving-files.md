@@ -45,6 +45,8 @@ As I'm sure you've guessed, in its simplest form you pass a path to `reply.file(
 To simplify things, especially if you have multiple routes that respond with files, you can configure a base path in your server and only pass relative paths to `reply.file()`
 
 ```javascript
+'use strict';
+
 const Path = require('path');
 const Hapi = require('hapi');
 
