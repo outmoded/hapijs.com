@@ -71,7 +71,7 @@ In addition to the above options, you may also pass a custom function used to ge
 
 ```javascript
 const sum = function (array, next) {
-    const total = 0;
+    let total = 0;
 
     array.forEach((item) => {
         total += item;
