@@ -49,13 +49,15 @@ server.method('add', add, {
         expiresIn: 60000,
         expiresAt: '30:22',
         staleIn: 30000,
-        staleTimeout: 10000
+        staleTimeout: 10000,
+        generateTimeout: 100
     }
 });
 ```
 
 The parameters mean:
 
+* `generateTimeout`: (required) number of milliseconds to wait before returning a timeout error when the function takes too long to return a value
 * `expiresIn`: milliseconds since the item was created to keep in cache
 * `expiresAt`: MM:HH notation for a specific time to invalidate the cache, this cannot be used at the same time as expiresIn
 * `staleIn`: milliseconds to wait before a cached item is marked stale, this must be *less* than expiresIn
