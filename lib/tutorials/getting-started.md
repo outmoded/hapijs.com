@@ -21,7 +21,10 @@ const Hapi = require('hapi');
 const server = new Hapi.Server();
 server.connection({ port: 3000 });
 
-server.start(() => {
+server.start((err) => {
+    if (err) {
+        throw err;
+    }
     console.log('Server running at:', server.info.uri);
 });
 ```
@@ -60,7 +63,10 @@ server.route({
     }
 });
 
-server.start(() => {
+server.start((err) => {
+    if (err) {
+        throw err;
+    }
     console.log('Server running at:', server.info.uri);
 });
 ```
@@ -163,7 +169,10 @@ server.register({
         throw err; // something bad happened loading the plugin
     }
 
-    server.start(() => {
+    server.start((err) => {
+        if (err) {
+           throw err;
+        }
         server.log('info', 'Server running at: ' + server.info.uri);
     });
 });
@@ -186,3 +195,4 @@ Great! This is just one short example of what plugins are capable of, for more i
 ## Everything else
 
 hapi has many, many other capabilities and only a select few are documented in tutorials here. Please use the list to your right to check them out. Everything else is documented in the [API reference](/api) and, as always, feel free to ask question or just visit us on freenode in [#hapi](http://webchat.freenode.net/?channels=hapi).
+0
