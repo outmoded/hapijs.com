@@ -47,7 +47,7 @@ Speaking of caching, another major advantage of server methods is that they may 
 server.method('add', add, {
     cache: {
         expiresIn: 60000,
-        expiresAt: '30:22',
+        expiresAt: '20:30',
         staleIn: 30000,
         staleTimeout: 10000,
         generateTimeout: 100
@@ -57,11 +57,11 @@ server.method('add', add, {
 
 The parameters mean:
 
-* `generateTimeout`: (required) number of milliseconds to wait before returning a timeout error when the function takes too long to return a value
-* `expiresIn`: milliseconds since the item was created to keep in cache
-* `expiresAt`: MM:HH notation for a specific time to invalidate the cache, this cannot be used at the same time as expiresIn
-* `staleIn`: milliseconds to wait before a cached item is marked stale, this must be *less* than expiresIn
-* `staleTimeout`: milliseconds to wait for a response before serving a stale value
+* `expiresIn`: relative expiration expressed in the number of milliseconds since the item was saved in the cache. Cannot be used together with `expiresAt`.
+* `expiresAt`: time of day expressed in 24h notation using the 'HH:MM' format, at which point all cache records for the route expire. Uses local time. Cannot be used together with `expiresIn`.
+* `staleIn`: number of milliseconds to mark an item stored in cache as stale and attempt to regenerate it. Must be less than `expiresIn`.
+* `staleTimeout`: number of milliseconds to wait before returning a stale value while generateFunc is generating a fresh value.
+* `generateTimeout`: number of milliseconds to wait before returning a timeout error when it takes too long to return a value. When the value is eventually returned, it is stored in the cache for future requests.
 * `segment`: an optional segment name used to isolate cache items.
 * `cache`: an optional string with the name of the cache connection configured on your server to use
 
