@@ -36,7 +36,7 @@
     "building-static-server": "3.x.x",
     "eslint": "1.0.x",
     "eslint-config-hapi": "1.x.x",
-    "eslint-plugin-markdown": "git://github.com/eslint/eslint-plugin-markdown.git#45f03b5",
+    "eslint-plugin-markdown": ">=1.0.0-beta.1 <2.0.0",
     "glob-cli": "1.x.x",
     "stylus": "0.52.x",
     "uglify-js": "2.x.x"
