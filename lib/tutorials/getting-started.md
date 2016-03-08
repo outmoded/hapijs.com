@@ -21,7 +21,11 @@ const Hapi = require('hapi');
 const server = new Hapi.Server();
 server.connection({ port: 3000 });
 
-server.start(() => {
+server.start((err) => {
+
+    if (err) {
+        throw err;
+    }
     console.log('Server running at:', server.info.uri);
 });
 ```
@@ -60,7 +64,11 @@ server.route({
     }
 });
 
-server.start(() => {
+server.start((err) => {
+
+    if (err) {
+        throw err;
+    }
     console.log('Server running at:', server.info.uri);
 });
 ```
@@ -81,6 +89,7 @@ Add the following to your `server.js` file:
 
 ``` javascript
 server.register(require('inert'), (err) => {
+
     if (err) {
         throw err;
     }
@@ -159,11 +168,16 @@ server.register({
         }]
     }
 }, (err) => {
+
     if (err) {
         throw err; // something bad happened loading the plugin
     }
 
-    server.start(() => {
+    server.start((err) => {
+
+        if (err) {
+           throw err;
+        }
         server.log('info', 'Server running at: ' + server.info.uri);
     });
 });
