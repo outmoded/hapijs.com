@@ -184,11 +184,11 @@ server.route({
     config: {
         handler: function (request, reply) {
             getBooks(function (err, books) {
-              if (err) {
-                return reply(Boom.wrap(err));
-              }
+                if (err) {
+                    return reply(Boom.wrap(err));
+                }
 
-              return reply(books);
+                return reply(books);
             });
         },
         response: {
