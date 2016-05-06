@@ -20,7 +20,9 @@
   "scripts": {
     "build": "make",
     "start": "node server.js",
-    "lint:tutorials": "./node_modules/.bin/eslint --ext .md lib/tutorials"
+    "lint:code": "lab -dL",
+    "lint:tutorials": "./node_modules/.bin/eslint --ext .md lib/tutorials",
+    "test": "npm run lint:code && npm run lint:tutorials"
   },
   "repository": {
     "type": "git",
