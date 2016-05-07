@@ -40,14 +40,15 @@ const plugins = [
     {
         register: require('good'),
         options: {
-            reporters: [{
-                reporter: require('good-console'),
-                events: {
-                    log: '*',
-                    response: '*',
-                    ops: '*'
-                }
-            }]
+            ops: {
+                interval: 30 * 1000
+            },
+            reporters: {
+                console: [{
+                    module: 'good-console',
+                    args: [{ log: '*', response: '*', log: '*'}]
+                }, 'stdout']
+            }
         }
     },
     require('vision'),
