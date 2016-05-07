@@ -151,7 +151,7 @@ For instance, a `POST` route may return one of the following:
 
 hapi supports this by allowing you to specify a different validation schema for each response status code.
 `response.status` is an object with keys that are numeric status codes, and properties that are joi schemas:
-```javascript
+```
 {
     response: {
         status: {
@@ -170,7 +170,7 @@ options to pass to joi during validation. See the API docs for more details.
 Here is an example route configuration that returns a list of books:
 
 ```javascript
-var bookSchema = Joi.object({
+const bookSchema = Joi.object({
     title: Joi.string().required(),
     author: Joi.string().required(),
     isbn: Joi.string().length(10),
@@ -183,9 +183,11 @@ server.route({
     path: '/books',
     config: {
         handler: function (request, reply) {
-            getBooks(function (err, books) {
+
+            getBooks((err, books) => {
+
                 if (err) {
-                    return reply(Boom.wrap(err));
+                    return reply(err);
                 }
 
                 return reply(books);
@@ -205,4 +207,3 @@ Because `response.failAction` is not specified, hapi will respond with a `500` e
 The error response will *not* indicate the reason for the error.
 If you have logging configured, you will be able to inspect your error logs for information about what caused the response validation to fail.
 If `response.failAction` were set to `log`, then hapi would respond with the original payload, and log the validation error.
-

@@ -134,6 +134,9 @@ server.route({
         const id = request.params.a + ':' + request.params.b;
         sumCache.get({ id: id, a: request.params.a, b: request.params.b }, (err, result) => {
 
+            if (err) {
+                return reply(err);
+            }
             reply(result);
         });
     }
@@ -174,6 +177,9 @@ server.route({
 
         server.methods.sum(request.params.a, request.params.b, (err, result) => {
 
+            if (err) {
+                return reply(err);
+            }
             reply(result);
         });
     }
@@ -202,6 +208,9 @@ server.route({
 
         server.methods.sum(request.params.a, request.params.b, (err, result, cached, report) => {
 
+            if (err) {
+                return reply(err);
+            }
             const lastModified = cached ? new Date(cached.stored) : new Date();
             return reply(result).header('last-modified', lastModified.toUTCString());
         });

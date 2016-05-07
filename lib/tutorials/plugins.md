@@ -117,6 +117,10 @@ server.register({
         message: 'hello'
     }
 }, (err) => {
+
+    if (err) {
+        throw err;
+    }
 });
 ```
 
@@ -130,6 +134,10 @@ server.register([{
     register: require('plugin2'),
     options: {}
 }], (err) => {
+
+    if (err) {
+        throw err;
+    }
 });
 ```
 
@@ -145,6 +153,7 @@ For example, let's say we have a plugin that looks like this:
 'use strict';
 
 exports.register = function (server, options, next) {
+
     server.route({
         method: 'GET',
         path: '/test',
@@ -169,6 +178,10 @@ server.register({ register: require('myplugin') }, {
         prefix: '/plugins'
     }
 }, (err) => {
+
+    if (err) {
+        throw err;
+    }
 });
 ```
 
@@ -182,6 +195,10 @@ The `select` parameter works exactly the same way as `server.select()` does, in 
 server.register({ register: require('myplugin') }, {
     select: ['webserver', 'admin']
 }, (err) => {
+
+    if (err) {
+        throw err;
+    }
 });
 ```
 

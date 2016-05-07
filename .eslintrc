@@ -3,5 +3,9 @@
     "extends": "eslint-config-hapi",
     "plugins": [
         "markdown"
-    ]
+    ],
+    "rules": {
+        "strict": 0,
+        "no-unused-vars": 0
+    }
 }
