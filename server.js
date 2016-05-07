@@ -21,14 +21,6 @@ server.connection({
     port: Config.port
 });
 
-server.views({
-    engines: {
-        jade: Jade
-    },
-    path: Path.join(__dirname, 'templates'),
-    isCached: Config.getconfig.env === 'production'
-});
-
 server.ext('onPreResponse', (request, reply) => {
 
     if (!request.response.isBoom) {
@@ -44,23 +36,23 @@ server.method(require('./lib/markdown').methods);
 server.method(require('./lib/community').methods);
 server.method(require('./lib/changelog').methods);
 
-server.route(require('./lib/routes').routes);
-
-const plugins = [];
-
-plugins.push({
-    register: require('good'),
-    options: {
-        reporters: [{
-            reporter: require('good-console'),
-            events: {
-                log: '*',
-                response: '*',
-                ops: '*'
-            }
-        }]
-    }
-});
+const plugins = [
+    {
+        register: require('good'),
+        options: {
+            reporters: [{
+                reporter: require('good-console'),
+                events: {
+                    log: '*',
+                    response: '*',
+                    ops: '*'
+                }
+            }]
+        }
+    },
+    require('vision'),
+    require('inert')
+];
 
 if (Config.getconfig.env === 'dev') {
     plugins.push(require('building-static-server'));
@@ -71,6 +63,16 @@ server.register(plugins, (err) => {
     if (err) {
         throw err;
     }
+
+    server.views({
+        engines: {
+            jade: Jade
+        },
+        path: Path.join(__dirname, 'templates'),
+        isCached: Config.getconfig.env === 'production'
+    });
+
+    server.route(require('./lib/routes').routes);
 
     server.start((err) => {
 
