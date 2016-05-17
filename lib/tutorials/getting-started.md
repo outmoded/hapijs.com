@@ -120,13 +120,14 @@ More details on how static content is served are detailed on [Serving Static Con
 
 ## Using plugins
 
-A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [good](https://github.com/hapijs/good) plugin and its [good-console](https://github.com/hapijs/good-console) reporter on to our server.
+A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [good](https://github.com/hapijs/good) plugin and its [good-console](https://github.com/hapijs/good-console) reporter on to our server. We'll also need a basic filtering mechanism. Let's use [good-squeeze](https://github.com/hapijs/good-squeeze) because it has the basic event type and tag filtering we need to get started.
 
-The plugin first needs to be installed:
+Let's install the modules from npm to get started:
 
 ```bash
 npm install --save good
 npm install --save good-console
+npm install --save good-squeeze
 ```
 
 Then update your `server.js`:
@@ -159,13 +160,18 @@ server.route({
 server.register({
     register: Good,
     options: {
-        reporters: [{
-            reporter: require('good-console'),
-            events: {
-                response: '*',
-                log: '*'
-            }
-        }]
+        reporters: {
+            console: [{
+                module: 'good-squeeze',
+                name: 'Squeeze',
+                args: [{
+                    response: '*',
+                    log: '*'
+                }]
+            }, {
+                module: 'good-console'
+            }, 'stdout']
+        }
     }
 }, (err) => {
 
