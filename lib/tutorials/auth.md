@@ -61,6 +61,7 @@ server.register(Basic, (err) => {
         if (err) {
             throw err;
         }
+
         console.log('server running at: ' + server.info.uri);
     });
 });
