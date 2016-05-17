@@ -46,7 +46,7 @@ const plugins = [
             reporters: {
                 console: [{
                     module: 'good-console',
-                    args: [{ log: '*', response: '*', log: '*'}]
+                    args: [{ log: '*', response: '*', log: '*' }]
                 }, 'stdout']
             }
         }
