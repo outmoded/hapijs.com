@@ -31,7 +31,7 @@ server.route({
 ```
 **Listing 1** Setting Cache-Control header
 
-Listing 1 also illustrates that the `expiresIn` value can be overridden with the `ttl(msec)` method prodided by the [response object](http://hapijs.com/api#response-object) interface.
+Listing 1 also illustrates that the `expiresIn` value can be overridden with the `ttl(msec)` method provided by the [response object](http://hapijs.com/api#response-object) interface.
 
 See [route-options](http://hapijs.com/api#route-options) for more information about common `cache` configuration options.
 
