@@ -6,13 +6,11 @@ const Jade = require('jade');
 const Markdown = require('./lib/markdown');
 const Path = require('path');
 
-const serverConfig = {};
-
-if (Config.getconfig.env === 'production') {
-    serverConfig.cache = require('catbox-redis');
+if (Config.server.cache) {
+    Config.server.cache.engine = require(Config.server.cache.engine);
 }
 
-const server = new Hapi.Server(serverConfig);
+const server = new Hapi.Server(Config.server);
 
 Jade.filters.markdown = Markdown.parseSync;
 
