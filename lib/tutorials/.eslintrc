@@ -1,5 +1,7 @@
 {
     "rules": {
-        "hapi/hapi-scope-start": 0
+        "hapi/hapi-scope-start": 0,
+        "strict": 0,
+        "no-unused-vars": 0
     }
 }

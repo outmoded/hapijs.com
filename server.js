@@ -1,15 +1,18 @@
-var Config = require('getconfig');
-var Crypto = require('crypto');
-var Hapi = require('hapi');
-var Jade = require('jade');
-var Markdown = require('./lib/markdown');
-var Path = require('path');
+'use strict';
 
-var serverConfig = {};
+const Config = require('getconfig');
+const Hapi = require('hapi');
+const Jade = require('jade');
+const Markdown = require('./lib/markdown');
+const Path = require('path');
+
+const serverConfig = {};
+
 if (Config.getconfig.env === 'production') {
     serverConfig.cache = require('catbox-redis');
 }
-var server = new Hapi.Server(serverConfig);
+
+const server = new Hapi.Server(serverConfig);
 
 Jade.filters.markdown = Markdown.parseSync;
 
@@ -18,21 +21,13 @@ server.connection({
     port: Config.port
 });
 
-server.views({
-    engines: {
-        jade: Jade
-    },
-    path: Path.join(__dirname, 'templates'),
-    isCached: Config.getconfig.env === 'production'
-});
-
-server.ext('onPreResponse', function (request, reply) {
+server.ext('onPreResponse', (request, reply) => {
 
     if (!request.response.isBoom) {
         return reply.continue();
     }
 
-    reply.view('error', request.response).code(request.response.output.statusCode);
+    return reply.view('error', request.response).code(request.response.output.statusCode);
 });
 
 server.method(require('./lib/npm').methods);
@@ -41,34 +36,50 @@ server.method(require('./lib/markdown').methods);
 server.method(require('./lib/community').methods);
 server.method(require('./lib/changelog').methods);
 
-server.route(require('./lib/routes').routes);
-
-var plugins = [];
-plugins.push({
-    register: require('good'),
-    options: {
-        reporters: [{
-            reporter: require('good-console'),
-            events: {
-                log: '*',
-                response: '*',
-                ops: '*'
+const plugins = [
+    {
+        register: require('good'),
+        options: {
+            ops: {
+                interval: 30 * 1000
+            },
+            reporters: {
+                console: [{
+                    module: 'good-console',
+                    args: [{ log: '*', response: '*', log: '*' }]
+                }, 'stdout']
             }
-        }]
-    }
-});
+        }
+    },
+    require('vision'),
+    require('inert')
+];
 
 if (Config.getconfig.env === 'dev') {
     plugins.push(require('building-static-server'));
 }
 
-server.register(plugins, function (err) {
+server.register(plugins, (err) => {
 
     if (err) {
         throw err;
     }
 
-    server.start(function () {
+    server.views({
+        engines: {
+            jade: Jade
+        },
+        path: Path.join(__dirname, 'templates'),
+        isCached: Config.getconfig.env === 'production'
+    });
+
+    server.route(require('./lib/routes').routes);
+
+    server.start((err) => {
+
+        if (err) {
+            throw err;
+        }
 
         console.log('hapijs.com running at: ' + server.info.uri);
     });
