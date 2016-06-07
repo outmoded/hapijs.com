@@ -1,5 +1,7 @@
 # Hapijs.com
 
+You can also have a look at [Getting Started with hapi.js] (https://www.packtpub.com/web-development/getting-started-hapijs) at the Packt publishing page.
+
 <a href="https://andyet.com"><img src="https://s3.amazonaws.com/static.andyet.com/images/%26yet-logo.svg" align="right" /></a>
 This is the home of [hapijs.com](http://hapijs.com).
 
