@@ -1,11 +1,13 @@
 # Hapijs.com
 
 <a href="https://andyet.com"><img src="https://s3.amazonaws.com/static.andyet.com/images/%26yet-logo.svg" align="right" /></a>
+<a href="https://www.packet.net"><img src="https://www.packet.net/assets/images/logo-main.png" align="right" /></a>
+
 This is the home of [hapijs.com](http://hapijs.com).
 
 Lead Maintainer: [Nathan LaFreniere](https://github.com/nlf)
 
-**hapijs.com** is sponsored by [&yet](https://andyet.com).
+**hapijs.com** is sponsored by [&yet](https://andyet.com) with a very special thanks to [packet](https://www.packet.net) for providing our hosting.
 
 ## Running/developing
 
