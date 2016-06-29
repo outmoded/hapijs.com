@@ -1,7 +1,8 @@
 # Hapijs.com
 
-<a href="https://andyet.com"><img src="https://s3.amazonaws.com/static.andyet.com/images/%26yet-logo.svg" align="right" /></a>
-<a href="https://www.packet.net"><img src="https://www.packet.net/assets/images/logo-main.png" align="right" /></a>
+<a href="https://andyet.com"><img src="https://s3.amazonaws.com/static.andyet.com/images/%26yet-logo.svg" height="80px" align="right" /></a>
+<div height="85px"></div>
+<a href="https://www.packet.net"><img src="https://www.packet.net/assets/images/logo-main.png" height="80px" align="right" /></a>
 
 This is the home of [hapijs.com](http://hapijs.com).
 
