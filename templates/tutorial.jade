@@ -12,6 +12,10 @@ block content
       nav
         h3 Tutorials
         ul
+          each lang in languages
+            li 
+              a(href='/tutorials/#{language}', class=(lang === language ? 'active' : '')) #{lang}
+        ul
           each tutorial in tutorials
             li
-              a(href='/tutorials/#{tutorial.slug}', class=(tutorial.title === active ? 'active' : '')) #{tutorial.title}
+              a(href='/tutorials/#{language}/#{tutorial.slug}', class=(tutorial.title === active ? 'active' : '')) #{tutorial.title}
