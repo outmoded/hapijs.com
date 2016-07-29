@@ -4,14 +4,15 @@ block title
   title hapi Resources
 
 block content
+  -  function spaceToDash(s) { return s.replace(/\s+/g, '-'); };
   .content.page-api.cf
 
     .column.api-description
-      p Aside from the content that you'll find on this site, there's also a lot of community-produced content that can help you learn how to be effective with hapi.js. If you've produced some content that you want to see on this list, please send us a <a href="https://github.com/hapijs/hapijs.com/blob/master/lib/resources.js">pull request</a>. 
+      p Aside from the content that you'll find on this site, there's also a lot of community-produced content that can help you learn how to be effective with hapi.js. If you've produced some content that you want to see on this list, please send us a <a href="https://github.com/hapijs/hapijs.com/blob/master/lib/resources.js">pull request</a>.
 
       each category, categoryName in resources.categories
         .category
-          a(id=categoryName)
+          a(id=spaceToDash(categoryName))
           h3= categoryName
 
           ul
@@ -27,4 +28,4 @@ block content
         ul.unstyled(role='categories')
           each category, categoryName in resources.categories
             li(role='category')
-              a(href='##{categoryName}')= categoryName
+              a(href='##{spaceToDash(categoryName)}')= categoryName
