@@ -60,9 +60,9 @@ server.register(Basic, (err) => {
     server.start((err) => {
 
         if (err) {
-          throw err;
+            throw err;
         }
-        
+
         console.log('server running at: ' + server.info.uri);
     });
 });

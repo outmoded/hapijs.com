@@ -173,7 +173,7 @@ Nós estamos vendo como passar o contexto direto para uma view, mas como é que 
 O mais simplete caminho para alcançar isso é usando a opção `context` ao chamar `server.views()`:
 
 ```javascript
-const var defaultContext = {
+const defaultContext = {
     title: 'My personal site'
 };
 
