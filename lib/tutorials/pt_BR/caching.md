@@ -16,7 +16,7 @@ server.route({
     method: 'GET',
     handler: function (request, reply) {
 
-        var response = reply({ be: 'hapi' });
+        const response = reply({ be: 'hapi' });
         if (request.params.ttl) {
             response.ttl(request.params.ttl);
         }

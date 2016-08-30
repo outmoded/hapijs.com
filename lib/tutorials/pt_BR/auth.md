@@ -40,9 +40,9 @@ const validate = function (request, username, password, callback) {
 };
 
 server.register(Basic, (err) => {
-    
+
     if (err) {
-      throw err;
+        throw err;
     }
 
     server.auth.strategy('simple', 'basic', { validateFunc: validate });
@@ -59,9 +59,10 @@ server.register(Basic, (err) => {
 
     server.start((err) => {
 
-      if (err) {
-        throw err;
-      }
+        if (err) {
+          throw err;
+        }
+        
         console.log('server running at: ' + server.info.uri);
     });
 });

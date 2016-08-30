@@ -173,7 +173,7 @@ Nós estamos vendo como passar o contexto direto para uma view, mas como é que 
 O mais simplete caminho para alcançar isso é usando a opção `context` ao chamar `server.views()`:
 
 ```javascript
-var defaultContext = {
+const var defaultContext = {
     title: 'My personal site'
 };
 
@@ -181,7 +181,7 @@ server.views({
     engines: {
         'html': {
             module: require('handlebars'),
-            compileMode: 'sync' // específico do motor 
+            compileMode: 'sync' // específico do motor
         }
     },
     context: defaultContext
@@ -199,7 +199,7 @@ O código a seguir é uma função helper que irá armazerna em um arquivo chama
 
 ```javascript
 module.exports = function () {
-    var fortunes = [
+    const fortunes = [
         'Heisenberg may have slept here...',
         'Wanna buy a duck?',
         'Say no, then negotiate.',
@@ -211,7 +211,7 @@ module.exports = function () {
         'Fortune favors the lucky.',
         'Have a nice day!'
     ];
-    var x = Math.floor(Math.random() * fortunes.length);
+    const x = Math.floor(Math.random() * fortunes.length);
     return fortunes[x];
 };
 ```
