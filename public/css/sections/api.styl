@@ -14,8 +14,18 @@
     height: 100%
 
     nav
-      height: calc(100% - 380px)
       overflow: auto
+
+      &.affix
+        position: fixed
+        top: 20px
+        height: calc(100% - 40px)
+
+      ul ul
+        display: none
+
+      .active > ul
+        display: block
 
       & > ul
         font-size: $font-small
@@ -27,14 +37,12 @@
           font-weight: bold
           display: block
           padding-left: 20px
-
-        .section-closed
           background: url('/public/img/icon-arrow-right.svg') 0 8px no-repeat
 
-        .section-opened
+        .active .section-opened
           background: url('/public/img/icon-arrow-down.svg') 0 8px no-repeat
 
-        .section-closed:not(.active), .section-opened:not(.active)
+        li:not(.active) > .section-closed, li:not(.active) > .section-opened
           color: $orange
 
           &:hover
@@ -46,7 +54,7 @@
             &:hover
               color: $orange-dark
 
-        .active
+        .active > a
           color: black
 
           & > code
@@ -75,7 +83,7 @@
           margin-top: 0
           margin-bottom: 0
 
-          a:not(.active):not(.section-closed):not(.section-opened)
+          li:not(.active) > a:not(.section-closed):not(.section-opened)
             color: $gray-light
 
             &:hover
