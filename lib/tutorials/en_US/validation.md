@@ -123,7 +123,7 @@ Also valid is the `validate.payload` parameter, which will validate payload data
 hapi can also validate responses before they are sent back to the client.
 This validation is defined in the `response` property of the route `config` object.
 
-If a response does not pass the response validation, the client will receive an Internal Server Error (500) response by default (see response.failAction below).
+If a response does not pass the response validation, the client will receive an Internal Server Error (500) response by default (see `response.failAction` below).
 
 Output validation is useful for ensuring that your API is serving data that is consistent with its documentation/contract.
 Additionally, plugins like [hapi-swagger](https://github.com/glennjones/hapi-swagger) and [lout](https://github.com/hapijs/lout) can use the response-validation schemas to automatically document each

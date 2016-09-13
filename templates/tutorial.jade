@@ -9,9 +9,18 @@ block content
       .reference!= html
 
     .column.nav-secondary
+      .tag-list.cf
+        p.pull-left Languages:
+        .tag-list-toggle.pull-right= language
+          ul.unstyled.tag-list-picker
+            each lang in languages 
+              if lang !== language 
+                li
+                  a(href='/tutorials?lang=#{lang}')= lang 
       nav
         h3 Tutorials
+
         ul
           each tutorial in tutorials
             li
-              a(href='/tutorials/#{tutorial.slug}', class=(tutorial.title === active ? 'active' : '')) #{tutorial.title}
+              a(href='/tutorials/#{tutorial.slug}?lang=#{language}', class=(tutorial.title === active ? 'active' : '')) #{tutorial.title}
