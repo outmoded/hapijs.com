@@ -19,7 +19,7 @@ The most basic server looks like the following:
 const Hapi = require('hapi');
 
 const server = new Hapi.Server();
-server.connection({ port: 3000 });
+server.connection({ port: 3000, host: 'localhost' });
 
 server.start((err) => {
 
@@ -46,7 +46,7 @@ Now that we have a server we should add one or two routes so that it actually do
 const Hapi = require('hapi');
 
 const server = new Hapi.Server();
-server.connection({ port: 3000 });
+server.connection({ port: 3000, host: 'localhost' });
 
 server.route({
     method: 'GET',
@@ -139,7 +139,7 @@ const Hapi = require('hapi');
 const Good = require('good');
 
 const server = new Hapi.Server();
-server.connection({ port: 3000 });
+server.connection({ port: 3000, host: 'localhost' });
 
 server.route({
     method: 'GET',
