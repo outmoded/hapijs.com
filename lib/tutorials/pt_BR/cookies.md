@@ -50,7 +50,7 @@ Neste exemplo, o hapi irá responder com a string `Hello`, bem como definir um c
 O cookie pode ser eliminado invocando o método `unstate()` no objecto [`response`](/api#response-object):
 
 ```javascript
-reply('Hello').unstate('data', { firstVisit: false });
+reply('Hello').unstate('data');
 ```
 
 ### Sobrescrevendo opções
@@ -60,5 +60,3 @@ Ao definir um cookie, você também pode passar as mesmas opções disponíveis 
 ```javascript
 reply('Hello').state('data', 'test', { encoding: 'none' });
 ```
-
-Ao eliminar um cookie, as opções especificadas têm que ser iguais ás definições que estão no server.

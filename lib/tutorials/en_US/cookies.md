@@ -50,7 +50,7 @@ In this example, hapi will reply with the string `Hello` as well as set a cookie
 The cookie can be cleared by calling the `unstate()` method on the [`response`](/api#response-object) object:
 
 ```javascript
-reply('Hello').unstate('data', { firstVisit: false });
+reply('Hello').unstate('data');
 ```
 
 ### Overriding options
@@ -59,6 +59,3 @@ When setting a cookie, you may also pass the same options available to `server.s
 
 ```javascript
 reply('Hello').state('data', 'test', { encoding: 'none' });
-```
-
-When clearing a cookie, the specified keys in options must match the same keys in the server definition.  
