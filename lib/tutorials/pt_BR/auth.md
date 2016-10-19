@@ -52,7 +52,7 @@ server.register(Basic, (err) => {
         config: {
             auth: 'simple',
             handler: function (request, reply) {
-                reply('hello, ' + request.auth.credentials.name);
+                return reply('hello, ' + request.auth.credentials.name);
             }
         }
     });

@@ -52,7 +52,7 @@ server.route({
     method: 'GET',
     path: '/',
     handler: function (request, reply) {
-        reply('Hello, world!');
+        return reply('Hello, world!');
     }
 });
 
@@ -60,7 +60,7 @@ server.route({
     method: 'GET',
     path: '/{name}',
     handler: function (request, reply) {
-        reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
+        return reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
     }
 });
 
@@ -98,7 +98,7 @@ server.register(require('inert'), (err) => {
         method: 'GET',
         path: '/hello',
         handler: function (request, reply) {
-            reply.file('./public/hello.html');
+            return reply.file('./public/hello.html');
         }
     });
 });
@@ -145,7 +145,7 @@ server.route({
     method: 'GET',
     path: '/',
     handler: function (request, reply) {
-        reply('Hello, world!');
+        return reply('Hello, world!');
     }
 });
 
@@ -153,7 +153,7 @@ server.route({
     method: 'GET',
     path: '/{name}',
     handler: function (request, reply) {
-        reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
+        return reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
     }
 });
 
