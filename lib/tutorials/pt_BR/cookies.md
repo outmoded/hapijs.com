@@ -46,17 +46,17 @@ reply('Hello').state('data', { firstVisit: false });
 
 Neste exemplo, o hapi irá responder com a string `Hello`, bem como definir um cookie chamado` data` a uma string codificada em base64 cuja representação é o objetivo especificado.
 
-## Eliminando um cookie
-O cookie pode ser eliminado invocando o método `unstate()` no objecto [`response`](/api#response-object):
-
-```javascript
-reply('Hello').unstate('data');
-```
-
 ### Sobrescrevendo opções
 
 Ao definir um cookie, você também pode passar as mesmas opções disponíveis para `server.state()` como um terceiro parâmetro, tais como:
 
 ```javascript
 reply('Hello').state('data', 'test', { encoding: 'none' });
+```
+
+## Eliminando um cookie
+O cookie pode ser eliminado invocando o método `unstate()` no objecto [`response`](/api#response-object):
+
+```javascript
+reply('Hello').unstate('data');
 ```
