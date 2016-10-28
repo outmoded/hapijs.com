@@ -53,3 +53,11 @@ When setting a cookie, you may also pass the same options available to `server.s
 ```javascript
 reply('Hello').state('data', 'test', { encoding: 'none' });
 ```
+
+## Clearing a cookie
+The cookie can be cleared by calling the `unstate()` method on the [`response`](/api#response-object) object:
+
+```javascript
+reply('Hello').unstate('data');
+```
+

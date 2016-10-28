@@ -8,7 +8,7 @@ Quando estamos desenvolvendo uma aplicação web, usar cookies é com bastante f
 
 O hapi possui várias opções configuráveis ​​ao lidar com cookies. Os padrões são bons para a maioria dos casos, mas podem ser alterados quando necessário.
 
-Para configurá-los, digite `server.state (nome, opções)` onde `nome` é o nome em string do cookie e `opções` é um objeto usado para configurar o cookie específico.
+Para configurá-los, invoque `server.state(nome, opções)` onde `nome` é o nome em string do cookie e `opções` é um objeto usado para configurar o cookie específico.
 
 ```javascript
 server.state('data', {
@@ -44,12 +44,19 @@ A definição de um cookie é feita através da [interface `reply()`](/api#reply
 reply('Hello').state('data', { firstVisit: false });
 ```
 
-Neste exemplo, o hapi irá responder com a string `Hello`, bem como definir um cookie chamado` data` a uma string codificada em base64 cuja representação é o objetivo especificado. 
+Neste exemplo, o hapi irá responder com a string `Hello`, bem como definir um cookie chamado` data` a uma string codificada em base64 cuja representação é o objetivo especificado.
 
 ### Sobrescrevendo opções
 
-Ao definir um cookie, você também pode passar as mesmas opções disponíveis para `server.state ()` como um terceiro parâmetro, tais como:
+Ao definir um cookie, você também pode passar as mesmas opções disponíveis para `server.state()` como um terceiro parâmetro, tais como:
 
 ```javascript
 reply('Hello').state('data', 'test', { encoding: 'none' });
+```
+
+## Eliminando um cookie
+O cookie pode ser eliminado invocando o método `unstate()` no objecto [`response`](/api#response-object):
+
+```javascript
+reply('Hello').unstate('data');
 ```
