@@ -14,8 +14,8 @@ block content
       each company, title in community.all
         section.company.cf
           if (company.logo)
-            a(href='#{company.url}', class='community-company-logo')
-              img(src='/public/img/#{company.logo}', width=(company.width ? '#{company.width}' : undefined), height=(company.height ? '#{company.height}' : undefined), alt='#{title}')
+            a(href=company.url, class='community-company-logo')
+              img(src='/public/img/'+company.logo, width=(company.width ? company.width : undefined), height=(company.height ? company.height : undefined), alt=title)
             blockquote
               p= company.quote
               small &ndash; #{company.person} at #{title}

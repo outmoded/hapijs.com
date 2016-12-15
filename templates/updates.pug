@@ -23,7 +23,7 @@ block content
             each pullRequest in pullRequests.slice(0, 5)
               li
                 p.pull-request-number
-                  a(href='#{pullRequest.html_url}') ##{pullRequest.number}
+                  a(href=pullRequest.html_url) ##{pullRequest.number}
                 p.pull-request-title= pullRequest.title
 
         .column.closed-issues-list
@@ -35,7 +35,7 @@ block content
             each issue in issues.slice(0, 5)
               li
                 p.issue-number
-                  a(href='#{issue.html_url}') ##{issue.number}
+                  a(href=issue.html_url) ##{issue.number}
                 p.issue-title= issue.title
 
   section.changelog

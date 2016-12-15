@@ -14,7 +14,7 @@
     "hapi": "13.x.x",
     "hoek": "4.x.x",
     "inert": "3.x.x",
-    "jade": "1.x.x",
+    "pug": "^2.0.0-beta6",
     "semver": "5.x.x",
     "vision": "4.x.x",
     "wreck": "7.x.x"

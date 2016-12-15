@@ -27,4 +27,4 @@ block content
         ul.unstyled(role='categories')
           each category, categoryName in plugins.categories
             li(role='category')
-              a(href='##{categoryName}')= categoryName
+              a(href='#'+categoryName)= categoryName
