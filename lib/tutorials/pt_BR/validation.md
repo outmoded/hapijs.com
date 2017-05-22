@@ -21,7 +21,7 @@ server.route({
     method: 'GET',
     path: '/hello/{name}',
     handler: function (request, reply) {
-        reply('Hello ' + request.params.name + '!');
+        return reply('Hello ' + request.params.name + '!');
     },
     config: {
         validate: {
@@ -80,7 +80,7 @@ server.route({
     method: 'GET',
     path: '/list',
     handler: function (request, reply) {
-        reply(resources.slice(0, request.query.limit));
+        return reply(resources.slice(0, request.query.limit));
     },
     config: {
         validate: {

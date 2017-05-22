@@ -71,7 +71,7 @@ api.route({
     method: 'GET',
     path: '/',
     handler: function (request, reply) {
-        reply('api index');
+        return reply('api index');
     }
 });
 ```
@@ -159,7 +159,7 @@ exports.register = function (server, options, next) {
         method: 'GET',
         path: '/test',
         handler: function (request, reply) {
-            reply('test passed');
+            return reply('test passed');
         }
     });
 

@@ -137,7 +137,7 @@ server.route({
             if (err) {
                 return reply(err);
             }
-            reply(result);
+            return reply(result);
         });
     }
 });
@@ -180,7 +180,7 @@ server.route({
             if (err) {
                 return reply(err);
             }
-            reply(result);
+            return reply(result);
         });
     }
 });

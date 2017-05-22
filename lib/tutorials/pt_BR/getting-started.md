@@ -49,7 +49,7 @@ server.route({
     method: 'GET',
     path: '/',
     handler: function (request, reply) {
-        reply('Olá, mundo!');
+        return reply('Olá, mundo!');
     }
 });
 
@@ -57,7 +57,7 @@ server.route({
     method: 'GET',
     path: '/{name}',
     handler: function (request, reply) {
-        reply('Olá, ' + encodeURIComponent(request.params.name) + '!');
+        return reply('Olá, ' + encodeURIComponent(request.params.name) + '!');
     }
 });
 
@@ -142,7 +142,7 @@ server.route({
     method: 'GET',
     path: '/',
     handler: function (request, reply) {
-        reply('Olá, mundo!');
+        return reply('Olá, mundo!');
     }
 });
 
@@ -150,7 +150,7 @@ server.route({
     method: 'GET',
     path: '/{name}',
     handler: function (request, reply) {
-        reply('Olá, ' + encodeURIComponent(request.params.name) + '!');
+        return reply('Olá, ' + encodeURIComponent(request.params.name) + '!');
     }
 });
 
