@@ -9,6 +9,8 @@ Create a new directory `myproject`, and from there:
 
 That's it! You now have everything you need in order to create a server using hapi.
 
+> Note: hapi.js does respect semantic versionning for [its dependencies](https://github.com/hapijs/hapi/blob/master/package.json). Additionally, we also [lock their versions](https://github.com/hapijs/hapi/blob/master/npm-shrinkwrap.json) by leveraging the npm shrinkwrap feature to ensure determinist installations. While third party package managers (like Yarn) should work, they are not officially supported as some discrepancies might be observed.
+
 ## Creating a server
 
 The most basic server looks like the following:
