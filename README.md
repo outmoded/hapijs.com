@@ -45,5 +45,10 @@ We'd love to hear from people using hapi, and add them to our [community listing
 
 1. Fork the [hapijs.com repository](https://github.com/hapijs/hapijs.com)
 1. Add your logo to the [public/img](https://github.com/hapijs/hapijs.com/tree/master/public/img) folder. It should be in png format, at least 300 pixels wide. The name should follow the format `logo-<yourcompanyname>.png`.
-1. Add an entry including a short (~300 characters) user quote, describing your hapi user experience to the [lib/community.js](https://github.com/hapijs/hapijs.com/blob/master/lib/community.js) page.
+1. Add an entry to the bottom of the hash in [lib/community.js](https://github.com/hapijs/hapijs.com/blob/master/lib/community.js) including:
+  * url: Your company or project's url.
+  * logo: The unqualified filename of the logo you added above.
+  * description: a short (~300 characters) user quote, describing your hapi user experience.
+  * person: used for quote attribution
+  * height / width: Used to control the image rendering size - use one or both of these to make your logo render correctly.
 1. Submit a PR!
