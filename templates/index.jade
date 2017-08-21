@@ -7,21 +7,22 @@ block header
 
   .content
 
-    section.bottom-rule.introduction.cf
+    section.bottom-rule.introduction
+      .cf
 
-      h2 A rich framework for building applications and services
-      h4 hapi enables developers to focus on writing reusable application logic instead of spending time building infrastructure.
+        h2 A rich framework for building applications and services
+        h4 hapi enables developers to focus on writing reusable application logic instead of spending time building infrastructure.
 
-      .install-hapi.cf
-        p $ npm install hapi
-        .cursor.animated.flash
-    
-      .latest-update
-        small Current version: <a href='https://github.com/hapijs/hapi/tags'>#{version}</a> 
-        small  ● Latest update:
-        small  <a href="#{latestUpdate.url}" role="update">#{latestUpdate.updated}</a>
-        small  ● Downloads last month:
-        small  <a href="http://npm-stat.com/charts.html?package=hapi">#{downloads}</a>
+        .install-hapi.cf
+          p $ npm install hapi
+          .cursor.animated.flash
+      
+        .latest-update
+          small Current version: <a href='https://github.com/hapijs/hapi/tags'>#{version}</a> 
+          small  ● Latest update:
+          small  <a href="#{latestUpdate.url}" role="update">#{latestUpdate.updated}</a>
+          small  ● Downloads last month:
+          small  <a href="http://npm-stat.com/charts.html?package=hapi">#{downloads}</a>
 
 block content
 
