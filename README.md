@@ -38,3 +38,12 @@ After finish the translations, you also need add your translation in the `index.
 
 ## Plugins
 hapijs.com maintains a list of community-created plugins [here](http://hapijs.com/plugins). If there are any plugins you have created or one you use often that isn't listed please send a [pull request](https://github.com/hapijs/hapijs.com/blob/master/lib/plugins.js). Please note the existing categories, but if your plugin does not fit one feel free to create your own. Please keep the plugins in alphabetical order to be fair to all contributors.
+
+## Community
+
+We'd love to hear from people using hapi, and add them to our [community listing](http://hapijs.com/community). You can get yourself added in a few steps:
+
+1. Fork the [hapijs.com repository](https://github.com/hapijs/hapijs.com)
+1. Add your logo to the [public/img](https://github.com/hapijs/hapijs.com/tree/master/public/img) folder. It should be in png format, at least 300 pixels wide. The name should follow the format `logo-<yourcompanyname>.png`.
+1. Add an entry including a short (~300 characters) user quote, describing your hapi user experience to the [lib/community.js](https://github.com/hapijs/hapijs.com/blob/master/lib/community.js) page.
+1. Submit a PR!
