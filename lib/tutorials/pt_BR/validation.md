@@ -205,3 +205,32 @@ Por quê, `response.failAction` não é especificado, o Hapi irá responder com 
 A resposta de erro *não* indica a razão do erro.
 Se os registros (logging) estiverem configurados, você será capaz de inspecionar os registros de erros sobre a causa da falha na validação da resposta.
 Se `response.failAction` estiver configurada para `log`, então o Hapi irá responder com os dados originais, e registrar o erro na validação.
+
+## Opções
+
+É possivel passar opções para validação, sendo possível, por exemplo, ter uma rota que retorna todos os campos com erros de validação.
+Veja o exemplo abaixo:
+
+```javascript
+server.route({
+    method: 'POST',
+    path: '/books',
+    config: {
+        handler: addBook(),
+        validation: {
+            payload: {
+                name: Joi.string().required(),
+                author: Joi.string().required(),
+                price: Joi.string().required()
+            },
+            options: {
+                abortEarly: false
+            }
+        }
+    }
+});
+
+```
+
+O Joi tem a opção abortEarly como verdadeira por padrão. Com isto, apenas o primeiro erro encontrado é retornado.
+Para mais opções disponíveis, clique (aqui)[https://github.com/hapijs/joi/blob/v10.6.0/API.md#validatevalue-schema-options-callback].

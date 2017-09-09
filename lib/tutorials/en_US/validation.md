@@ -207,3 +207,32 @@ Because `response.failAction` is not specified, hapi will respond with a `500` e
 The error response will *not* indicate the reason for the error.
 If you have logging configured, you will be able to inspect your error logs for information about what caused the response validation to fail.
 If `response.failAction` were set to `log`, then hapi would respond with the original payload, and log the validation error.
+
+## Options
+
+You can use validation options to show all fields with validate errors.
+See the exemple below:
+
+```javascript
+server.route({
+    method: 'POST',
+    path: '/books',
+    config: {
+        handler: addBook(),
+        validation: {
+            payload: {
+                name: Joi.string().required(),
+                author: Joi.string().required(),
+                price: Joi.string().required()
+            },
+            options: {
+                abortEarly: false
+            }
+        }
+    }
+});
+
+```
+
+Joi has abortEarly as true by default. With this, only the first validation error is returned.
+See more options (here)[https://github.com/hapijs/joi/blob/v10.6.0/API.md#validatevalue-schema-options-callback].
