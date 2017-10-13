@@ -1,14 +1,14 @@
-## Client side caching
+## 클라이언트쪽 캐싱
 
-_This tutorial is compatible with hapi v11.x.x._
+_이 튜터리얼은 hapi v11.x.x와 호환됩니다._
 
-The HTTP protocol provides several different HTTP headers to control how browsers cache resources. To decide which headers are suitable for your use case check Google developers [guide](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching) or other [resources](https://www.google.com/search?q=HTTP+caching). This tutorial provides overview how to use these techniques with hapi.
+HTTP 프로토콜은 브라우저가 자원을 캐시 하는 방법을 제어하는 몇 개의 다른 HTTP 헤더를 제공합니다. 사용 사례에 맞는 헤더를 선택하려면 구글 개발자 [가이드](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching) 또는 다른 [자료](https://www.google.com/search?q=HTTP+caching)를 확인하세요. 이 튜터리얼은 그 기술을 hapi와 사용하는 방법을 개괄적으로 설명합니다.
 
 ### Cache-Control
 
-The `Cache-Control` header tells the browser and any intermediate cache if a resource is cacheable and for what duration. For example, `Cache-Control:max-age=30, must-revalidate, private` means that the browser can cache the associated resource for thirty seconds and `private` means it should not be cached by intermediate caches, only by the browser. `must-revalidate` means that once it expires it has to request the resource again from the server.
+`Cache-Control` 헤더는 자원이 캐시 가능 여부와 캐시 기간을 브라우저와 중간 캐시에 알려줍니다. 예를 들어 `Cache-Control:max-age=30, must-revalidate, private`은 브라우저는 관련된 자원을 30초 동안 캐시 할 수 있음을 의미하고 `private`는 브라우저 외에 다른 중간 캐시에서는 캐시 될 수 없음을 의미합니다. `must-revalidate`는 시간이 만료되면 서버에 다시 자원을 요청해야 하는 것을 의미합니다. 
 
-Let's see how we can set this header in hapi:
+hapi에서 이 헤더를 어떻게 설정하는지 보겠습니다.:
 
 ```javascript
 server.route({
@@ -29,51 +29,51 @@ server.route({
     }
 });
 ```
-**Listing 1** Setting Cache-Control header
+**목록 1** Cache-Control 헤더 설정하기
 
-Listing 1 also illustrates that the `expiresIn` value can be overridden with the `ttl(msec)` method provided by the [response object](http://hapijs.com/api#response-object) interface.
+목록 1은 `expiresIn` 값이 [response 객체](http://hapijs.com/api#response-object)의 `ttl(msec)` 메소드로 덮일 수 있음을 보여줍니다
 
-See [route-options](http://hapijs.com/api#route-options) for more information about common `cache` configuration options.
+일반적인 `cache` 설정 옵션에 대한 자세한 정보는 [route-options](http://hapijs.com/api#route-options)을 봐 주세요.
 
 ### Last-Modified
 
-In some cases the server can provide information when resources were last modified. When using the [inert](https://github.com/hapijs/inert) plugin for serving static content, a `Last-Modified` header is added to every response payload.
+때에 따라 서버가 자원이 마지막으로 수정된 시간 정보를 제공할 수 있습니다. 정적 콘텐츠를 제공하는 [inert](https://github.com/hapijs/inert) 플러그인을 사용할 때, 모든 응답 페이로드에 `Last-Modified` 헤더가 추가됩니다.
 
-When the `Last-Modified` header is set on a response, hapi compares it with the `If-Modified-Since` header coming from client to decide if the response status code should be `304`.
+hapi는 응답의 `Last-Modified` 헤더에 설정된 시간과 클라이언트에게서 오는 `If-Modified-Since` 헤더의 시간을 비교하여 응답 상태 코드가 `304`가 될지 결정합니다.
 
-Assuming `lastModified` is Date object you can set this header via [response object](http://hapijs.com/api#response-object) interface as seen below, in Listing 2.
+`lastModifed`가 Date 객체라고 가정하고 응답 객체를 목록 2에서처럼 [response 객체](http://hapijs.com/api#response-object)를 통해 헤더를 설정할 수 있습니다.
 
 ```javascript
    reply(result).header('Last-Modified', lastModified.toUTCString());
 ```
-**Listing 2** Setting Last-Modified header
+**목록 2** Last-Modified 헤더 설정하기
 
-There is one more example using `Last-Modified` in the [last section](#client-and-server-caching) of this tutorial.
+이 튜터리얼의 [마지막 절](#client-and-server-caching)에 `Last-Modified`를 사용한 또 다른 예제가 있습니다.
 
 ### ETag
 
-The ETag header is an alternative to `Last-Modified` where the server provides a token (usually the checksum of the resource) instead of last modified timestamp. The browser will use this token to set the `If-None-Match` header in the next request. The server compares this header value with the new `ETag` checksum and responds with `304` if they are the same.
+ETag 헤더는 마지막 수정된 시간 대신 서버가 제공하는 토큰(보통 자원의 체크섬)으로 `Last-Modified`의 대안입니다. 브라우저는 다음 요청의 `If-None-Match` 헤더를 설정할 때 이 토큰을 합니다. 서버는 이 헤더의 값과 새로운 `ETag` 체크섬을 비교하여 같은 값이면 `304`로 응답합니다.
 
-You only need to set `ETag` in your handler via `etag(tag, options)` function:
+`etag(tag, options)` 함수로 `ETag`를 설정하기만 하면 됩니다.: 
 
 ```javascript
    reply(result).etag('xxxxxxxxx');
 ```
-**Listing 3** Setting ETag header
+**목록 3** ETag 헤더 설정하기
 
-Check the documentation of `etag` under the [response object](http://hapijs.com/api#response-object) for more details about the parameters and available options.
+인자와 가능한 옵션에 대한 더 자세한 내용은 [response 객체](http://hapijs.com/api#response-object)에서 `etag` 문서를 확인하세요.
 
-## Server side caching
+## 서버 쪽 캐싱
 
-hapi provides powerful server side caching via [catbox](https://www.github.com/hapijs/catbox) and makes using cache very convenient. This tutorial section will help you understand how catbox is utilized inside hapi and how you can leverage it.
+hapi는 [catbox](https://www.github.com/hapijs/catbox)을 통해 강력한 서버 쪽 캐싱을 제공하고 캐시 사용을 매우 편리하게 만듭니다. 튜터리얼의 이 절은 catbox가 hapi 내부에서 어떻게 활용되고 어떻게 활용할 것인지 이해하는 데 도움이 될 것입니다. 
 
-Catbox has two interfaces; client and policy.
+Catbox는 두 개의 인터페이스를 가지고 있습니다; client와 policy.
 
 ### Client
 
-[Client](https://github.com/hapijs/catbox#client) is a low-level interface that allows you set/get key-value pairs. It is initialized with one of the available adapters: ([Memory](https://github.com/hapijs/catbox-memory), [Redis](https://github.com/hapijs/catbox-redis), [mongoDB](https://github.com/hapijs/catbox-mongodb), [Memcached](https://github.com/hapijs/catbox-memcached), or [Riak](https://github.com/DanielBarnes/catbox-riak)).
+[Client](https://github.com/hapijs/catbox#client)는 키-값 쌍을 설정 / 가져올 수 있는 저수준 인터페이스입니다. 사용가능한 어댑터로 초기화 됩니다: ([Memory](https://github.com/hapijs/catbox-memory), [Redis](https://github.com/hapijs/catbox-redis), [mongoDB](https://github.com/hapijs/catbox-mongodb), [Memcached](https://github.com/hapijs/catbox-memcached), [Riak](https://github.com/DanielBarnes/catbox-riak))
 
-hapi always initialize one default [client](https://github.com/hapijs/catbox#client) with [memory](https://github.com/hapijs/catbox-memory) adapter. Let's see how we can define more clients.
+hapi는 [memory](https://github.com/hapijs/catbox-memory) 어댑터로 하나의 기본 [client](https://github.com/hapijs/catbox#client)를 항상 초기화합니다.
 
 ```javascript
 'use strict';
@@ -101,13 +101,13 @@ server.connection({
     port: 8000
 });
 ```
-**Listing 4** Defining catbox clients
+**목록 4** catbox client 정의하기
 
-In Listing 4, we've defined two catbox clients; mongoCache and redisCache. Including the default memory cache created by hapi, there are three available cache clients. You can replace the default client by omitting the `name` property when registering a new cache client. `partition` tells the adapter how cache should be named ('catbox' by default). In case of [mongoDB](http://www.mongodb.org/) it is database name and in case of [redis](http://redis.io/) it is used as key prefix.
+목록 4에서 두 개의 catbox client를 정의했습니다.; mongoCache와 redisCache. hapi가 생성한 기본 메모리 캐시를 포함하여 총 3개의 가능한 캐시 client가 있습니다. 새로운 캐시 client를 등록할 때 `name` 속성을 생략하면 기본 client를 교체할 수 있습니다. `partition`은 어댑터에 캐시 이름을 알려줍니다. (기본은 `catbox`) [mongoDB](http://www.mongodb.org/)의 경우 데이터베이스 이름이고 [redis](http://redis.io/)의 경우 키의 접두사로 사용됩니다.
 
 ### Policy
 
-[Policy](https://github.com/hapijs/catbox#policy) is a more high-level interface than Client. Let's pretend we are dealing with something more complicated than adding two numbers and we want to cache the results. [server.cache](http://hapijs.com/api#servercacheoptions) creates a new [policy](https://github.com/hapijs/catbox#policy), which is then used in the route handler.
+[Policy](https://github.com/hapijs/catbox#policy)는 client 보다 고수준 인터페이스입니다. 두 숫자를 더하는 것보다 더 복잡한 것을 다룰 것이고 그 결과를 캐시하기를 원합니다. [server.cache](http://hapijs.com/api#servercacheoptions)는 새로운 [policy](https://github.com/hapijs/catbox#policy)를 생성하고 경로 처리기에서 사용됩니다.
 
 ```javascript
 const add = function (a, b, next) {
@@ -142,19 +142,19 @@ server.route({
     }
 });
 ```
-**Listing 5** Using `server.cache`
+**목록 5** `server.cache` 사용하기
 
-`cache` tells hapi which [client](https://github.com/hapijs/catbox#client) to use.
+`cache`는 hapi에게 사용할 [client](https://github.com/hapijs/catbox#client)를 알려줍니다. 
 
-The first parameter of the `sumCache.get` function is an object with a mandatory key `id`, which is a unique item identifier string.
+`sumCache.get` 함수의 첫 번째 인자는 고유한 항목 식별자 문자열인 필수 키 `id`를 가진 객체이다.
 
-In addition to **partitions**, there are **segments** that allow you to isolate caches within one [client](https://github.com/hapijs/catbox#client). If you want to cache results from two different methods, you usually don't want mix the results together. In [mongoDB](http://www.mongodb.org/) adapters, `segment` represents a collection and in [redis](http://redis.io/) it's an additional prefix along with the `partition` option.
+**partitions**외에도 하나의 [client](https://github.com/hapijs/catbox#client)에서 캐시를 격리할 수 있는 **segments**가 있습니다. 두 개의 다른 메소드로부터의 결과를 캐시 하려고 할 때 보통 그 결과를 같이 섞이는 것을 원하지 않을 것입니다.  [mongoDB](http://www.mongodb.org/) 어댑터에서 `segment`는 collection을 의미하고 [redis](http://redis.io/)에서는 `partition` 옵션과 함께 추가 접두사입니다
 
-The default value for `segment` when [server.cache](http://hapijs.com/api#servercacheoptions) is called inside of a plugin will be `'!pluginName'`. When creating [server methods](http://hapijs.com/tutorials/server-methods), the `segment` value will be `'#methodName'`. If you have a use case for multiple policies sharing one segment there is a [shared](http://hapijs.com/api#servercacheoptions) option available as well.
+플러그인 안에서 [server.cache](http://hapijs.com/api#servercacheoptions)가 호출될 때 `segment`의 기본값은 `'!pluginName'`입니다. [server methods](http://hapijs.com/tutorials/server-methods)를 만들 때 `segment`의 값은 `'#mothodName'`입니다. 여러 policy에서 하나의 segment를 공유하려는 여러 policy가 있는 경우라면 [shared](http://hapijs.com/api#servercacheoptions) 옵션을 사용할 수 있습니다.
 
-### Server methods
+### 서버 메소드
 
-But it can get better than that! In 95% cases you will use [server methods](http://hapijs.com/tutorials/server-methods) for caching purposes, because it reduces boilerplate to minimum. Let's rewrite Listing 5 using server methods:
+더 좋아질 수 있습니다! 보일러 플레이트가 최소로 줄어들기 때문에 95% 경우 캐싱 목적으로 [server methods](http://hapijs.com/tutorials/server-methods)을 사용할 것입니다. 서버 메소드를 사용하여 목록 5를 다시 작성합니다.: 
 
 ```javascript
 const add = function (a, b, next) {
@@ -185,20 +185,20 @@ server.route({
     }
 });
 ```
-**Listing 6** Using cache via server methods
+**목록 6** 서버 메소드로 캐시 사용하기
 
-[server.method()](http://hapijs.com/api#servermethodname-method-options) created a new [policy](https://github.com/hapijs/catbox#policy) with `segment: '#sum'` automatically for us. Also the unique item `id` (cache key) was automatically generated from parameters. By default, it handles `string`,`number` and `boolean` parameters. For more complex parameters, you have to provide your own `generateKey` function to create unique ids based on the parameters - check out the server methods [tutorial](http://hapijs.com/tutorials/server-methods) for more information.
+[server.method()](http://hapijs.com/api#servermethodname-method-options)는 `segment: '#sum'`과 함께 자동으로 새로운 [policy](https://github.com/hapijs/catbox#policy)를 만듭니다. 또한, 고유 항목 `id`(캐시 키)는 인자로부터 자동으로 생성됩니다. 기본으로 `string`, `number`, `boolean` 인자를 받습니다. 더 복잡한 인자들은 인자를 기반으로 고유한 식별자를 만드는 `generateKey` 함수를 제공해야 합니다. - 더 자세한 내용은 서버 메소드 [tutorial](http://hapijs.com/tutorials/server-methods)에서 확인하세요.
 
-### What next?
+### 다음은?
 
-* Look into catbox policy [options](https://github.com/hapijs/catbox#policy) and pay extra attention to `staleIn`, `staleTimeout`, `generateTimeout`, which leverages the full potential of catbox caching.
-* Check server methods [tutorial](http://hapijs.com/tutorials/server-methods) for more examples.
+* catbox policy [options](https://github.com/hapijs/catbox#policy)을 살펴보고 catbox 캐싱의 모든 잠재력을 활용하기 위해 `staleIn`, `staleTimeout`, `generateTimeout`에 각별한 주의를 기울여주세요.
+* 많은 예제는 서버 메소드 [tutorial](http://hapijs.com/tutorials/server-methods)을 확인하세요.
 
-## Client and Server caching
+## 클라이언트와 서버 캐싱
 
-[Catbox Policy](https://github.com/hapijs/catbox#policy) provides two more parameters `cached` and `report` which provides some details when an item is cached.
+[Catbox Policy](https://github.com/hapijs/catbox#policy)는 항목이 캐시될 때 자세한 정보를 제공하는 `cached`, `report` 두 개의 인자를 더 제공합니다.
 
-In this case we use `cached.stored` timestamp to set `last-modified` header.
+이 예에서 `cached.stored` 시간으로 `last-modified` 헤더를 설정합니다. 
 
 ```javascript
 server.route({
@@ -217,4 +217,4 @@ server.route({
     }
 });
 ```
-**Listing 7** Server and client side caching used together
+**목록 7** 같이 사용되는 서버와 클라이언트 쪽 캐싱
