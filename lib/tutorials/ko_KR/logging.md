@@ -1,35 +1,35 @@
-## Built-in methods
+## 내장 메소드
 
-As with any server software, logging is very important. Hapi has some built in logging methods, as well as some limited capability for viewing these logs.
+다른 서버 소프트웨어와 마찬가지로 로깅은 매우 중요합니다. hapi는 이러한 로그를 볼수 있는 제한된 기능뿐만 아니라 내장 로깅 메소드를 가지고 있습니다.
 
-There are two nearly identical logging methods, `server.log`, and `request.log`. The difference between the two is in what event they emit, what object emits the event, and what data is automatically associated. The `server.log` method emits a `log` event on the server, and has the server's URI associated with it. `request.log` emits a `request` event on the `server` and has the request's internal id associated with it.
+거의 같은 두 가지 로깅 방법인 `server.log`와 `request.log`가 있습니다. 이 둘의 차이점은 어떤 이벤트에서 발생하는지, 어떤 객체가 이벤트를 발생시키는지 그리고 어떤 데이터가 자동으로 연결되는지에 있습니다 `server.log` 메소드는 서버에서 서버의 URI와 연관된 `log` 이벤트를 보냅니다. `request.log`는 서버에서 요청의 내부 ID를 가지고 있는 `request` 이벤트를 보냅니다.
 
-They both accept up to three parameters. They are, in order, `tags`, `data`, and `timestamp`.
+두 가지 모두 3개의 인자를 받습니다. 순서대로 `tags`, `data`, `timestamp`입니다.
 
-`tags` is a string or array of strings used to briefly identify the event. Think of them like log levels, but far more expressive. For example, you could tag an error retrieving data from your database like the following:
+`tags`는 이벤트를 바로 식별하는 문자열 또는 문자열의 배열입니다. 로그 레벨 같지만 보다 표현적이라고 생각하세요. 예를 들어 다음과 같이 데이터베이스로부터 데이터를 받는 동안 에러를 태그할 수 있습니다.:
 
 ```javascript
 server.log(['error', 'database', 'read']);
 ```
 
-Any log events that hapi generates internally will always have the `hapi` tag associated with them.
+hapi가 내부에서 생성하는 로그 이벤트는 항상 그 이벤트와 연관된 `hapi` 태그를 가지고 있습니다.
 
-The second parameter, data, is an optional string or object to log with the event. This is where you would pass in things like an error message, or any other details that you wish to go along with your tags. The log event will automatically have the uri of the server it's associated with as a property.
+두 번째 인자 data는 이벤트와 함께 기록할 선택적인 문자열 또는 객체입니다. 이 인자는 에러 메시지 같은 것 또는 태그를 붙이고 싶은 다른 구체적인 것이 저장되는 곳입니다. 로그 이벤트는 자동으로 서버의 URI를 속성으로 가집니다.
 
-Last is the timestamp parameter. This defaults to `Date.now()`, and should only be passed in if you need to override the default for some reason.
+마지막은 timestamp 인자입니다. `Date.now()`의 값이 기본값입니다. 어떤 이유로 기본값을 덮어쓸 필요가 있을 경우만 전달합니다.
 
-### Retrieving request logs
+### 요청 로그 가져오기
 
-Hapi also provides a method (`request.getLog`) to retrieve log events from a request, assuming you still have access to the request object. If called with no parameters it will return an array of all log events associated with the request. You may also pass a tag or array of tags to filter the result set. This can be useful for retrieving a history of all logged events on a request when an error occurs for analysis.
+hapi는 요청 객체에 여전히 접근할 수 있다고 가정하고 요청으로부터 로그 이벤트를 가져오는 (`request.getLog`) 메소드를 제공합니다. 아무 인자 없이 호출한다면 요청과 관련된 모든 로그의 배열을 넘겨받습니다. 결과를 필터링하기 위해 태그 또는 태그의 배열을 넘길 수 있습니다. 분석을 위해 오류가 발생했을 때 요청에 기록된 모든 이벤트의 기록을 찾는 데 유용합니다.
 
-### Configuration
+### 설정
 
-By default, the only errors hapi will print to console are uncaught errors in external code, and runtime errors from incorrect implementation of hapi's API. You can configure your server to print request events based on tag, however. For example, if you wanted to print any error in a request you would configure your server as follows:
+기본으로 hapi가 콘솔에 출력하는 오류는 외부 코드에서 잡히지 않은 오류와 hapi의 API의 잘못된 구현에 대한 실행 중 오류입니다. 그러나 태그 기반으로 요청 이벤트를 출력하도록 서버를 설정할 수 있습니다. 예를 들어 요청에서 어떤 오류를 출력하려면 다음처럼 서버를 설정합니다.:
 
 ```javascript
 const server = new Hapi.Server({ debug: { request: ['error'] } });
 ```
 
-## Logging plugins
+## 로깅 플러그인
 
-The built-in methods are fairly minimal, however, and for more thorough logging you should really look into using a plugin like [good](https://github.com/hapijs/good) or [bucker](https://github.com/nlf/bucker).
+내장 메소드는 매우 적습니다. 자세한 로깅을 위해서는 [good](https://github.com/hapijs/good) 또느 [bucker](https://github.com/nlf/bucker) 같은 플러그인 사용법을 실제로 봐야 합니다.
