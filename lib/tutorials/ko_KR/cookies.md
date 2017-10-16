@@ -21,7 +21,7 @@ server.state('data', {
 });
 ```
 
-이 설정은 세션 수명을(브라우저면 닫힐 때 삭제) 가지고 있고, secure와 HTTP only 두 플래그가 설정되었으며(이 플래그에 대해서 더욱 자세한 정보는 ([RFC 6265](http://tools.ietf.org/html/rfc6265), 특히 [4.1.2.5](http://tools.ietf.org/html/rfc6265#section-4.1.2.5) 장과 and [4.1.2.6](http://tools.ietf.org/html/rfc6265#section-4.1.2.6) 장을 봐주세요) hapi에게 값은 base64로 인코딩된 JSON 문자열이라는 것을 알려주는 `data`라는 쿠키를 만듭니다. `server.state()` 옵션 관련 전체 문서는 [the API reference](/api#serverstatename-options)에서 찾을 수 있습니다.
+이 설정은 세션 수명을(브라우저가 닫힐 때 삭제) 가지고 있고, secure와 HTTP only 두 플래그가 설정되었으며(이 플래그에 대해서 더욱 자세한 정보는 [RFC 6265](http://tools.ietf.org/html/rfc6265), 특히 [4.1.2.5](http://tools.ietf.org/html/rfc6265#section-4.1.2.5) 장과 and [4.1.2.6](http://tools.ietf.org/html/rfc6265#section-4.1.2.6) 장을 봐주세요) hapi에게 값은 base64로 인코딩된 JSON 문자열이라는 것을 알려주는 `data`라는 쿠키를 만듭니다. `server.state()` 옵션 관련 전체 문서는 [the API reference](/api#serverstatename-options)에서 찾을 수 있습니다.
 
 이 외에도 경로를 추가할 때 두 인자를 `config`에 전달 할 수 있습니다.:
 
