@@ -1,12 +1,12 @@
-## Authentication
+## 인증
 
-_This tutorial is compatible with hapi v11.x.x._
+_이 튜터리얼은 hapi v11.x.x와 호환됩니다._
 
-Authentication within hapi is based on the concept of `schemes` and `strategies`.
+hapi에서 인증은 `schemes`와 `strategies` 개념을 기반으로 하고 있습니다.
 
-Think of a scheme as a general type of auth, like "basic" or "digest". A strategy on the other hand, is a pre-configured and named instance of a scheme.
+"basic", "digest" 같은 인증의 일반적인 유형으로 scheme을 생각하면 됩니다. 반면에 strategy는 미리 설정하고 이름을 붙인 scheme의 인스턴스입니다.
 
-First, let's look at an example of how to use [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic):
+우선 [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic)을 사용하는 예를 보겠습니다.:
 
 ```javascript
 'use strict';
@@ -67,106 +67,106 @@ server.register(Basic, (err) => {
 });
 ```
 
-First, we define our `users` database, which is a simple object in this example. Then we define a validation function, which is a feature specific to [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) and allows us to verify that the user has provided valid credentials.
+먼저 이 예제에서 간단한 객체인 `users`라는 데이터베이스를 정의했습니다. 그런 다음 [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic)의 고유한 기능인 검증 함수를 정의하고 사용자가 유효한 자격 증명을 제공했는지 검증할 수 있습니다.
 
-Next, we register the plugin, which creates a scheme with the name of `basic`. This is done within the plugin via [server.auth.scheme()](/api#serverauthschemename-scheme).
+다음으로 플러그인을 등록하면 `basic` 이름을 가진 scheme을 생성합니다. 플러그인 안에서 [server.auth.scheme()](/api#serverauthschemename-scheme)을 통해 이뤄집니다.
 
-Once the plugin has been registered, we use [server.auth.strategy()](/api#serverauthstrategyname-scheme-mode-options) to create a strategy with the name of `simple` that refers to our scheme named `basic`. We also pass an options object that gets passed to the scheme and allows us to configure its behavior.
+플러그인이 등록되면 `basic`이라는 scheme을 참조하는 `simple` 이름의 strategy를 생성하기 위해 [server.auth.strategy()](/api#serverauthstrategyname-scheme-mode-options)를 사용합니다. scheme에 전달되고 행동을 설정할 수 있는 옵션 객체를 전달합니다.
 
-The last thing we do is tell a route to use the strategy named `simple` for authentication.
+마지막으로 route에 인증에 사용할 strategy 이름인 `simple`을 알려줍니다.
 
 ## Schemes
 
-A `scheme` is a method with the signature `function (server, options)`. The `server` parameter is a reference to the server the scheme is being added to, while the `options` parameter is the configuration object provided when registering a strategy that uses this scheme.
+`scheme`은 `function (server, options)` 형태의 메소드 입니다. `server` 인자는 scheme이 추가될 서버를 참조하고 `options` 인자는 이 scheme을 사용하는 strategy가 등록될 때 제공되는 설정 객체입니다.
 
-This method must return an object with *at least* the key `authenticate`. Other optional methods that can be used are `payload` and `response`.
+이 메소드는 *최소한* `authenticate` 키를 가진 객체를 반환해야 합니다. 사용될 수 있는 다른 선택적인 메소드는 `payload`와 `response`입니다.
 
 ### `authenticate`
 
-The `authenticate` method has a signature of `function (request, reply)`, and is the only *required* method in a scheme.
+`authenticate` 메소드는 `function (request, reply)` 모양을 가지고 scheme에서 유일한 *필수* 메소드입니다. 
 
-In this context, `request` is the `request` object created by the server. It is the same object that becomes available in a route handler, and is documented in the [API reference](/api#request-object).
+`request`는 서버에서 생성된 `request` 객체입니다. route 처리기에서 사용 가능한 것과 같은 객체이고 [API reference](/api#request-object)에 문서로 만들어 져 있습니다.  
 
-`reply` is the standard hapi `reply` interface, it accepts `err` and `result` parameters in that order.
+`reply`는 `err`와 `result` 인자를 받는 표준 hapi `reply` 인터페이스입니다.
 
-If `err` is a non-null value, this indicates a failure in authentication and the error will be used as a reply to the end user. It is advisable to use [boom](https://github.com/hapijs/boom) to create this error to make it simple to provide the appropriate status code and message.
+`err`가 null value가 아니면 인증 실패를 의미하고 사용자에 대한 응답으로 에러가 사용될 것입니다. 에러를 생성하고 적절한 상태 코드와 메시지를 쉽게 제공하려면 [boom](https://github.com/hapijs/boom)을 사용하는 것이 좋습니다.  
 
-The `result` parameter should be an object, though the object itself as well as all of its keys are optional if an `err` is provided.
+`err`가 제공되는 경우 모든 키와 객체 자체가 선택적일지라도 `result` 인자는 객체이어야 합니다.
 
-If you would like to provide more detail in the case of a failure, the `result` object must have a `credentials` property which is an object representing the authenticated user (or the credentials the user attempted to authenticate with) and should be called like `reply(error, null, result);`.
+실패 시 더 자세한 정보를 제공하려면 `result` 객체는 인증된 사용자(또는 인증을 시도했던 자격 증명)`credentials` 속성을 가지고 있어야 하고 `reply(error, null, result);` 처럼 호출되어야 합니다.
 
-When authentication is successful, you must call `reply.continue(result)` where result is an object with a `credentials` property.
+인증이 성공하면 `credentials` 속성을 가지고 있는 result 인자로 `reply.continue(result)`를 호출해야 합니다.
 
-Additionally, you may also have an `artifacts` key, which can contain any authentication related data that is not part of the user's credentials.
+또한, 사용자 자격증명의 일부가 아닌 인증 관련 데이터를 포함한 `artifacts` 키를 가질 수 있습니다.
 
-The `credentials` and `artifacts` properties can be accessed later (in a route handler, for example) as part of the `request.auth` object.
+`credentials`와 `artifacts` 속성은 이후에(예를 들면 route 처리기에서) `request.auth` 객체의 부분으로 접근할 수 있습니다.
 
 ### `payload`
 
-The `payload` method has the signature `function (request, reply)`.
+`payload` 메소드는 `function (request, reply)` 형태로 되어 있습니다.
 
-Again, the standard hapi `reply` interface is available here. To signal a failure call `reply(error, result)` or simply `reply(error)` (again, recommended to use [boom](https://github.com/hapijs/boom)) for errors.
+다시 표준 hapi `reply` 인터페이스가 여기에 있습니다. 에러 때문에 실패를 알리려면 `reply(error, result)` 또는 간단히 `reply(error)`를 호출합니다. (다시 [boom](https://github.com/hapijs/boom) 사용을 추천합니다.)
 
-To signal a successful authentication, call `reply.continue()` with no parameters.
+성공적인 인증을 알리려면 아무 인자 없이 `reply.continue()`를 호출합니다.
 
 ### `response`
 
-The `response` method also has the signature `function (request, reply)` and utilizes the standard `reply` interface.
+`response` 메소드는 `function (request, reply)` 형태를 가지며 표준 `reply` 인터페이스를 사용합니다.
 
-This method is intended to decorate the response object (`request.response`) with additional headers, before the response is sent to the user.
+이 메소드는 응답을 사용자에게 보내기 전에 응답 객체 (`request.response`)를 추가적인 헤더를 덧붙이기 위한 것입니다.
 
-Once any decoration is complete, you must call `reply.continue()`, and the response will be sent.
+덧붙임이 완료되면 `reply.continue()`를 호출하고 응답을 전송합니다.
 
-If an error occurs, you should instead call `reply(error)` where `error` is recommended to be a [boom](https://github.com/hapijs/boom).
+만약 에러가 발생하면 `reply(error)`를 대신 호출합니다. `error`는 [boom](https://github.com/hapijs/boom)을 권장합니다. 
 
-### Registration
+### 등록하기
 
-To register a scheme, use either `server.auth.scheme(name, scheme)`. The `name` parameter is a string used to identify this specific scheme, the `scheme` parameter is a method as described above.
+scheme을 등록하려면 `server.auth.scheme(name, scheme)`을 사용해야 합니다. `name` 인자는 이 특정 scheme을 식별하는 문자열이고, `scheme` 인자는 위에 설명한 메소드입니다. 
 
 ## Strategies
 
-Once you've registered your scheme, you need a way to use it. This is where strategies come in.
+scheme을 등록했으면 scheme을 사용해야 합니다. 이때 strategy가 들어옵니다.
 
-As mentioned above, a strategy is essentially a pre-configured copy of a scheme.
+앞서 언급했듯이 strategy는 본래 미리 설정된 scheme의 사본입니다.
 
-To register a strategy, we must first have a scheme registered. Once that's complete, use `server.auth.strategy(name, scheme, [mode], [options])` to register your strategy.
+strategy를 등록하려면 먼저 등록된 scheme이 있어야 합니다. scheme 등록이 완료되었으면 strategy를 등록하기 위해 `server.auth.strategy(name, scheme, [mode], [options])`를 사용합니다.    
 
-The `name` parameter must be a string, and will be used later to identify this specific strategy. `scheme` is also a string, and is the name of the scheme this strategy is to be an instance of.
+`name` 인자는 문자열이어야 하고 이후에 특정 strategy를 식별하기 위해 사용됩니다. `scheme` 또한 문자열이고 strategy로 인스턴스가 되는 scheme의 이름입니다.
 
 ### Mode
 
-`mode` is the first optional parameter, and may be either `true`, `false`, `'required'`, `'optional'`, or `'try'`.
+`mode`는 `true`, `false`, `'required'`, `'optional'`, `'try'` 중 하나일 수 있는 첫 번째 선택적 인자입니다.
 
-The default mode is `false`, which means that the strategy will be registered but not applied anywhere until you do so manually.
+기본 mode 값은 `false`입니다. strategy를 등록하지만 직접 수행하기 전까지 아무 곳에도 적용되지 않습니다.
 
-If set to `true` or `'required'`, which are the same, the strategy will be automatically assigned to all routes that don't contain an `auth` config. This setting means that in order to access the route, the user must be authenticated, and their authentication must be valid, otherwise they will receive an error.
+`true`또는 `'required'`로 설정되면 strategy는 자동으로 `auth` 설정이 없는 모든 route에 할당됩니다. 이 설정은 route에 접근하려면 사용자는 인증받고 유효해야 함을 의미합니다. 그렇지 않으면 에러를 받을 것을 의미합니다. 
 
-If mode is set to `'optional'` the strategy will still be applied to all routes lacking `auth` config, but in this case the user does *not* need to be authenticated. Authentication data is optional, but must be valid if provided.
+`'optional'`로 설정되면 strategy는 `auth` 설정이 없는 모든 route에 적용되지만, 사용자는 인증할 필요가 *없습니다*. 인증 데이터는 선택이지만 제공된 경우는 유효해야 합니다.
 
-The last mode setting is `'try'` which, again, applies to all routes lacking an `auth` config. The difference between `'try'` and `'optional'` is that with `'try'` invalid authentication is accepted, and the user will still reach the route handler.
+마지막 모드 설정은 `'try'`이며 `auth` 설정이 없는 모든 route에 적용됩니다. `'try'`와 `'optional'`의 차이는 `'try'`는 유효하지 않은 인증도 허락하고 사용자는 route 처리기에 도달합니다. 
 
 ### Options
 
-The final optional parameter is `options`, which will be passed directly to the named scheme.
+마지막 선택 인자는 명명한 scheme에 직접 전달되는 `options`입니다.
 
-### Setting a default strategy
+### 기본 strategy 설정하기
 
-As previously mentioned, the `mode` parameter can be used with `server.auth.strategy()` to set a default strategy. You may also set a default strategy explicitly by using `server.auth.default()`.
+앞서 언급했듯이 `mode` 인자는 `server.auth.strategy()`와 함께 사용되어 기본 strategy를 설정할 수 있습니다. `server.auth.default()`를 사용함으로 기본 strategy를 명시적으로 설정할 수도 있습니다.
 
-This method accepts one parameter, which may be either a string with the name of the strategy to be used as default, or an object in the same format as the route handler's [auth options](#route-configuration).
+이 메소드는 기본값으로 사용할 strategy 이름 문자열 또는 route 처리기의 [auth options](#route-configuration)과 같은 형식의 객체를 하나의 인자를 받습니다.
 
-Note that any routes added *before* `server.auth.default()` is called will not have the default applied to them. If you need to make sure that all routes have the default strategy applied, you must either call `server.auth.default()` before adding any of your routes, or set the default mode when registering the strategy.
+`server.auth.default()`호출 되기 *전에* 추가된 route에는 기본이 적용되지 않습니다. 모든 route에 기본 strategy가 적용되었는지 확실히 하려면 route를 추가하기 전에 `server.auth.default()`를 호출하거나 strategy를 등록할 때 기본 mode로 설정합니다.
 
-## Route configuration
+## Route 설정
 
-Authentication can also be configured on a route, by the `config.auth` parameter. If set to `false`, authentication is disabled for the route.
+`config.auth` 인자로 route의 인증을 설정할 수 있습니다. `false`로 설정되면 route에 인증이 사용되지 않습니다. 
 
-It may also be set to a string with the name of the strategy to use, or an object with `mode`, `strategies`, and `payload` parameters.
+사용할 strategy의 이름을 가진 문자열 또는 `mode`, `strategies`, `payload` 인자를 가진 객체로 설정될 수 있습니다.
 
-The `mode` parameter may be set to `'required'`, `'optional'`, or `'try'` and works the same as when registering a strategy.
+`mode` 인자는 `'required'`, `'optional'` 또는 `'try'`로 설정될 수 있으며 strategy를 등록할 때와 같이 동작합니다.
 
-When specifying one strategy, you may set the `strategy` property to a string with the name of the strategy. When specifying more than one strategy, the parameter name must be `strategies` and should be an array of strings each naming a strategy to try. The strategies will then be attempted in order until one succeeds, or they have all failed.
+하나의 strategy를 지정할 때 strategy 이름의 문자열로 `strategy` 속성을 설정할 수 있습니다. 하나 이상의 strategy를 지정한다면 인자 이름은 `strategies`가 돼야 하고 시도할 각 strategy의 이름 문자열의 배열이어야 합니다. strategy는 성공할 때 까지 하나씩 시도되거나 모두 실패합니다. 
 
-Lastly, the `payload` parameter can be set to `false` denoting the payload is not to be authenticated, `'required'` or `true` meaning that it *must* be authenticated, or `'optional'` meaning that if the client includes payload authentication information, the authentication must be valid.
+마지막으로 `payload` 인자는 payload는 인증되지 않음을 가리키는 `false`, *반드시* 인증돼야 하는 `'required'` 또는 `true`, 클라이언트가 payload 인증 정보를 포함한다면 반드시 유효해야 하는 `'optional'`로 설정될 수 있습니다.
 
-The `payload` parameter is only possible to use with a strategy that supports the `payload` method in its scheme.
+`payload` 인자는 scheme에서 `payload` 메소드를 지원하는 strategy에서만 사용 가능합니다. 
