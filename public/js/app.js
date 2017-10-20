@@ -1,5 +1,5 @@
 /* these methods borrowed from youmightnotneedjquery.com */
-var hasClass = function (el, className) {
+var hasClass = function(el, className) {
     if (el.classList) {
         return el.classList.contains(className);
     }
@@ -8,7 +8,7 @@ var hasClass = function (el, className) {
     }
 };
 
-var addClass = function (el, className) {
+var addClass = function(el, className) {
     if (el.classList) {
         el.classList.add(className);
     }
@@ -17,7 +17,7 @@ var addClass = function (el, className) {
     }
 };
 
-var removeClass = function (el, className) {
+var removeClass = function(el, className) {
     if (el.classList) {
         el.classList.remove(className);
     }
@@ -48,22 +48,11 @@ var windowHandler = function () {
     var top = document.body.scrollTop;
     var winWidth = document.body.offsetWidth;
 
-    if (winWidth > 769) {
-        if (top > headerBottom) {
-            var left = (winWidth * 0.1) + (winWidth * 0.8 * 0.7);
-            var width = winWidth * 0.8 * 0.3;
-
-            navDiv.style.position = 'fixed';
-            navDiv.style.top = 0;
-            navDiv.style.left = left + 'px';
-            navDiv.style.width = width + 'px';
-        }
-        else {
-            navDiv.style.position = '';
-            navDiv.style.top = '';
-            navDiv.style.left = '';
-            navDiv.style.width = '';
-        }
+    if (winWidth <= 769) {
+        navDiv.style.position = '';
+        navDiv.style.top = '';
+        navDiv.style.left = '';
+        navDiv.style.width = '';
     }
 };
 
@@ -71,7 +60,7 @@ window.addEventListener('scroll', windowHandler);
 window.addEventListener('resize', windowHandler);
 
 // expand a section
-var expand = function (target) {
+var expand = function(target) {
 
     if (hasClass(target, 'section-closed')) {
         removeClass(target, 'section-closed');
@@ -79,7 +68,7 @@ var expand = function (target) {
         target.nextElementSibling.style.display = '';
     }
 
-    var findParent = function (el, selector) {
+    var findParent = function(el, selector) {
         if (matches(el, selector)) {
             return el;
         }
@@ -95,7 +84,7 @@ var expand = function (target) {
 
 
 // collapse a section
-var collapse = function (target) {
+var collapse = function(target) {
     removeClass(target, 'section-opened');
     addClass(target, 'section-closed');
 
@@ -104,7 +93,7 @@ var collapse = function (target) {
 
 
 // format a time stamp to a human readable string
-var ageString = function (then) {
+var ageString = function(then) {
 
     then = new Date(then);
     var now = new Date();
@@ -137,10 +126,10 @@ var ageString = function (then) {
 };
 
 // Search engine for the API part
-var SearchEngine = function () {
+var SearchEngine = function() {
 
     // Simple DOM walker
-    var walkTheDOM = function (node, func) {
+    var walkTheDOM = function(node, func) {
         if (func(node)) {
             // If the function returns true, do not walk the children
             return;
@@ -158,7 +147,7 @@ var SearchEngine = function () {
      * It's supposed to leave alone the nodes that do not directly contain the terms but lead to the ones that do,
      * this is essential to know in which part of the documentation your are.
      */
-    var crawlToHide = function (terms) {
+    var crawlToHide = function(terms) {
         var children = this.children;
         var nodes = this.nodes;
         var found = false;
@@ -215,7 +204,7 @@ var SearchEngine = function () {
     };
 
     var hierarchy; // holds a cache of the hierarchy of the document
-    var search = function () {
+    var search = function() {
         var terms = searchText.value.toLowerCase().split(' ');
         var content = document.querySelector('.entry-content');
 
@@ -236,7 +225,7 @@ var SearchEngine = function () {
             hierarchy = { tag: content, children: [], nodes: [] };
             var current = hierarchy;
 
-            walkTheDOM(content, function (node) {
+            walkTheDOM(content, function(node) {
                 if (node === content) { // Skip root
                     return;
                 }
@@ -250,10 +239,10 @@ var SearchEngine = function () {
                     // Headers are a specific case that need to be compared to give them the good level in the hierarchy
 
                     if (current.tag.tagName === node.tagName) {
-                        current.parent.children.push({ tag: node, parent: current.parent, children: [], nodes: [] });
+                    current.parent.children.push({ tag: node, parent: current.parent, children: [], nodes: [] });
                         current = current.parent.children[current.parent.children.length - 1];
-                    }
-                    else {
+                }
+                else {
                         if (/^H\d$/.test(current.tag.tagName) && +current.tag.tagName[1] > +node.tagName[1]) {
 
                             // That header has a higher level than the current, this means we just ended a section and
@@ -265,21 +254,21 @@ var SearchEngine = function () {
 
                             // Then put ourself under the right parent
                             current = current.parent;
-                            current.children.push({ tag: node, parent: current, children: [], nodes: [] });
-                        }
-                        else {
+                        current.children.push({ tag: node, parent: current, children: [], nodes: [] });
+                    }
+                    else {
                             // This is a sub-section
-                            current.children.push({ tag: node, parent: current, children: [], nodes: [] });
+                        current.children.push({ tag: node, parent: current, children: [], nodes: [] });
                         }
 
                         current = current.children[current.children.length - 1];
                     }
-                }
-                else if (hierarchicalNodes.indexOf(node.tagName) !== -1) {
-                    current.children.push({ tag: node, parent: current, children: [], nodes: [] });
+            }
+            else if (hierarchicalNodes.indexOf(node.tagName) !== -1) {
+                current.children.push({ tag: node, parent: current, children: [], nodes: [] });
                     current = current.children[current.children.length - 1];
-                }
-                else {
+            }
+            else {
                     current.nodes.push(node);
                     return true; // Stop walking that, this is a normal node, we can consider it a leaf even if it has children.
                 }
@@ -292,7 +281,28 @@ var SearchEngine = function () {
     return search;
 };
 
-document.addEventListener('DOMContentLoaded', function () {
+var openCloseSections = function() {
+
+    // Close all API doc sections
+    // Open sections that are children of active nodes
+
+    $('.nav-secondary > nav a+ul').each(function() {
+
+        if ($(this.parentElement).hasClass('active')) {
+            $(this.previousElementSibling)
+                .removeClass('section-closed')
+                .addClass('section-opened')
+        }
+        else {
+            $(this.previousElementSibling)
+                .addClass('section-closed')
+                .removeClass('section-opened')
+        }
+    });
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+
     if (typeof searchText !== 'undefined') {
         searchText.onkeyup = SearchEngine();
     }
@@ -302,57 +312,20 @@ document.addEventListener('DOMContentLoaded', function () {
         // move the first UL to the sidebar
         nav = nav[0];
         var sidebar = document.querySelectorAll('.nav-secondary nav')[0];
+        addClass(nav, 'nav');
         sidebar.appendChild(nav);
 
         // iterate over the links, make sections have a section-closed class
-        // and collapse all the sections by default
         var links = nav.querySelectorAll('a + ul');
-        Array.prototype.forEach.call(links, function (link) {
+        Array.prototype.forEach.call(links, function(link) {
 
             addClass(link.previousElementSibling, 'section-closed');
-            link.style.display = 'none';
         });
 
         // remove the user-content- prefix from header links
         var headers = document.querySelectorAll('.api-description a');
-        Array.prototype.forEach.call(headers, function (header) {
+        Array.prototype.forEach.call(headers, function(header) {
             header.id = header.id.replace(/^user\-content\-/, '');
-        });
-
-        // add link click handlers
-        var navLinks = document.querySelectorAll('.nav-secondary nav a');
-        Array.prototype.forEach.call(navLinks, function (navLink) {
-            navLink.addEventListener('click', function (e) {
-
-                // make sure we have the a
-                var target = e.target;
-                if (matches(target, 'code')) {
-                    target = target.parentNode;
-                }
-
-                // clear the old 'active' link and set the current one
-                if (!hasClass(target, 'active')) {
-                    Array.prototype.forEach.call(document.querySelectorAll('.active'), function (old) {
-                        removeClass(old, 'active');
-                    });
-
-                    addClass(target, 'active');
-                }
-
-                if (hasClass(target, 'section-closed')) {
-                    expand(target);
-                }
-                else if (hasClass(target, 'section-opened')) {
-                    collapse(target);
-                }
-
-                // collapse everything that isn't active and doesn't have an active child
-                Array.prototype.forEach.call(document.querySelectorAll('.section-opened:not(.active)'), function (oldLink) {
-                    if (oldLink.nextElementSibling.querySelectorAll('.active').length === 0) {
-                        collapse(oldLink);
-                    }
-                });
-            });
         });
     }
     else {
@@ -364,13 +337,30 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // make sure to expand menu to correct location if they got here with a hash
-    if (window.location.hash) {
-        var target = document.querySelectorAll('.nav-secondary nav a[href="' + window.location.hash + '"]');
-        if (target.length) {
-            target = target[0];
-            expand(target);
-            addClass(target, 'active');
+    $('.nav-secondary > nav').affix({ offset: { top: 400 } });
+    $('body').scrollspy({ target: '.nav-secondary > nav' });
+
+    openCloseSections();
+
+    var currentActiveElement;
+
+    $('.nav-secondary > nav').on('activate.bs.scrollspy', function(ev) {
+
+        openCloseSections();
+
+        var el = $('.nav-secondary > nav').find('.active').last();
+        var node = el.get(0);
+
+        if (node === currentActiveElement) {
+            return;
         }
-    }
+
+        currentActiveElement = node;
+
+        // Scroll to newly active element
+
+        var scrollTo = $('.nav-secondary > nav').scrollTop() + el.offset().top - $('.nav-secondary > nav').offset().top;
+        var buffer = 30;
+        $('.nav-secondary > nav').scrollTop(scrollTo - buffer);
+    });
 });
