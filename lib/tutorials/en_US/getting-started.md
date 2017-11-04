@@ -103,7 +103,7 @@ server.register(require('inert')).then(() => {
     return server.start()
         .then(() => {
             console.log(`Server running at: ${server.info.uri}`);
-        })
+        });
 
 }).catch((err) => {
     console.error(err);
