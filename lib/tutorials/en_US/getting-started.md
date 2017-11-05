@@ -19,15 +19,19 @@ The most basic server looks like the following:
 
 const Hapi = require('hapi');
 
-const server = new Hapi.Server({ port: 3000, host: 'localhost' });
+const server = Hapi.server({ port: 3000, host: 'localhost' });
 
-server.start()
-    .then(() => {
+async function init() {
+    try {
+        await server.start();
         console.log(`Server running at: ${server.info.uri}`);
-    })
-    .catch((err) => {
+    } catch (err) {
         console.error(err);
-    });
+    }
+}
+
+init();
+
 ```
 
 First, we require hapi. Then we create a new hapi server object with a configuration object containing a host and a port
@@ -45,12 +49,12 @@ Now that we have a server we should add one or two routes so that it actually do
 
 const Hapi = require('hapi');
 
-const server = new Hapi.Server({ port: 3000, host: 'localhost' });
+const server = Hapi.server({ port: 3000, host: 'localhost' });
 
 server.route({
     method: 'GET',
     path: '/',
-    handler: function (request, h) {
+    handler: (request, h) => {
         return 'Hello, world!';
     }
 });
@@ -63,14 +67,16 @@ server.route({
     }
 });
 
-
-server.start()
-    .then(() => {
+async function init() {
+    try {
+        await server.start();
         console.log(`Server running at: ${server.info.uri}`);
-    })
-    .catch((err) => {
+    } catch (err) {
         console.error(err);
-    });
+    }
+}
+
+init();
 ```
 
 Save the above as `server.js` and start the server with the command `node server.js`. Now you'll find that if you visit [http://localhost:3000](http://localhost:3000) in your browser, you'll see the text `Hello, world!`, and if you visit [http://localhost:3000/stimpy](http://localhost:3000/stimpy) you'll see `Hello, stimpy!`.
@@ -85,35 +91,33 @@ We've proven that we can start a simple Hapi app with our Hello World applicatio
 
 To install [inert](https://github.com/hapijs/inert) run this command at the command line: `npm install --save inert` This will download [inert](https://github.com/hapijs/inert) and add it to your `package.json`, which documents which packages are installed.
 
-Add the following to your `server.js` file:
-
-Notice that `server.start()` was moved inside the plugin registration. This is to make sure that the registration is finished before starting the server.
+Update the `init` function in your `server.js` file:
 
 ``` javascript
-server.register(require('inert')).then(() => {
+async function init() {
+    try {
+        await server.register(require('inert'));
 
-    server.route({
-        method: 'GET',
-        path: '/hello',
-        handler: function (request, h) {
-            return h.file('./public/hello.html');
-        }
-    });
-
-    return server.start()
-        .then(() => {
-            console.log(`Server running at: ${server.info.uri}`);
+        server.route({
+            method: 'GET',
+            path: '/hello',
+            handler: (request, h) => {
+                return h.file('./public/hello.html');
+            }
         });
 
-}).catch((err) => {
-    console.error(err);
-});
+        await server.start();
+        console.log(`Server running at: ${server.info.uri}`);
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 ```
 
-The `server.register()` command above adds the [inert](https://github.com/hapijs/inert) plugin to your Hapi application. If something goes wrong, we want to know, so we've added a `.catch()` at the end that will receive any errors. It is recommended to always add a catch when working with promises to prevent errors from being swallowed.
+The `server.register()` command above adds the [inert](https://github.com/hapijs/inert) plugin to your Hapi application. If something goes wrong, we want to know, so we've added a `try catch` that will receive any errors. It is recommended to always add a catch when working with promises to prevent errors from being swallowed.
 
-The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file. We've put the routing callback function inside of registering inert because we need to insure that inert is registered _before_ we use it to render the static page. It is generally wise to run code that depends on a plugin within the success handler that registers that plugin so that you can be absolutely sure that plugin exists when your code runs.
+The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file.
 
 Start up your server with `npm start` and go to [`http://localhost:3000/hello`](http://localhost:3000/hello) in your browser. Oh no! We're getting an error because we never created a `hello.html` file. You need to create the missing file to get rid of this error.
 
