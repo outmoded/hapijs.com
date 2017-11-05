@@ -21,7 +21,7 @@ const Hapi = require('hapi');
 
 const server = Hapi.server({ port: 3000, host: 'localhost' });
 
-async function init() {
+const init = async () => {
     try {
         await server.start();
         console.log(`Server running at: ${server.info.uri}`);
@@ -67,7 +67,7 @@ server.route({
     }
 });
 
-async function init() {
+const init = async () => {
     try {
         await server.start();
         console.log(`Server running at: ${server.info.uri}`);
@@ -94,7 +94,7 @@ To install [inert](https://github.com/hapijs/inert) run this command at the comm
 Update the `init` function in your `server.js` file:
 
 ``` javascript
-async function init() {
+const init = async () => {
     try {
         await server.register(require('inert'));
 
