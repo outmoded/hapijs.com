@@ -14,7 +14,7 @@ block content
         .column.new-contributor-issues
           header.cf
             h4.pull-left Issues for new contributors
-            a.pull-right(href='https://github.com/issues?q=is%3Aopen+is%3Aissue+user%3Ahapijs+label%3A%22new+contributor%22+', title='See all issues for new contributors') See all
+            a.pull-right(href='https://github.com/hapijs/hapi/labels/new%20contributor', title='See all issues for new contributors') See all
 
           ul.unstyled
             each issue in newContributorIssues.slice(0, 20)
@@ -26,7 +26,7 @@ block content
         .column.help-wanted-issues
           header.cf
             h4.pull-left Help wanted
-            a.pull-right(href='https://github.com/issues?q=is%3Aopen+is%3Aissue+user%3Ahapijs+label%3A%22help+wanted%22', title='See all issues where help is wanted') See all
+            a.pull-right(href='https://github.com/hapijs/hapi/labels/help%20wanted', title='See all issues where help is wanted') See all
 
           ul.unstyled
             each issue in helpWantedIssues.slice(0, 20)
