@@ -92,12 +92,7 @@ block content
           span.pl-s const
           |  server 
           span.pl-k = 
-          span.pl-k new 
-          span.pl-en Hapi.Server
-          | ();
-          br
-
-          | server.connection({ 
+          span.pl-en Hapi.server({ 
           |     host: 
           span.pl-s1
             span.pl-pds '
@@ -135,17 +130,16 @@ block content
           | (
           span.pl-vpf request
           | , 
-          span.pl-vpf reply
+          span.pl-vpf h
           | ) {
           br
           br
           span.pl-s         return 
-          | reply(
           span.pl-s1
             span.pl-pds '
             | hello world
             span.pl-pds '
-          | );
+          | ;
           |     }
           | });
           br
@@ -154,16 +148,28 @@ block content
           span.pl-c // Start the server
           br
 
-          | server.start((err) => {
+          span.pl-s async function
+          | start() {
           br
           
           br
-          span.pl-s     if 
+          span.pl-s    try
+          | {
+          br
+          span.pl-s         await
+          | server.start();
+          br
+          span.pl-s    catch
           | (err) {
           br
-          span.pl-s         throw 
-          | err;
-          |     }
+          |     console.log(err);
+          br
+          |     process.exit(1);
+          br
+          |    }
+          br
+          
+          br
           |     console.log(
           span.pl-s1
             span.pl-pds '
