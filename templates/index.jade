@@ -93,6 +93,7 @@ block content
           |  server 
           span.pl-k = 
           span.pl-en Hapi.server({ 
+          br
           |     host: 
           span.pl-s1
             span.pl-pds '
@@ -149,24 +150,23 @@ block content
           br
 
           span.pl-s async function
-          | start() {
+          |  start() {
           br
           
           br
           span.pl-s    try
-          | {
+          |  {
           br
           span.pl-s         await
-          | server.start();
+          |  server.start();
+          br
+          |     }
           br
           span.pl-s    catch
-          | (err) {
-          br
-          |     console.log(err);
-          br
-          |     process.exit(1);
-          br
-          |    }
+          |  (err) {
+          |         console.log(err);
+          |         process.exit(1);
+          |     }
           br
           
           br
@@ -177,6 +177,10 @@ block content
             span.pl-pds '
           | , server.info.uri);
           | });
+          br
+          
+          br
+          start();
           br
 
         p Launch the application by running 
