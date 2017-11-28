@@ -5,6 +5,7 @@ block title
 
 block content
   .content.page-api.cf
+    p.dep-warn This tutorial and all other tutorials in this section are for hapi v16 and <strong>will not work</strong> under v17 unless explicitly marked <em>compatible with v17</em>. We are in the process of updating all tutorials on the site to work with the <strong><a href="https://github.com/hapijs/hapi/issues/3658">major v17 API&nbsp;changes</a></strong>, please <a href="https://github.com/hapijs/hapijs.com/issues">help us out</a> if you can!
     .column.api-description
       .reference!= html
 
@@ -13,10 +14,10 @@ block content
         p.pull-left Languages:
         .tag-list-toggle.pull-right= language
           ul.unstyled.tag-list-picker
-            each lang in languages 
-              if lang !== language 
+            each lang in languages
+              if lang !== language
                 li
-                  a(href='/tutorials?lang=#{lang}')= lang 
+                  a(href='/tutorials?lang=#{lang}')= lang
       nav
         h3 Tutorials
 
