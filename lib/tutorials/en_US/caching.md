@@ -1,6 +1,6 @@
 ## Client side caching
 
-_This tutorial is compatible with hapi v11.x.x._
+_This tutorial is compatible with hapi v16_
 
 The HTTP protocol provides several different HTTP headers to control how browsers cache resources. To decide which headers are suitable for your use case check Google developers [guide](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching) or other [resources](https://www.google.com/search?q=HTTP+caching). This tutorial provides overview how to use these techniques with hapi.
 

@@ -1,6 +1,6 @@
 ## Authentication
 
-_This tutorial is compatible with hapi v11.x.x._
+_This tutorial is compatible with hapi v16_
 
 Authentication within hapi is based on the concept of `schemes` and `strategies`.
 
