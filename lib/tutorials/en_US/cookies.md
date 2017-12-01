@@ -1,6 +1,6 @@
 ## Cookies
 
-_This tutorial is compatible with hapi v11.x.x._
+_This tutorial is compatible with hapi v16_
 
 When writing a web application, using cookies is often a necessity. When using hapi, cookies are flexible, safe, and simple.
 
@@ -53,3 +53,11 @@ When setting a cookie, you may also pass the same options available to `server.s
 ```javascript
 reply('Hello').state('data', 'test', { encoding: 'none' });
 ```
+
+## Clearing a cookie
+The cookie can be cleared by calling the `unstate()` method on the [`response`](/api#response-object) object:
+
+```javascript
+reply('Hello').unstate('data');
+```
+

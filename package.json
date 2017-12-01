@@ -4,23 +4,27 @@
   "description": "hapijs.com",
   "main": "server.js",
   "dependencies": {
-    "async": "1.x.x",
-    "boom": "2.x.x",
-    "catbox-memory": "1.x.x",
+    "async": "1.5.x",
+    "boom": "3.x.x",
+    "catbox-memory": "2.x.x",
     "catbox-redis": "1.x.x",
-    "getconfig": "2.x.x",
-    "good": "6.x.x",
-    "good-console": "5.x.x",
-    "hapi": "8.x.x",
-    "hoek": "2.x.x",
+    "getconfig": "3.x.x",
+    "good": "7.x.x",
+    "good-console": "6.x.x",
+    "hapi": "13.x.x",
+    "hoek": "4.x.x",
+    "inert": "3.x.x",
     "jade": "1.x.x",
     "semver": "5.x.x",
-    "wreck": "6.x.x"
+    "vision": "4.x.x",
+    "wreck": "7.x.x"
   },
   "scripts": {
     "build": "make",
     "start": "node server.js",
-    "lint:tutorials": "./node_modules/.bin/eslint --ext .md lib/tutorials"
+    "lint:code": "eslint -c eslint-config-hapi .",
+    "lint:tutorials": "eslint --ext .md lib/tutorials",
+    "test": "npm run lint:code && npm run lint:tutorials"
   },
   "repository": {
     "type": "git",
@@ -34,11 +38,13 @@
   "homepage": "https://github.com/hapijs/hapijs.com",
   "devDependencies": {
     "building-static-server": "3.x.x",
-    "eslint": "1.0.x",
-    "eslint-config-hapi": "1.x.x",
-    "eslint-plugin-markdown": "git://github.com/eslint/eslint-plugin-markdown.git#45f03b5",
+    "eslint": "2.12.x",
+    "eslint-config-hapi": "9.x.x",
+    "eslint-plugin-hapi": "4.x.x",
+    "eslint-plugin-markdown": ">=1.0.0-beta.1 <2.0.0",
     "glob-cli": "1.x.x",
-    "stylus": "0.52.x",
+    "lab": "10.x.x",
+    "stylus": "0.54.x",
     "uglify-js": "2.x.x"
   }
 }

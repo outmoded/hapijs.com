@@ -1,0 +1,9 @@
+{
+    "githubToken": "$GITHUB_TOKEN",
+    "server": {
+        "cache": {
+            "engine": "catbox-redis",
+            "host": "redis"
+        }
+    }
+}

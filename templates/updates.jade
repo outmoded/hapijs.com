@@ -5,7 +5,7 @@ block title
 
 block content
 
-  section.github-updates
+  section.bottom-rule.github-updates
     .content
       h3 Latest Updates
       - var issueString = issues.length === 1 ? 'issue' : 'issues';
@@ -38,7 +38,7 @@ block content
                   a(href='#{issue.html_url}') ##{issue.number}
                 p.issue-title= issue.title
 
-  section.changelog
+  section.bottom-rule.changelog
     .content
       h3 Changelog
       .changelog

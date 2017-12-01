@@ -1,6 +1,6 @@
 ## Client side caching
 
-_This tutorial is compatible with hapi v11.x.x._
+_This tutorial is compatible with hapi v16_
 
 The HTTP protocol provides several different HTTP headers to control how browsers cache resources. To decide which headers are suitable for your use case check Google developers [guide](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching) or other [resources](https://www.google.com/search?q=HTTP+caching). This tutorial provides overview how to use these techniques with hapi.
 
@@ -31,7 +31,7 @@ server.route({
 ```
 **Listing 1** Setting Cache-Control header
 
-Listing 1 also illustrates that the `expiresIn` value can be overridden with the `ttl(msec)` method prodided by the [response object](http://hapijs.com/api#response-object) interface.
+Listing 1 also illustrates that the `expiresIn` value can be overridden with the `ttl(msec)` method provided by the [response object](http://hapijs.com/api#response-object) interface.
 
 See [route-options](http://hapijs.com/api#route-options) for more information about common `cache` configuration options.
 
@@ -134,6 +134,9 @@ server.route({
         const id = request.params.a + ':' + request.params.b;
         sumCache.get({ id: id, a: request.params.a, b: request.params.b }, (err, result) => {
 
+            if (err) {
+                return reply(err);
+            }
             reply(result);
         });
     }
@@ -174,6 +177,9 @@ server.route({
 
         server.methods.sum(request.params.a, request.params.b, (err, result) => {
 
+            if (err) {
+                return reply(err);
+            }
             reply(result);
         });
     }
@@ -202,6 +208,9 @@ server.route({
 
         server.methods.sum(request.params.a, request.params.b, (err, result, cached, report) => {
 
+            if (err) {
+                return reply(err);
+            }
             const lastModified = cached ? new Date(cached.stored) : new Date();
             return reply(result).header('last-modified', lastModified.toUTCString());
         });

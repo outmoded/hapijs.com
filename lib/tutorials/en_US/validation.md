@@ -117,3 +117,93 @@ You may validate incoming headers as well, with a `validate.headers` parameter.
 ### Payload parameters
 
 Also valid is the `validate.payload` parameter, which will validate payload data sent to a route by the user. It works exactly the same way as query parameters, in that if you validate one key, you must validate them all.
+
+## Output
+
+hapi can also validate responses before they are sent back to the client.
+This validation is defined in the `response` property of the route `config` object.
+
+If a response does not pass the response validation, the client will receive an Internal Server Error (500) response by default (see `response.failAction` below).
+
+Output validation is useful for ensuring that your API is serving data that is consistent with its documentation/contract.
+Additionally, plugins like [hapi-swagger](https://github.com/glennjones/hapi-swagger) and [lout](https://github.com/hapijs/lout) can use the response-validation schemas to automatically document each
+endpoint's output format, thus ensuring that your documentation is always up to date.
+
+hapi supports quite a few options to fine-tune output validation. Here are a few of them:
+
+### response.failAction
+
+You can choose what to do when response validation fails by setting `response.failAction` to one of the following:
+* `error`: send an Internal Server Error (500) response (default).
+* `log`: just log the offense and send the response as-is.
+
+### response.sample
+
+If performance is a concern, hapi can be configured to validate only a percentage of responses.
+This can be acheived with the `response.sample` property of the route `config`.
+
+### response.status
+
+Sometimes one endpoint can serve different response objects.
+For instance, a `POST` route may return one of the following:
+* `201` with the newly created resource if a new resource is created.
+* `202` with the old and new values if an existing resource was updated.
+
+hapi supports this by allowing you to specify a different validation schema for each response status code.
+`response.status` is an object with keys that are numeric status codes, and properties that are joi schemas:
+```
+{
+    response: {
+        status: {
+            201: dataSchema,
+            202: Joi.object({ original: dataSchema, updated:  dataSchema })
+        }
+    }
+}
+```
+
+### response.options
+options to pass to joi during validation. See the API docs for more details.
+
+### Example
+
+Here is an example route configuration that returns a list of books:
+
+```javascript
+const bookSchema = Joi.object({
+    title: Joi.string().required(),
+    author: Joi.string().required(),
+    isbn: Joi.string().length(10),
+    pageCount: Joi.number(),
+    datePublished: Joi.date().iso()
+});
+
+server.route({
+    method: 'GET',
+    path: '/books',
+    config: {
+        handler: function (request, reply) {
+
+            getBooks((err, books) => {
+
+                if (err) {
+                    return reply(err);
+                }
+
+                return reply(books);
+            });
+        },
+        response: {
+            sample: 50,
+            schema: Joi.array().items(bookSchema)
+        }
+    }
+});
+
+```
+
+This will validate one half of the responses (`sample: 50`).
+Because `response.failAction` is not specified, hapi will respond with a `500` error code if any `books` do not match the `bookSchema` exactly.
+The error response will *not* indicate the reason for the error.
+If you have logging configured, you will be able to inspect your error logs for information about what caused the response validation to fail.
+If `response.failAction` were set to `log`, then hapi would respond with the original payload, and log the validation error.

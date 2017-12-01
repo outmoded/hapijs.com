@@ -1,6 +1,6 @@
 ## Installing hapi
 
-_This tutorial is compatible with hapi v11.x.x._
+_This tutorial is compatible with hapi v16_
 
 Create a new directory `myproject`, and from there:
 
@@ -19,14 +19,14 @@ The most basic server looks like the following:
 const Hapi = require('hapi');
 
 const server = new Hapi.Server();
-server.connection({ port: 3000 });
+server.connection({ port: 3000, host: 'localhost' });
 
 server.start((err) => {
 
     if (err) {
         throw err;
     }
-    console.log('Server running at:', server.info.uri);
+    console.log(`Server running at: ${server.info.uri}`);
 });
 ```
 
@@ -46,7 +46,7 @@ Now that we have a server we should add one or two routes so that it actually do
 const Hapi = require('hapi');
 
 const server = new Hapi.Server();
-server.connection({ port: 3000 });
+server.connection({ port: 3000, host: 'localhost' });
 
 server.route({
     method: 'GET',
@@ -69,7 +69,7 @@ server.start((err) => {
     if (err) {
         throw err;
     }
-    console.log('Server running at:', server.info.uri);
+    console.log(`Server running at: ${server.info.uri}`);
 });
 ```
 
@@ -120,13 +120,14 @@ More details on how static content is served are detailed on [Serving Static Con
 
 ## Using plugins
 
-A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [good](https://github.com/hapijs/good) plugin and its [good-console](https://github.com/hapijs/good-console) reporter on to our server.
+A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [good](https://github.com/hapijs/good) plugin and its [good-console](https://github.com/hapijs/good-console) reporter on to our server. We'll also need a basic filtering mechanism. Let's use [good-squeeze](https://github.com/hapijs/good-squeeze) because it has the basic event type and tag filtering we need to get started.
 
-The plugin first needs to be installed:
+Let's install the modules from npm to get started:
 
 ```bash
 npm install --save good
 npm install --save good-console
+npm install --save good-squeeze
 ```
 
 Then update your `server.js`:
@@ -138,7 +139,7 @@ const Hapi = require('hapi');
 const Good = require('good');
 
 const server = new Hapi.Server();
-server.connection({ port: 3000 });
+server.connection({ port: 3000, host: 'localhost' });
 
 server.route({
     method: 'GET',
@@ -159,13 +160,18 @@ server.route({
 server.register({
     register: Good,
     options: {
-        reporters: [{
-            reporter: require('good-console'),
-            events: {
-                response: '*',
-                log: '*'
-            }
-        }]
+        reporters: {
+            console: [{
+                module: 'good-squeeze',
+                name: 'Squeeze',
+                args: [{
+                    response: '*',
+                    log: '*'
+                }]
+            }, {
+                module: 'good-console'
+            }, 'stdout']
+        }
     }
 }, (err) => {
 
@@ -176,7 +182,7 @@ server.register({
     server.start((err) => {
 
         if (err) {
-           throw err;
+            throw err;
         }
         server.log('info', 'Server running at: ' + server.info.uri);
     });

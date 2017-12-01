@@ -1,6 +1,6 @@
 ## Views
 
-_This tutorial is compatible with hapi v11.x.x._
+_This tutorial is compatible with hapi v16_
 
 hapi has extensive support for template rendering, including the ability to load and leverage multiple templating engines, partials, helpers (functions used in templates to manipulate data), and layouts.
 
@@ -91,7 +91,7 @@ Additionally, there are two settings that alter how hapi will allow you to use p
 For example, if you have a directory structure like:
 
 ```
-views\
+templates\
   index.html
   layout\
     layout.html
@@ -108,9 +108,9 @@ server.views({
         html: require('handlebars')
     },
     relativeTo: __dirname,
-    path: './views',
-    layoutPath: './views/layout',
-    helpersPath: './views/helpers'
+    path: './templates',
+    layoutPath: './templates/layout',
+    helpersPath: './templates/helpers'
 });
 ```
 
@@ -273,11 +273,11 @@ In order to use the built-in layout system, first setup the view engine:
 server.views({
     // ...
     layout: true,
-    layoutPath: Path.join(__dirname, 'views/layout')
+    layoutPath: Path.join(__dirname, 'templates/layout')
 });
 ```
 
-This enables the built-in layouts and defines the default layout page to `views/layout/layout.html` (or whatever other extension you're using).
+This enables the built-in layouts and defines the default layout page to `templates/layout/layout.html` (or whatever other extension you're using).
 
 Setup a content area in your `layout.html`:
 
