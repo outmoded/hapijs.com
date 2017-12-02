@@ -140,7 +140,7 @@ You can choose what to do when response validation fails by setting `response.fa
 ### response.sample
 
 If performance is a concern, hapi can be configured to validate only a percentage of responses.
-This can be acheived with the `response.sample` property of the route `config`.
+This can be achieved with the `response.sample` property of the route `config`.
 
 ### response.status
 
