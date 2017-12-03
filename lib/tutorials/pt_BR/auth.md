@@ -1,6 +1,6 @@
 ## Autenticação
 
-_Este tutorial é compatível com o hapi v10.x.x_
+_Este tutorial é compatível com hapi v16_
 
 A autenticação no hapi tem como base um conceito de esquemas (`schemes`) e estratégias (`strategies`).
 

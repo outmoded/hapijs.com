@@ -92,12 +92,8 @@ block content
           span.pl-s const
           |  server 
           span.pl-k = 
-          span.pl-k new 
-          span.pl-en Hapi.Server
-          | ();
+          span.pl-en Hapi.server({ 
           br
-
-          | server.connection({ 
           |     host: 
           span.pl-s1
             span.pl-pds '
@@ -135,17 +131,16 @@ block content
           | (
           span.pl-vpf request
           | , 
-          span.pl-vpf reply
+          span.pl-vpf h
           | ) {
           br
           br
           span.pl-s         return 
-          | reply(
           span.pl-s1
             span.pl-pds '
             | hello world
             span.pl-pds '
-          | );
+          | ;
           |     }
           | });
           br
@@ -154,23 +149,38 @@ block content
           span.pl-c // Start the server
           br
 
-          | server.start((err) => {
+          span.pl-s async function
+          |  start() {
           br
           
           br
-          span.pl-s     if 
-          | (err) {
+          span.pl-s     try
+          |  {
           br
-          span.pl-s         throw 
-          | err;
+          span.pl-s         await
+          |  server.start();
+          br
           |     }
+          br
+          span.pl-s     catch
+          |  (err) {
+          |         console.log(err);
+          |         process.exit(1);
+          |     }
+          br
+          
+          br
           |     console.log(
           span.pl-s1
             span.pl-pds '
             | Server running at:
             span.pl-pds '
           | , server.info.uri);
-          | });
+          | };
+          br
+          
+          br
+          | start();
           br
 
         p Launch the application by running 

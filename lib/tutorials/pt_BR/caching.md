@@ -1,6 +1,6 @@
-## Aramazenamento em cache no lado do cliente 
+## Aramazenamento em cache no lado do cliente
 
-_Este tutorial é compativel com hapi v11.x.x._
+_Este tutorial é compatível com hapi v16_
 
 O protocolo HTTP fornece várias cebeçalhos diferentes para controlar os recursos de cache do navegador. Para decidir quais cabeçalhos são validos para o seu caso de uso, varifique no Google developers [guide](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching) ou neste [resources](https://www.google.com/search?q=HTTP+caching). Este tutorial oferece uma visão geral de como usar estas técnicas com hapi.
 
@@ -31,15 +31,15 @@ server.route({
 ```
 **Listagem 1** Setar Cache-Control no cabeçalho
 
-Na Listagem 1 ilustra que o valor `expiresIn` pode ser sobrescrito com o método `ttl(msec)` pelo [objeto de resposta](http://hapijs.com/api#response-object). 
+Na Listagem 1 ilustra que o valor `expiresIn` pode ser sobrescrito com o método `ttl(msec)` pelo [objeto de resposta](http://hapijs.com/api#response-object).
 
-Veja [route-options](http://hapijs.com/api#route-options) por mais informações sobre as opções de configuração comuns do `cache`. 
+Veja [route-options](http://hapijs.com/api#route-options) por mais informações sobre as opções de configuração comuns do `cache`.
 
 ### Last-Modified
 
 Em alguns casos o servidor pode fornecer informações de quando os recursos foram modificados pela última vez. Quando usar o plugin [inert](https://github.com/hapijs/inert) pase servir conteúdo estáticos, um cabeçalho `Last-Modified` é adicionado em toda carga de resposta.
 
-Quando o cebeçalho `Last-Modified` é setado em um resposta, o hapi compare ele com o cabeçalho `If-Modified-Since` vindo pelo cliente para decidir se o código do status da resposta deve ser `304`. 
+Quando o cebeçalho `Last-Modified` é setado em um resposta, o hapi compare ele com o cabeçalho `If-Modified-Since` vindo pelo cliente para decidir se o código do status da resposta deve ser `304`.
 
 Assumindo que `lastModified` é um objeto do tipo Date, é possivel definir no cabeçalho via interface [objeto de resposta](http://hapijs.com/api#response-object) como pode ser visto abaixo, na Listagem 2.
 

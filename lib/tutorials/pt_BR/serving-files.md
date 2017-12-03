@@ -1,6 +1,6 @@
 ## Servindo arquivos estáticos
 
-_Este tutorial é compátivel com a versão v11.x.x do hapi_
+_Este tutorial é compatível com hapi v16_
 
 Inevitavelmente quando desenvolvemos algumas aplicações web, surge a necessidade de servir simples arquivos do disco. Há um plugin chamado [inert](https://github.com/hapijs/inert) que adiciona essa funcionalidade para o hapi atráves de manipuladores adicionais.
 
