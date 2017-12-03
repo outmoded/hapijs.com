@@ -26,7 +26,10 @@ const init = async () => {
     console.log(`Server running at: ${server.info.uri}`);
 }
 
-init().catch(console.error);
+init().catch((err) => {
+    console.log(err);
+    process.exit(1);
+});
 
 ```
 
@@ -55,20 +58,15 @@ server.route({
     }
 });
 
-server.route({
-    method: 'GET',
-    path: '/{name}',
-    handler: (request, h) => {
-        return `Hello, ${encodeURIComponent(request.params.name)}!`;
-    }
-});
-
 const init = async () => {
     await server.start();
     console.log(`Server running at: ${server.info.uri}`);
 }
 
-init().catch(console.error);
+init().catch((err) => {
+    console.log(err);
+    process.exit(1);
+});
 ```
 
 Save the above as `server.js` and start the server with the command `node server.js`. Now you'll find that if you visit [http://localhost:3000](http://localhost:3000) in your browser, you'll see the text `Hello, world!`, and if you visit [http://localhost:3000/stimpy](http://localhost:3000/stimpy) you'll see `Hello, stimpy!`.
@@ -117,9 +115,81 @@ More details on how static content is served are detailed on [Serving Static Con
 
 ## Using plugins
 
-We just saw how to use a plugin in the previous section. We used the `Inert` plugin to help with serving files from disk.
+A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [hapi pino](https://github.com/pinojs/hapi-pino) plugin.
 
-This is just one short example of what plugins are capable of, for more information check out the [plugins tutorial](/tutorials/plugins).
+Let's install the module from npm to get started:
+
+```bash
+npm install hapi-pino
+```
+
+Then update your `server.js`:
+
+```javascript
+'use strict';
+
+const Hapi = require('hapi');
+
+const server = Hapi.server({ port: 3000, host: 'localhost' });
+
+server.route({
+    method: 'GET',
+    path: '/',
+    handler: (request, h) => {
+        return 'Hello, world!';
+    }
+});
+
+server.route({
+    method: 'GET',
+    path: '/{name}',
+    handler: (request, h) => {
+        // request.log(['a', 'name'], "Request name");
+        // or
+        request.logger.info('In handler %s', request.path);
+
+        return `Hello, ${encodeURIComponent(request.params.name)}!`;
+    }
+});
+
+const init = async () => {
+    await server.register({
+        plugin: require('hapi-pino'),
+        options: {
+            prettyPrint: false,
+            logEvents: ['response']
+        }
+    });
+
+    await server.start();
+    console.log(`Server running at: ${server.info.uri}`);
+}
+
+init().catch((err) => {
+    console.log(err);
+    process.exit(1);
+});
+```
+
+Now when the server is started you'll see:
+
+```sh
+[2017-12-03T17:15:45.114Z] INFO (10412 on box): server started
+    created: 1512321345014
+    started: 1512321345092
+    host: "localhost"
+    port: 3000
+    protocol: "http"
+    id: "box:10412:jar12y2e"
+    uri: "http://localhost:3000"
+    address: "127.0.0.1"
+```
+
+And if we visit [http://localhost:3000/](http://localhost:3000/) in the browser that logs about the request are being printed in the terminal.
+
+The behavior of the logger is configured in `options` passed to the register function.
+
+Great! This is just one short example of what plugins are capable of, for more information check out the [plugins tutorial](/tutorials/plugins).
 
 ## Everything else
 
