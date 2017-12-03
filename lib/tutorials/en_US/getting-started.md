@@ -22,15 +22,11 @@ const Hapi = require('hapi');
 const server = Hapi.server({ port: 3000, host: 'localhost' });
 
 const init = async () => {
-    try {
-        await server.start();
-        console.log(`Server running at: ${server.info.uri}`);
-    } catch (err) {
-        console.error(err);
-    }
+    await server.start();
+    console.log(`Server running at: ${server.info.uri}`);
 }
 
-init();
+init().catch(console.error);
 
 ```
 
@@ -68,15 +64,11 @@ server.route({
 });
 
 const init = async () => {
-    try {
-        await server.start();
-        console.log(`Server running at: ${server.info.uri}`);
-    } catch (err) {
-        console.error(err);
-    }
+    await server.start();
+    console.log(`Server running at: ${server.info.uri}`);
 }
 
-init();
+init().catch(console.error);
 ```
 
 Save the above as `server.js` and start the server with the command `node server.js`. Now you'll find that if you visit [http://localhost:3000](http://localhost:3000) in your browser, you'll see the text `Hello, world!`, and if you visit [http://localhost:3000/stimpy](http://localhost:3000/stimpy) you'll see `Hello, stimpy!`.
@@ -95,22 +87,18 @@ Update the `init` function in your `server.js` file:
 
 ``` javascript
 const init = async () => {
-    try {
-        await server.register(require('inert'));
+    await server.register(require('inert'));
 
-        server.route({
-            method: 'GET',
-            path: '/hello',
-            handler: (request, h) => {
-                return h.file('./public/hello.html');
-            }
-        });
+    server.route({
+        method: 'GET',
+        path: '/hello',
+        handler: (request, h) => {
+            return h.file('./public/hello.html');
+        }
+    });
 
-        await server.start();
-        console.log(`Server running at: ${server.info.uri}`);
-    } catch (err) {
-        console.error(err);
-    }
+    await server.start();
+    console.log(`Server running at: ${server.info.uri}`);
 }
 
 ```
