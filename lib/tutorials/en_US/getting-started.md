@@ -1,7 +1,5 @@
 ## Installing hapi
 
-_This tutorial is compatible with hapi v16_
-
 Create a new directory `myproject`, and from there:
 
 * Run: `npm init` and follow the prompts, this will generate a package.json file for you.
@@ -18,23 +16,24 @@ The most basic server looks like the following:
 
 const Hapi = require('hapi');
 
-const server = new Hapi.Server();
-server.connection({ port: 3000, host: 'localhost' });
+const server = new Hapi.Server({ port: 3000, host: 'localhost' });
 
-server.start((err) => {
+async function startServer() {
+  try {
+    await server.start();
+    console.log("hello");
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 
-    if (err) {
-        throw err;
-    }
-    console.log(`Server running at: ${server.info.uri}`);
-});
+startServer();
 ```
 
-First, we require hapi. Then we create a new hapi server object. After that we add a connection to the server,  passing in a port
-number to listen on. After that, start the server and log that it's running.
+First, we require hapi. Then we create a new hapi server object. After that, start the server and log that it's running.
 
-When adding the server connection, we can also provide a hostname, IP address, or even
-a Unix socket file, or Windows named pipe to bind the server to. For more details, see [the API reference](/api/#serverconnectionoptions).
+When creating the server, we can also provide a hostname, IP address, Unix socket file, or Windows named pipe to bind the server to. For more details, see [the API reference](/api/#serverconnectionoptions).
 
 ## Adding routes
 
