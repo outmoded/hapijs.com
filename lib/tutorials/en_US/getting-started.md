@@ -44,32 +44,36 @@ Now that we have a server we should add one or two routes so that it actually do
 
 const Hapi = require('hapi');
 
-const server = new Hapi.Server();
-server.connection({ port: 3000, host: 'localhost' });
+const server = new Hapi.Server({ port: 3000, host: 'localhost' });
 
 server.route({
-    method: 'GET',
-    path: '/',
-    handler: function (request, reply) {
-        reply('Hello, world!');
-    }
+  method: 'GET',
+  path: '/',
+  handler: function (request, h) {
+    return 'Hello, world!';
+  }
 });
 
 server.route({
-    method: 'GET',
-    path: '/{name}',
-    handler: function (request, reply) {
-        reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
-    }
+  method: 'GET',
+  path: '/{name}',
+  handler: function (request, h) {
+    return 'Hello, ' + encodeURIComponent(request.params.name) + '!';
+  }
 });
 
-server.start((err) => {
 
-    if (err) {
-        throw err;
-    }
-    console.log(`Server running at: ${server.info.uri}`);
-});
+async function startServer() {
+  try {
+    await server.start();
+    console.log("hello");
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+
+startServer();
 ```
 
 Save the above as `server.js` and start the server with the command `node server.js`. Now you'll find that if you visit http://localhost:3000 in your browser, you'll see the text `Hello, world!`, and if you visit http://localhost:3000/stimpy you'll see `Hello, stimpy!`.
