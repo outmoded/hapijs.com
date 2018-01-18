@@ -128,7 +128,7 @@ More details on how static content is served are detailed on [Serving Static Con
 
 ## Using plugins
 
-A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [good](https://github.com/hapijs/good) plugin and its [good-console](https://github.com/hapijs/good-console) reporter on to our server. We'll also need a basic filtering mechanism. Let's use [good-squeeze](https://github.com/hapijs/good-squeeze) because it has the basic event type and tag filtering we need to get started.
+A common desire when creating any web application is an access log. To add some basic logging to our application, let's load the [good](https://github.com/hapijs/good) plugin and its [good-console](https://github.com/hapijs/good-console) reporter on to our server. We'll also need a basic filtering mechanism. Let's use [good-squeeze](https://github.com/hapijs/good-squeeze) because it has the basic event type and tag filtering we need to get started.
 
 Let's install the modules from npm to get started:
 
@@ -138,63 +138,39 @@ npm install --save good-console
 npm install --save good-squeeze
 ```
 
-Then update your `server.js`:
+Then modify `startServer` in `server.js` accordingly:
 
 ```javascript
-'use strict';
-
-const Hapi = require('hapi');
-const Good = require('good');
-
-const server = new Hapi.Server();
-server.connection({ port: 3000, host: 'localhost' });
-
-server.route({
-    method: 'GET',
-    path: '/',
-    handler: function (request, reply) {
-        reply('Hello, world!');
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/{name}',
-    handler: function (request, reply) {
-        reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
-    }
-});
-
-server.register({
-    register: Good,
-    options: {
-        reporters: {
-            console: [{
+async function startServer() {
+  try {
+    await server.register([
+      require('inert'),
+      {
+        plugin: require('good'),
+        options: {
+          reporters: {
+            console: [
+              {
                 module: 'good-squeeze',
                 name: 'Squeeze',
                 args: [{
                     response: '*',
                     log: '*'
                 }]
-            }, {
-                module: 'good-console'
-            }, 'stdout']
+              },
+              { module: 'good-console' },
+              'stdout'
+            ]
+          }
         }
-    }
-}, (err) => {
-
-    if (err) {
-        throw err; // something bad happened loading the plugin
-    }
-
-    server.start((err) => {
-
-        if (err) {
-            throw err;
-        }
-        server.log('info', 'Server running at: ' + server.info.uri);
-    });
-});
+      }
+    ]);
+    await server.start();
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 ```
 
 Now when the server is started you'll see:
