@@ -90,28 +90,33 @@ To install inert run this command at the command line: `npm install --save inert
 
 Add the following to your `server.js` file:
 
-``` javascript
-server.register(require('inert'), (err) => {
-
-    if (err) {
-        throw err;
-    }
-
-    server.route({
-        method: 'GET',
-        path: '/hello',
-        handler: function (request, reply) {
-            reply.file('./public/hello.html');
-        }
-    });
+```javascript
+server.route({
+  method: 'GET',
+  path: '/hello',
+  handler: function (request, h) {
+    return h.file('./public/hello.html');
+  }
 });
-
-
 ```
 
-The `server.register()` command above adds the inert plugin to your Hapi application. If something goes wrong, we want to know, so we've passed in an anonymous function which if invoked will receive `err` and throw that error. This callback function is required when registering plugins.
+Then modify your `startServer` function to register the plugin.
+```javascript
 
-The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file. We've put the routing callback function inside of registering inert because we need to insure that inert is registered _before_ we use it to render the static page. It is generally wise to run code that depends on a plugin within the callback that registers that plugin so that you can be absolutely sure that plugin exists when your code runs.
+async function startServer() {
+  try {
+    await server.register(require('inert'));
+    await server.start();
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+```
+
+The `server.register()` command above adds the inert plugin to your Hapi application. 
+
+The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file. 
 
 Start up your server with `npm start` and go to `http://localhost:3000/hello` in your browser. Oh no! We're getting a 404 error because we never created a `hello.html` file. You need to create the missing file to get rid of this error.
 
