@@ -10,59 +10,51 @@ if (Config.server.cache) {
     Config.server.cache.engine = require(Config.server.cache.engine);
 }
 
-const server = new Hapi.Server(Config.server);
+const server = Hapi.server(Config.server);
 
 Jade.filters.markdown = Markdown.parseSync;
+const start = async function () {
 
-server.connection({
-    host: Config.host,
-    port: Config.port
-});
+    server.ext({
+        type: 'onPreResponse',
+        method: function (request, h) {
 
-server.ext('onPreResponse', (request, reply) => {
-
-    if (!request.response.isBoom) {
-        return reply.continue();
-    }
-
-    return reply.view('error', request.response).code(request.response.output.statusCode);
-});
-
-server.method(require('./lib/npm').methods);
-server.method(require('./lib/github').methods);
-server.method(require('./lib/markdown').methods);
-server.method(require('./lib/community').methods);
-server.method(require('./lib/changelog').methods);
-
-const plugins = [
-    {
-        register: require('good'),
-        options: {
-            ops: {
-                interval: 30 * 1000
-            },
-            reporters: {
-                console: [{
-                    module: 'good-console',
-                    args: [{ log: '*', response: '*', log: '*' }]
-                }, 'stdout']
+            if (!request.response.isBoom) {
+                return h.continue;
             }
-        }
-    },
-    require('vision'),
-    require('inert')
-];
+            return h.view('error', request.response).code(request.response.output.statusCode);
+        } });
 
-if (Config.getconfig.env === 'dev') {
-    plugins.push(require('building-static-server'));
-}
+    server.method(require('./lib/npm').methods);
+    server.method(require('./lib/github').methods);
+    server.method(require('./lib/markdown').methods);
+    server.method(require('./lib/community').methods);
+    server.method(require('./lib/changelog').methods);
 
-server.register(plugins, (err) => {
+    const plugins = [
+        {
+            plugin: require('good'),
+            options: {
+                ops: {
+                    interval: 30 * 1000
+                },
+                reporters: {
+                    console: [{
+                        module: 'good-console',
+                        args: [{ log: '*', response: '*', log: '*' }]
+                    }, 'stdout']
+                }
+            }
+        },
+        require('vision'),
+        require('inert')
+    ];
 
-    if (err) {
-        throw err;
+    if (Config.getconfig.env === 'dev') {
+        plugins.push(require('building-static-server'));
     }
 
+    await server.register(plugins);
     server.views({
         engines: {
             jade: Jade
@@ -70,15 +62,20 @@ server.register(plugins, (err) => {
         path: Path.join(__dirname, 'templates'),
         isCached: Config.getconfig.env === 'production'
     });
-
-    server.route(require('./lib/routes').routes);
-
-    server.start((err) => {
-
-        if (err) {
-            throw err;
-        }
-
+    server.route(require('./lib/routes')(server));
+    try {
+        await server.start();
         console.log('hapijs.com running at: ' + server.info.uri);
-    });
+    }
+    catch (err) {
+        console.error(err);
+        process.exit(1);
+    }
+};
+
+process.on('unhandledRejection', (reason, p) => {
+
+    console.log('Unhandled Rejection at:', p, 'reason:', reason);
 });
+
+start();

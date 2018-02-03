@@ -3,5 +3,8 @@
     "extends": "eslint-config-hapi",
     "plugins": [
         "markdown"
-    ]
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2017
+    }
 }
