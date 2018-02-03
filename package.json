@@ -15,9 +15,9 @@
     "hapi": "17.x.x",
     "hoek": "5.x.x",
     "inert": "5.x.x",
-    "jade": "1.x.x",
     "p-do-whilst": "^0.1.0",
     "p-limit": "^1.2.0",
+    "pug": "^2.0.0-rc.4",
     "semver": "5.x.x",
     "vision": "5.x.x",
     "wreck": "14.x.x"

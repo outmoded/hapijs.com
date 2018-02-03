@@ -2,7 +2,7 @@
 
 const Config = require('getconfig');
 const Hapi = require('hapi');
-const Jade = require('jade');
+const Pug = require('pug');
 const Markdown = require('./lib/markdown');
 const Path = require('path');
 
@@ -12,7 +12,7 @@ if (Config.server.cache) {
 
 const server = Hapi.server(Config.server);
 
-Jade.filters.markdown = Markdown.parseSync;
+Pug.filters.markdown = Markdown.parseSync;
 const start = async function () {
 
     server.ext({
@@ -57,7 +57,7 @@ const start = async function () {
     await server.register(plugins);
     server.views({
         engines: {
-            jade: Jade
+            pug: Pug
         },
         path: Path.join(__dirname, 'templates'),
         isCached: Config.getconfig.env === 'production'
