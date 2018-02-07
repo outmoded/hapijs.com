@@ -20,7 +20,7 @@ block content
             each issue in newContributorIssues.slice(0, 20)
               li
                 p.issue-number
-                  a(href='#{issue.html_url}') ##{issue.number}
+                  a(href=issue.html_url) ##{issue.number}
                 p.issue-title (#{issue.repo}) #{issue.title}
 
         .column.help-wanted-issues
