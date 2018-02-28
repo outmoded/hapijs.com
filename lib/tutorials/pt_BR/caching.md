@@ -44,7 +44,7 @@ Quando o cebeçalho `Last-Modified` é setado em um resposta, o hapi compare ele
 Assumindo que `lastModified` é um objeto do tipo Date, é possivel definir no cabeçalho via interface [objeto de resposta](http://hapijs.com/api#response-object) como pode ser visto abaixo, na Listagem 2.
 
 ```javascript
-   reply(result).header('Last-Modified', lastModified.toUTCString());
+reply(result).header('Last-Modified', lastModified.toUTCString());
 ```
 **Listagem 2** Configurar Last-Modified no cabeçalho
 
@@ -57,7 +57,7 @@ O cabeçalho ETag é uma alternativa para o `Last-Modified` qunado o servidor fo
 Você só precisa definir `ETag` no seu manipulador com a função `etag(tag, options)`:
 
 ```javascript
-   reply(result).etag('xxxxxxxxx');
+reply(result).etag('xxxxxxxxx');
 ```
 **Listagem 3** Configurar ETag no cabeçalho
 

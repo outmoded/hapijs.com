@@ -309,5 +309,5 @@ server.views({
 Você também pode especificar um layout diferente por view:
 
 ```javascript
-    reply.view('myview', null, { layout: 'another_layout' });
+reply.view('myview', null, { layout: 'another_layout' });
 ```
