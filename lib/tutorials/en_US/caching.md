@@ -44,7 +44,7 @@ When the `Last-Modified` header is set on a response, hapi compares it with the 
 Assuming `lastModified` is Date object you can set this header via [response object](http://hapijs.com/api#response-object) interface as seen below, in Listing 2.
 
 ```javascript
-   reply(result).header('Last-Modified', lastModified.toUTCString());
+reply(result).header('Last-Modified', lastModified.toUTCString());
 ```
 **Listing 2** Setting Last-Modified header
 
@@ -57,7 +57,7 @@ The ETag header is an alternative to `Last-Modified` where the server provides a
 You only need to set `ETag` in your handler via `etag(tag, options)` function:
 
 ```javascript
-   reply(result).etag('xxxxxxxxx');
+reply(result).etag('xxxxxxxxx');
 ```
 **Listing 3** Setting ETag header
 
