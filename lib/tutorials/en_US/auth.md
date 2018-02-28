@@ -43,11 +43,13 @@ const start = async () => {
     await server.register(require('hapi-auth-basic'));
 
     server.auth.strategy('simple', 'basic', { validate });
-    server.auth.default('simple');
 
     server.route({
         method: 'GET',
         path: '/',
+        options: {
+            auth: 'simple'
+        },
         handler: function (request, h) {
 
             return 'welcome';
