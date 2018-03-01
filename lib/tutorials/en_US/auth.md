@@ -1,6 +1,6 @@
 ## Authentication
 
-_This tutorial is compatible with hapi v16_
+_This tutorial is compatible with hapi v17_
 
 Authentication within hapi is based on the concept of `schemes` and `strategies`.
 
@@ -13,10 +13,6 @@ First, let's look at an example of how to use [hapi-auth-basic](https://github.c
 
 const Bcrypt = require('bcrypt');
 const Hapi = require('hapi');
-const Basic = require('hapi-auth-basic');
-
-const server = new Hapi.Server();
-server.connection({ port: 3000 });
 
 const users = {
     john: {
@@ -27,44 +23,45 @@ const users = {
     }
 };
 
-const validate = function (request, username, password, callback) {
+const validate = async (request, username, password) => {
+
     const user = users[username];
     if (!user) {
-        return callback(null, false);
+        return { credentials: null, isValid: false };
     }
 
-    Bcrypt.compare(password, user.password, (err, isValid) => {
-        callback(err, isValid, { id: user.id, name: user.name });
-    });
+    const isValid = await Bcrypt.compare(password, user.password);
+    const credentials = { id: user.id, name: user.name };
+
+    return { isValid, credentials };
 };
 
-server.register(Basic, (err) => {
+const start = async () => {
 
-    if (err) {
-        throw err;
-    }
+    const server = Hapi.server({ port: 4000 });
 
-    server.auth.strategy('simple', 'basic', { validateFunc: validate });
+    await server.register(require('hapi-auth-basic'));
+
+    server.auth.strategy('simple', 'basic', { validate });
+
     server.route({
         method: 'GET',
         path: '/',
-        config: {
-            auth: 'simple',
-            handler: function (request, reply) {
-                reply('hello, ' + request.auth.credentials.name);
-            }
+        options: {
+            auth: 'simple'
+        },
+        handler: function (request, h) {
+
+            return 'welcome';
         }
     });
 
-    server.start((err) => {
+    await server.start();
 
-        if (err) {
-            throw err;
-        }
+    console.log('server running at: ' + server.info.uri);
+};
 
-        console.log('server running at: ' + server.info.uri);
-    });
-});
+start();
 ```
 
 First, we define our `users` database, which is a simple object in this example. Then we define a validation function, which is a feature specific to [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) and allows us to verify that the user has provided valid credentials.
@@ -83,41 +80,35 @@ This method must return an object with *at least* the key `authenticate`. Other 
 
 ### `authenticate`
 
-The `authenticate` method has a signature of `function (request, reply)`, and is the only *required* method in a scheme.
+The `authenticate` method has a signature of `function (request, h)`, and is the only *required* method in a scheme.
 
 In this context, `request` is the `request` object created by the server. It is the same object that becomes available in a route handler, and is documented in the [API reference](/api#request-object).
 
-`reply` is the standard hapi `reply` interface, it accepts `err` and `result` parameters in that order.
+`h` is the standard hapi [response toolkit](https://hapijs.com/api#response-toolkit).
 
-If `err` is a non-null value, this indicates a failure in authentication and the error will be used as a reply to the end user. It is advisable to use [boom](https://github.com/hapijs/boom) to create this error to make it simple to provide the appropriate status code and message.
-
-The `result` parameter should be an object, though the object itself as well as all of its keys are optional if an `err` is provided.
-
-If you would like to provide more detail in the case of a failure, the `result` object must have a `credentials` property which is an object representing the authenticated user (or the credentials the user attempted to authenticate with) and should be called like `reply(error, null, result);`.
-
-When authentication is successful, you must call `reply.continue(result)` where result is an object with a `credentials` property.
-
-Additionally, you may also have an `artifacts` key, which can contain any authentication related data that is not part of the user's credentials.
+When authentication is successful, you must call and return `h.authenticated({ credentials, artifacts })`. `credentials` property is an object representing the authenticated user (or the credentials the user attempted to authenticate with) Additionally, you may also have an `artifacts` key, which can contain any authentication related data that is not part of the user's credentials.
 
 The `credentials` and `artifacts` properties can be accessed later (in a route handler, for example) as part of the `request.auth` object.
 
+If authentication is unsuccesful, you can either throw an error or call and return `h.unauthenticated(error, [data])` where `error` is an authentication error and `data` is an optional object containing `credentials` and `artifacts`. There's no difference between calling `return h.unauthenticated(error)` or throwing an error if no `data` object is provided. The specifics of the error passed will affect the behavior. More information can be found in the API docuementation for [`server.auth.scheme(name, scheme)`](https://hapijs.com/api#-serverauthschemename-scheme). It is recommend to use [boom](https://github.com/hapijs/boom) for errors.
+
 ### `payload`
 
-The `payload` method has the signature `function (request, reply)`.
+The `payload` method has the signature `function (request, h)`.
 
-Again, the standard hapi `reply` interface is available here. To signal a failure call `reply(error, result)` or simply `reply(error)` (again, recommended to use [boom](https://github.com/hapijs/boom)) for errors.
+Again, the standard hapi response toolkit is available here. To signal a failure throw an error, again it's recommended to use [boom](https://github.com/hapijs/boom) for errors.
 
-To signal a successful authentication, call `reply.continue()` with no parameters.
+To signal a successful authentication, return `h.continue`.
 
 ### `response`
 
-The `response` method also has the signature `function (request, reply)` and utilizes the standard `reply` interface.
+The `response` method also has the signature `function (request, h)` and utilizes the standard response toolkit.
 
 This method is intended to decorate the response object (`request.response`) with additional headers, before the response is sent to the user.
 
-Once any decoration is complete, you must call `reply.continue()`, and the response will be sent.
+Once any decoration is complete, you must return `h.continue`, and the response will be sent.
 
-If an error occurs, you should instead call `reply(error)` where `error` is recommended to be a [boom](https://github.com/hapijs/boom).
+If an error occurs, you should instead throw an error where the error is recommended to be a [boom](https://github.com/hapijs/boom).
 
 ### Registration
 
@@ -129,21 +120,9 @@ Once you've registered your scheme, you need a way to use it. This is where stra
 
 As mentioned above, a strategy is essentially a pre-configured copy of a scheme.
 
-To register a strategy, we must first have a scheme registered. Once that's complete, use `server.auth.strategy(name, scheme, [mode], [options])` to register your strategy.
+To register a strategy, we must first have a scheme registered. Once that's complete, use `server.auth.strategy(name, scheme, [options])` to register your strategy.
 
 The `name` parameter must be a string, and will be used later to identify this specific strategy. `scheme` is also a string, and is the name of the scheme this strategy is to be an instance of.
-
-### Mode
-
-`mode` is the first optional parameter, and may be either `true`, `false`, `'required'`, `'optional'`, or `'try'`.
-
-The default mode is `false`, which means that the strategy will be registered but not applied anywhere until you do so manually.
-
-If set to `true` or `'required'`, which are the same, the strategy will be automatically assigned to all routes that don't contain an `auth` config. This setting means that in order to access the route, the user must be authenticated, and their authentication must be valid, otherwise they will receive an error.
-
-If mode is set to `'optional'` the strategy will still be applied to all routes lacking `auth` config, but in this case the user does *not* need to be authenticated. Authentication data is optional, but must be valid if provided.
-
-The last mode setting is `'try'` which, again, applies to all routes lacking an `auth` config. The difference between `'try'` and `'optional'` is that with `'try'` invalid authentication is accepted, and the user will still reach the route handler.
 
 ### Options
 
@@ -151,7 +130,7 @@ The final optional parameter is `options`, which will be passed directly to the 
 
 ### Setting a default strategy
 
-As previously mentioned, the `mode` parameter can be used with `server.auth.strategy()` to set a default strategy. You may also set a default strategy explicitly by using `server.auth.default()`.
+You may set a default strategy by using `server.auth.default()`.
 
 This method accepts one parameter, which may be either a string with the name of the strategy to be used as default, or an object in the same format as the route handler's [auth options](#route-configuration).
 
@@ -159,11 +138,17 @@ Note that any routes added *before* `server.auth.default()` is called will not h
 
 ## Route configuration
 
-Authentication can also be configured on a route, by the `config.auth` parameter. If set to `false`, authentication is disabled for the route.
+Authentication can also be configured on a route, by the `options.auth` parameter. If set to `false`, authentication is disabled for the route.
 
 It may also be set to a string with the name of the strategy to use, or an object with `mode`, `strategies`, and `payload` parameters.
 
 The `mode` parameter may be set to `'required'`, `'optional'`, or `'try'` and works the same as when registering a strategy.
+
+If set to `'required'`, in order to access the route, the user must be authenticated, and their authentication must be valid, otherwise they will receive an error.
+
+If `mode` is set to `'optional'` the strategy will still be applied to the route but in this case the user does *not* need to be authenticated. Authentication data is optional, but must be valid if provided.
+
+The last `mode` setting is `'try'`. The difference between `'try'` and `'optional'` is that with `'try'` invalid authentication is accepted, and the user will still reach the route handler.
 
 When specifying one strategy, you may set the `strategy` property to a string with the name of the strategy. When specifying more than one strategy, the parameter name must be `strategies` and should be an array of strings each naming a strategy to try. The strategies will then be attempted in order until one succeeds, or they have all failed.
 
