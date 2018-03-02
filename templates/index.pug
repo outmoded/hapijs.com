@@ -16,9 +16,9 @@ block header
         .install-hapi.cf
           p $ npm install hapi
           .cursor.animated.flash
-      
+
         .latest-update
-          small Current version: <a href='https://github.com/hapijs/hapi/tags'>#{version}</a> 
+          small Current version: <a href='https://github.com/hapijs/hapi/tags'>#{version.version}</a>
           small  ● Latest update:
           small  <a href="#{latestUpdate.url}" role="update">#{latestUpdate.updated}</a>
           small  ● Downloads last month:
@@ -35,26 +35,26 @@ block content
       .cf
 
         each company in frontPage
-          a(href='#{company.url}', class='community-logo')
-            img(src='/public/img/#{company.logo}', width=(company.width ? '#{company.width}' : undefined), height=(company.height ? '#{company.height}' : undefined), alt='#{company.name}')
+          a(href=company.url, class='community-logo')
+            img(src=`/public/img/${company.logo}`, width=(company.width ? company.width : undefined), height=(company.height ? company.height : undefined), alt=company.name)
 
       a(href='/community', class='button button-primary') See more
 
       p Are you using hapi too? <a href='https://github.com/hapijs/hapijs.com/issues/43'>Let us know</a>.
 
       p Visit us on IRC in <a href='http://webchat.freenode.net/?channels=hapi'>#hapi</a> on <a href='http://freenode.net'>freenode</a>.
-      
+
       p Join us on Slack at <a href='https://hapihour.slack.com'>hapihour.slack.com</a> (<a href='https://hapihour.slack.com/join/shared_invite/enQtMjM5Njk1NDgzNTY5LThmODkxODIzOTg5NjJjODFiYjcxZDMxMTAyMzBkZDk3MWY4MTFlNDAyMTU3MmUwMmM0Y2UwMjU3YjAwYjRkN2E'>First time? Join here</a>).
     section.bottom-rule.getting-started
       h2 Getting started
-      p Start by creating a 
+      p Start by creating a
         code package.json
         | :
 
       .highlight.highlight-bash
         pre npm init
 
-      p Install hapi and save it to your 
+      p Install hapi and save it to your
         code package.json
         |  dependencies:
 
@@ -76,8 +76,8 @@ block content
 
           br
           span.pl-s const
-          |  Hapi 
-          span.pl-k = 
+          |  Hapi
+          span.pl-k =
           span.pl-s3 require
           | (
           span.pl-s1
@@ -92,19 +92,19 @@ block content
           br
 
           span.pl-s const
-          |  server 
-          span.pl-k = 
-          span.pl-en Hapi.server({ 
+          |  server
+          span.pl-k =
+          span.pl-en Hapi.server({
           br
-          |     host: 
+          |     host:
           span.pl-s1
             span.pl-pds '
             | localhost
             span.pl-pds '
-          | , 
-          |     port: 
+          | ,
+          |     port:
           span.pl-c1 8000
-          | 
+          |
           | });
           br
 
@@ -114,7 +114,7 @@ block content
 
           | server.route({
           |     method
-          span.pl-k : 
+          span.pl-k :
           span.pl-s1
             span.pl-pds '
             | GET
@@ -126,18 +126,18 @@ block content
             span.pl-pds '
             | /hello
             span.pl-pds '
-          | , 
+          | ,
           |     handler
-          span.pl-k : 
-          span.pl-st function 
+          span.pl-k :
+          span.pl-st function
           | (
           span.pl-vpf request
-          | , 
+          | ,
           span.pl-vpf h
           | ) {
           br
           br
-          span.pl-s         return 
+          span.pl-s         return
           span.pl-s1
             span.pl-pds '
             | hello world
@@ -154,7 +154,7 @@ block content
           span.pl-s async function
           |  start() {
           br
-          
+
           br
           span.pl-s     try
           |  {
@@ -170,7 +170,7 @@ block content
           |         process.exit(1);
           |     }
           br
-          
+
           br
           |     console.log(
           span.pl-s1
@@ -180,14 +180,14 @@ block content
           | , server.info.uri);
           | };
           br
-          
+
           br
           | start();
           br
 
-        p Launch the application by running 
+        p Launch the application by running
           code npm start
-          |  and open 
+          |  and open
           em localhost:8000/hello
           |  in your browser.
 
