@@ -80,36 +80,45 @@ The `server` object is a reference to the `server` your plugin is being loaded i
 Plugins can be loaded one at a time, or as a group in an array, by the `server.register()` method, for example:
 
 ```javascript
-// load one plugin
+const start = async function () {
 
-await server.register(require('myplugin'));
+    // load one plugin
 
-// load multiple plugins
+    await server.register(require('myplugin'));
 
-await server.register([require('myplugin'), require('yourplugin'));
+    // load multiple plugins
+
+    await server.register([require('myplugin'), require('yourplugin')]);
+};
 ```
 
 To pass options to your plugin, we instead pass an object with `register` and `options` keys, such as:
 
 ```javascript
-await server.register({
-    register: require('myplugin'),
-    options: {
-        message: 'hello'
-    }
-});
+const start = async function () {
+
+    await server.register({
+        register: require('myplugin'),
+        options: {
+            message: 'hello'
+        }
+    });
+};
 ```
 
 These objects can also be passed in an array:
 
 ```javascript
-await server.register([{
-    register: require('plugin1'),
-    options: {}
-}, {
-    register: require('plugin2'),
-    options: {}
-}]);
+const start = async function () {
+
+    await server.register([{
+        register: require('plugin1'),
+        options: {}
+    }, {
+        register: require('plugin2'),
+        options: {}
+    }]);
+};
 ```
 
 ### Plugin options
@@ -142,11 +151,14 @@ exports.plugin = {
 Normally, when this plugin is loaded it will create a `GET` route at `/test`. This can be changed by using the `prefix` setting in the options, which will prepend a string to all routes created in the plugin:
 
 ```javascript
-await server.register(require('myplugin'), {
-    routes: {
-        prefix: '/plugins'
-    }
-});
+const start = async function () {
+
+    await server.register(require('myplugin'), {
+        routes: {
+            prefix: '/plugins'
+        }
+    });
+};
 ```
 
 Now when the plugin is loaded, because of the `prefix` option the `GET` route will be created at `/plugins/test`.
