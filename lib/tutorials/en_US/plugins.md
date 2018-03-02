@@ -61,15 +61,17 @@ exports.plugin = {
 
 Note that in the first example, we set the `name` and `version` properties explicitly, however in the second we set a `pkg` parameter with the contents of package.json as its value. Either method is acceptable.
 
-Also note that when written as a module, the module should export the plugin under the `exports.plugin` property.
+When written as a module, a plugin can either be top-level module export i.e `module.exports = { register, name, version }` or if you want your module to export more than a hapi plugin, it can be exported as `exports.plugin = { register, name, version }`.
 
 Additionally, the plugin object may contain the property `multiple` that when set to `true` tells hapi that it is safe to register your plugin more than once in the same server.
+
+Another available property is `once`. When set to `true` will mean hapi ignores subsequent registers of the same plugin without throwing an error.
 
 ### The register method
 
 As we've seen above, the `register` method accepts two parameters, `server` and `options`.
 
-The `options` parameter is simply whatever options the user passes to your plugin. No changes are made and the object is passed directly to your `register` method.
+The `options` parameter is simply whatever options the user passes to your plugin when calling `server.register(plugin, options)`. No changes are made and the object is passed directly to your `register` method.
 
 `register` should be an async function that returns once your plugin has completed whatever steps are necessary for it to be registered. Alternatively your register plugin should throw an error if an error occurred while registering your plugin.
 
@@ -98,7 +100,7 @@ To pass options to your plugin, we instead pass an object with `register` and `o
 const start = async function () {
 
     await server.register({
-        register: require('myplugin'),
+        plugin: require('myplugin'),
         options: {
             message: 'hello'
         }
@@ -112,16 +114,16 @@ These objects can also be passed in an array:
 const start = async function () {
 
     await server.register([{
-        register: require('plugin1'),
+        plugin: require('plugin1'),
         options: {}
     }, {
-        register: require('plugin2'),
+        plugin: require('plugin2'),
         options: {}
     }]);
 };
 ```
 
-### Plugin options
+### Registration options
 
 You may also pass a second optional parameter to `server.register()`. Documentation for this object can be found in the [API reference](/api#-await-serverregisterplugins-options).
 
