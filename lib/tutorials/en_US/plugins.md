@@ -29,7 +29,8 @@ const myPlugin = {
             }
         });
 
-        // ...
+        // etc ...
+        await someAsyncMethods();
     }
 };
 ```
@@ -54,7 +55,8 @@ exports.plugin = {
             }
         });
 
-        // ...
+        // etc...
+        await someAsyncMethods();
     }
 };
 ```
@@ -146,6 +148,9 @@ exports.plugin = {
                 return 'test passed';
             }
         });
+
+        // etc...
+        await someAsyncMethods();
     }
 };
 ```
