@@ -53,19 +53,6 @@ The `state()` method is also available on the [response object](/api#response-ob
 return h.response('Hello').state('data', { firstVisit: false });
 ```
 
-## Getting a cookie value
-
-Access a cookie’s value via `request.state` in a route handler, pre-requisite, or request lifecycle extension point.
-
-The `request.state` object contains the parsed HTTP state. Each key represents the cookie name and its value is the defined content.
-
-```javascript
-const value = request.state.data
-// console.log(value) will give you { firstVisit : false }
-```
-
-The sample code uses the `data` cookie key from above where the related value is set to `{ firstVisit: false }`.
-
 ### Overriding options
 
 When setting a cookie, you may also pass the same options available to `server.state()` as a third parameter, such as:
@@ -75,6 +62,19 @@ return h.response('Hello').state('data', 'test', { encoding: 'none' });
 ```
 
 In this example the cookie will simply be set to the string `"test"` with no encoding.
+
+## Getting a cookie value
+
+Access a cookie’s value via `request.state` in a route handler, pre-requisite, or request lifecycle extension point.
+
+The `request.state` object contains the parsed HTTP state. Each key represents the cookie name and its value is the defined content.
+
+```javascript
+const value = request.state.data;
+// console.log(value) will give you { firstVisit : false }
+```
+
+The sample code uses the `data` cookie key from above where the related value is set to `{ firstVisit: false }`.
 
 ## Clearing a cookie
 The cookie can be cleared by calling the `unstate()` method on the [response toolkit](/api#response-toolkit) or [response object](/api#response-object):
