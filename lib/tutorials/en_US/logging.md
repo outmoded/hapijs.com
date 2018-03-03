@@ -8,7 +8,7 @@ As with any server software, logging is very important. hapi has some built in l
 
 There are two nearly identical logging methods, [`server.log(tags, [data, [timestamp]])`](/api#-serverlogtags-data-timestamp), and [`request.log(tags, [data])`](https://hapijs.com/api#-requestlogtags-data), which are to be called whenever you want to log an event in your application. You'll want to call `request.log()` whenever in the context of a request, such as in a route handler, request lifecycle extension or authentication scheme. You'll want to use `server.log()` everywhere else, where you have no specific request in scope, for instance, just after your server has started or inside a plugin's `register()` method.
 
-They both accept the same first two parameters. They are, `tags`, `data`.
+They both accept the same first two parameters. They are, `tags` and `data`.
 
 `tags` is a string or array of strings used to briefly identify the event. Think of them like log levels, but far more expressive. For example, you could tag an error retrieving data from your database like the following:
 
@@ -38,9 +38,7 @@ server.events.on('log', (event, tags) => {
 
 Events logged with `server.log()` will emit a `log` event and events logged with `request.log()` will emit a `request` event.
 
-hapi also provides a method (`request.getLog`) to retrieve log events from a request, assuming you still have access to the request object. If called with no parameters it will return an array of all log events associated with the request. You may also pass a tag or array of tags to filter the result set. This can be useful for retrieving a history of all logged events on a request when an error occurs for analysis.
-
-You can retrive all logs for a particular request at once via `request.logs`. This will be an array containing all the logged request events. You must first set the `logs.collect` option to true on the route, otherwise this array will be empty.
+You can retrive all logs for a particular request at once via `request.logs`. This will be an array containing all the logged request events. You must first set the `logs.collect` option to `true` on the route, otherwise this array will be empty.
 
 ```javascript
 server.route({
