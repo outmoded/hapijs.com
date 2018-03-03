@@ -49,8 +49,11 @@ server.route({
             collect: true
         }
     },
-    handler: function (request, h) { ... }
-})
+    handler: function (request, h) {
+
+        return 'hello';
+    }
+});
 ```
 
 ### Debug mode (development only)
