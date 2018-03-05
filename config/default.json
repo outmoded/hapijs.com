@@ -2,5 +2,8 @@
     "host": "0.0.0.0",
     "port": 3000,
     "githubToken": "4fced799003cd092f363c56855eb469f3b4ef168",
-    "server": {}
+    "server": {
+        "host": "0.0.0.0",
+        "port": 3000
+    }
 }
