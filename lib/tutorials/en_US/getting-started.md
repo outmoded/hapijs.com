@@ -24,7 +24,7 @@ const server = Hapi.server({ port: 3000, host: 'localhost' });
 const init = async () => {
     await server.start();
     console.log(`Server running at: ${server.info.uri}`);
-}
+};
 
 init().catch((err) => {
     console.log(err);
@@ -61,7 +61,7 @@ server.route({
 const init = async () => {
     await server.start();
     console.log(`Server running at: ${server.info.uri}`);
-}
+};
 
 init().catch((err) => {
     console.log(err);
@@ -97,7 +97,7 @@ const init = async () => {
 
     await server.start();
     console.log(`Server running at: ${server.info.uri}`);
-}
+};
 
 ```
 
@@ -163,7 +163,7 @@ const init = async () => {
 
     await server.start();
     console.log(`Server running at: ${server.info.uri}`);
-}
+};
 
 init().catch((err) => {
     console.log(err);
