@@ -19,7 +19,7 @@ const server = Hapi.server();
 
 const start = async () => {
 
-    await server.register('vision');
+    await server.register(require('vision'));
 
     server.views({
         engines: {
@@ -232,7 +232,7 @@ For reference, here is a complete server script that uses the fortune view helpe
 
 const Hapi = require('hapi');
 
-const server = hapi.Server({ port: 8080 });
+const server = Hapi.server({ port: 8080 });
 
 const start = async () => {
 
