@@ -94,7 +94,12 @@ const add = async function (x, y, flags) {
     return result;
 };
 
-server.method('add', add, {});
+server.method('add', add, {
+    cache: {
+        expiresIn: 2000,
+        generateTimeout: 100
+    }
+});
 
 server.methods.add(5, 12);
 ```
