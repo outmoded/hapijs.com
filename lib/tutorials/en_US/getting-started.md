@@ -4,8 +4,8 @@ _This tutorial is compatible with hapi v17.x.x._
 
 Create a new directory `myproject`, and from there:
 
-* Run: `npm init` and follow the prompts, this will generate a package.json file for you.
 * Run: `cd myproject` this goes into the created project folder.
+* Run: `npm init` and follow the prompts, this will generate a package.json file for you.
 * Run: `npm install --save hapi@17.x.x` this installs hapi, and saves it in your package.json as a dependency of your project.
 
 That's it! You now have everything you need in order to create a server using hapi.
@@ -26,10 +26,13 @@ const init = async () => {
     console.log(`Server running at: ${server.info.uri}`);
 };
 
-init().catch((err) => {
+process.on('uncaughtException', (err) => {
+
     console.log(err);
     process.exit(1);
 });
+
+init();
 
 ```
 
@@ -52,21 +55,28 @@ const server = Hapi.server({ port: 3000, host: 'localhost' });
 
 server.route({
     method: 'GET',
-    path: '/',
+    path: '/{name}',
     handler: (request, h) => {
-        return 'Hello, world!';
+
+        const name = request.params.name;
+        return `Hello, ${name ? name : 'world'}!`;
     }
 });
 
 const init = async () => {
+
     await server.start();
     console.log(`Server running at: ${server.info.uri}`);
 };
 
-init().catch((err) => {
+process.on('uncaughtException', (err) => {
+
     console.log(err);
     process.exit(1);
 });
+
+init();
+
 ```
 
 Save the above as `server.js` and start the server with the command `node server.js`. Now you'll find that if you visit [http://localhost:3000](http://localhost:3000) in your browser, you'll see the text `Hello, world!`, and if you visit [http://localhost:3000/stimpy](http://localhost:3000/stimpy) you'll see `Hello, stimpy!`.
@@ -85,12 +95,14 @@ Update the `init` function in your `server.js` file:
 
 ``` javascript
 const init = async () => {
+
     await server.register(require('inert'));
 
     server.route({
         method: 'GET',
         path: '/hello',
         handler: (request, h) => {
+
             return h.file('./public/hello.html');
         }
     });
@@ -101,9 +113,9 @@ const init = async () => {
 
 ```
 
-The `server.register()` command above adds the [inert](https://github.com/hapijs/inert) plugin to your Hapi application. If something goes wrong, we want to know, so we've added a `try catch` that will receive any errors. It is recommended to always add a catch when working with promises to prevent errors from being swallowed.
+The `server.register()` command above adds the [inert](https://github.com/hapijs/inert) plugin to your Hapi application.
 
-The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file.
+The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file. We've put the route registration after registering the `inert` plugin. It is generally wise to run code that depends on a plugin after the plugin is registered so that you can be absolutely sure that the plugin exists when your code runs.
 
 Start up your server with `npm start` and go to [`http://localhost:3000/hello`](http://localhost:3000/hello) in your browser. Oh no! We're getting an error because we never created a `hello.html` file. You need to create the missing file to get rid of this error.
 
@@ -153,6 +165,7 @@ server.route({
 });
 
 const init = async () => {
+
     await server.register({
         plugin: require('hapi-pino'),
         options: {
@@ -165,13 +178,17 @@ const init = async () => {
     console.log(`Server running at: ${server.info.uri}`);
 };
 
-init().catch((err) => {
+process.on('uncaughtException', (err) => {
+
     console.log(err);
     process.exit(1);
 });
+
+init();
+
 ```
 
-Now when the server is started you'll see:
+Now when the server is started you'll see something like:
 
 ```sh
 [2017-12-03T17:15:45.114Z] INFO (10412 on box): server started
@@ -185,7 +202,7 @@ Now when the server is started you'll see:
     address: "127.0.0.1"
 ```
 
-And if we visit [http://localhost:3000/](http://localhost:3000/) in the browser that logs about the request are being printed in the terminal.
+And if we visit [http://localhost:3000/](http://localhost:3000/) in the browser, we can see that logs about the request are being printed in the terminal.
 
 The behavior of the logger is configured in `options` passed to the register function.
 
