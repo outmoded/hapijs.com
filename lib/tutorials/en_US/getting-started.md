@@ -1,7 +1,5 @@
 ## Installing hapi
 
-_This tutorial is compatible with hapi v16_
-
 Create a new directory `myproject`, and from there:
 
 * Run: `npm init` and follow the prompts, this will generate a package.json file for you.
@@ -18,23 +16,24 @@ The most basic server looks like the following:
 
 const Hapi = require('hapi');
 
-const server = new Hapi.Server();
-server.connection({ port: 3000, host: 'localhost' });
+const server = new Hapi.Server({ port: 3000, host: 'localhost' });
 
-server.start((err) => {
+async function startServer() {
+  try {
+    await server.start();
+    console.log("hello");
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 
-    if (err) {
-        throw err;
-    }
-    console.log(`Server running at: ${server.info.uri}`);
-});
+startServer();
 ```
 
-First, we require hapi. Then we create a new hapi server object. After that we add a connection to the server,  passing in a port
-number to listen on. After that, start the server and log that it's running.
+First, we require hapi. Then we create a new hapi server object. After that, start the server and log that it's running.
 
-When adding the server connection, we can also provide a hostname, IP address, or even
-a Unix socket file, or Windows named pipe to bind the server to. For more details, see [the API reference](/api/#serverconnectionoptions).
+When creating the server, we can also provide a hostname, IP address, Unix socket file, or Windows named pipe to bind the server to. For more details, see [the API reference](/api/#serverconnectionoptions).
 
 ## Adding routes
 
@@ -45,32 +44,36 @@ Now that we have a server we should add one or two routes so that it actually do
 
 const Hapi = require('hapi');
 
-const server = new Hapi.Server();
-server.connection({ port: 3000, host: 'localhost' });
+const server = new Hapi.Server({ port: 3000, host: 'localhost' });
 
 server.route({
-    method: 'GET',
-    path: '/',
-    handler: function (request, reply) {
-        reply('Hello, world!');
-    }
+  method: 'GET',
+  path: '/',
+  handler: function (request, h) {
+    return 'Hello, world!';
+  }
 });
 
 server.route({
-    method: 'GET',
-    path: '/{name}',
-    handler: function (request, reply) {
-        reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
-    }
+  method: 'GET',
+  path: '/{name}',
+  handler: function (request, h) {
+    return 'Hello, ' + encodeURIComponent(request.params.name) + '!';
+  }
 });
 
-server.start((err) => {
 
-    if (err) {
-        throw err;
-    }
-    console.log(`Server running at: ${server.info.uri}`);
-});
+async function startServer() {
+  try {
+    await server.start();
+    console.log("hello");
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+
+startServer();
 ```
 
 Save the above as `server.js` and start the server with the command `node server.js`. Now you'll find that if you visit http://localhost:3000 in your browser, you'll see the text `Hello, world!`, and if you visit http://localhost:3000/stimpy you'll see `Hello, stimpy!`.
@@ -87,28 +90,33 @@ To install inert run this command at the command line: `npm install --save inert
 
 Add the following to your `server.js` file:
 
-``` javascript
-server.register(require('inert'), (err) => {
-
-    if (err) {
-        throw err;
-    }
-
-    server.route({
-        method: 'GET',
-        path: '/hello',
-        handler: function (request, reply) {
-            reply.file('./public/hello.html');
-        }
-    });
+```javascript
+server.route({
+  method: 'GET',
+  path: '/hello',
+  handler: function (request, h) {
+    return h.file('./public/hello.html');
+  }
 });
-
-
 ```
 
-The `server.register()` command above adds the inert plugin to your Hapi application. If something goes wrong, we want to know, so we've passed in an anonymous function which if invoked will receive `err` and throw that error. This callback function is required when registering plugins.
+Then modify your `startServer` function to register the plugin.
+```javascript
 
-The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file. We've put the routing callback function inside of registering inert because we need to insure that inert is registered _before_ we use it to render the static page. It is generally wise to run code that depends on a plugin within the callback that registers that plugin so that you can be absolutely sure that plugin exists when your code runs.
+async function startServer() {
+  try {
+    await server.register(require('inert'));
+    await server.start();
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+```
+
+The `server.register()` command above adds the inert plugin to your Hapi application. 
+
+The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file. 
 
 Start up your server with `npm start` and go to `http://localhost:3000/hello` in your browser. Oh no! We're getting a 404 error because we never created a `hello.html` file. You need to create the missing file to get rid of this error.
 
@@ -120,7 +128,7 @@ More details on how static content is served are detailed on [Serving Static Con
 
 ## Using plugins
 
-A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [good](https://github.com/hapijs/good) plugin and its [good-console](https://github.com/hapijs/good-console) reporter on to our server. We'll also need a basic filtering mechanism. Let's use [good-squeeze](https://github.com/hapijs/good-squeeze) because it has the basic event type and tag filtering we need to get started.
+A common desire when creating any web application is an access log. To add some basic logging to our application, let's load the [good](https://github.com/hapijs/good) plugin and its [good-console](https://github.com/hapijs/good-console) reporter on to our server. We'll also need a basic filtering mechanism. Let's use [good-squeeze](https://github.com/hapijs/good-squeeze) because it has the basic event type and tag filtering we need to get started.
 
 Let's install the modules from npm to get started:
 
@@ -130,63 +138,39 @@ npm install --save good-console
 npm install --save good-squeeze
 ```
 
-Then update your `server.js`:
+Then modify `startServer` in `server.js` accordingly:
 
 ```javascript
-'use strict';
-
-const Hapi = require('hapi');
-const Good = require('good');
-
-const server = new Hapi.Server();
-server.connection({ port: 3000, host: 'localhost' });
-
-server.route({
-    method: 'GET',
-    path: '/',
-    handler: function (request, reply) {
-        reply('Hello, world!');
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/{name}',
-    handler: function (request, reply) {
-        reply('Hello, ' + encodeURIComponent(request.params.name) + '!');
-    }
-});
-
-server.register({
-    register: Good,
-    options: {
-        reporters: {
-            console: [{
+async function startServer() {
+  try {
+    await server.register([
+      require('inert'),
+      {
+        plugin: require('good'),
+        options: {
+          reporters: {
+            console: [
+              {
                 module: 'good-squeeze',
                 name: 'Squeeze',
                 args: [{
                     response: '*',
                     log: '*'
                 }]
-            }, {
-                module: 'good-console'
-            }, 'stdout']
+              },
+              { module: 'good-console' },
+              'stdout'
+            ]
+          }
         }
-    }
-}, (err) => {
-
-    if (err) {
-        throw err; // something bad happened loading the plugin
-    }
-
-    server.start((err) => {
-
-        if (err) {
-            throw err;
-        }
-        server.log('info', 'Server running at: ' + server.info.uri);
-    });
-});
+      }
+    ]);
+    await server.start();
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 ```
 
 Now when the server is started you'll see:
