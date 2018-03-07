@@ -26,7 +26,7 @@ const init = async () => {
     console.log(`Server running at: ${server.info.uri}`);
 };
 
-process.on('uncaughtException', (err) => {
+process.on('unhandledRejection', (err) => {
 
     console.log(err);
     process.exit(1);
@@ -40,7 +40,7 @@ First, we require hapi. Then we create a new hapi server object with a configura
 number to listen on. After that we start the server and log that it's running.
 
 When creating a server, we can also provide a hostname, IP address, or even
-a Unix socket file, or Windows named pipe to bind the server to. For more details, see [the API reference](/api/#server.options).
+a Unix socket file, or Windows named pipe to bind the server to. For more details, see [the API reference](/api/#-server-options).
 
 ## Adding routes
 
@@ -55,11 +55,19 @@ const server = Hapi.server({ port: 3000, host: 'localhost' });
 
 server.route({
     method: 'GET',
+    path: '/',
+    handler: (request, h) => {
+
+        return 'Hello, world!';
+    }
+});
+
+server.route({
+    method: 'GET',
     path: '/{name}',
     handler: (request, h) => {
 
-        const name = request.params.name;
-        return `Hello, ${name ? name : 'world'}!`;
+        return 'Hello, ' + encodeURIComponent(request.params.name) + '!';
     }
 });
 
@@ -69,7 +77,7 @@ const init = async () => {
     console.log(`Server running at: ${server.info.uri}`);
 };
 
-process.on('uncaughtException', (err) => {
+process.on('unhandledRejection', (err) => {
 
     console.log(err);
     process.exit(1);
@@ -87,7 +95,7 @@ The `method` parameter can be any valid HTTP method, array of HTTP methods, or a
 
 ## Creating static pages and content
 
-We've proven that we can start a simple Hapi app with our Hello World application. Next, we'll use a plugin called **inert** to serve a static page. Before you begin, stop the server with **CTRL + C**.
+We've proven that we can start a simple hapi app with our Hello World application. Next, we'll use a plugin called **inert** to serve a static page. Before you begin, stop the server with **CTRL + C**.
 
 To install [inert](https://github.com/hapijs/inert) run this command at the command line: `npm install --save inert` This will download [inert](https://github.com/hapijs/inert) and add it to your `package.json`, which documents which packages are installed.
 
@@ -113,7 +121,7 @@ const init = async () => {
 
 ```
 
-The `server.register()` command above adds the [inert](https://github.com/hapijs/inert) plugin to your Hapi application.
+The `server.register()` command above adds the [inert](https://github.com/hapijs/inert) plugin to your hapi application.
 
 The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file. We've put the route registration after registering the `inert` plugin. It is generally wise to run code that depends on a plugin after the plugin is registered so that you can be absolutely sure that the plugin exists when your code runs.
 
@@ -178,7 +186,7 @@ const init = async () => {
     console.log(`Server running at: ${server.info.uri}`);
 };
 
-process.on('uncaughtException', (err) => {
+process.on('unhandledRejection', (err) => {
 
     console.log(err);
     process.exit(1);
