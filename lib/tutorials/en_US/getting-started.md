@@ -125,7 +125,7 @@ The `server.register()` command above adds the [inert](https://github.com/hapijs
 
 The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file. We've put the route registration after registering the `inert` plugin. It is generally wise to run code that depends on a plugin after the plugin is registered so that you can be absolutely sure that the plugin exists when your code runs.
 
-Start up your server with `npm start` and go to [`http://localhost:3000/hello`](http://localhost:3000/hello) in your browser. Oh no! We're getting an error because we never created a `hello.html` file. You need to create the missing file to get rid of this error.
+Start up your server with `node server.js` and go to [`http://localhost:3000/hello`](http://localhost:3000/hello) in your browser. Oh no! We're getting an error because we never created a `hello.html` file. You need to create the missing file to get rid of this error.
 
 Create a folder called `public` at the root of your directory with a file called `hello.html` within it. Inside `hello.html` put the following HTML: `<h2>Hello World.</h2>`. Then reload the page in your browser. You should see a header reading "Hello World."
 
