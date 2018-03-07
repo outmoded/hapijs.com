@@ -34,11 +34,11 @@ const start = async () => {
 start();
 ```
 
-As you can see above, in its most basic form you pass a path to `reply.file()` and you're done.
+As you can see above, in its most basic form you return `h.file(path)`.
 
 ### Relative paths
 
-To simplify things, especially if you have multiple routes that respond with files, you can configure a base path in your server and only pass relative paths to `reply.file()`:
+To simplify things, especially if you have multiple routes that respond with files, you can configure a base path in your server and only pass relative paths to `h.file()`:
 
 ```javascript
 'use strict';
