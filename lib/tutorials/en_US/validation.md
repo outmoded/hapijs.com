@@ -58,7 +58,7 @@ server.route({
 
         return posts.slice(0, request.query.limit);
     },
-    config: {
+    options: {
         validate: {
             query: {
                 limit: Joi.number().integer().min(1).max(100).default(10)
