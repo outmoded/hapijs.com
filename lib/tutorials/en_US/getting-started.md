@@ -1,6 +1,8 @@
-## Installing hapi
+## Getting started
 
-_This tutorial is compatible with hapi v17.x.x._
+_This tutorial is compatible with hapi v17_
+
+### Installing hapi
 
 Create a new directory `myproject`, and from there:
 
@@ -10,7 +12,7 @@ Create a new directory `myproject`, and from there:
 
 That's it! You now have everything you need in order to create a server using hapi.
 
-## Creating a server
+### Creating a server
 
 The most basic server looks like the following:
 
@@ -19,9 +21,13 @@ The most basic server looks like the following:
 
 const Hapi = require('hapi');
 
-const server = Hapi.server({ port: 3000, host: 'localhost' });
+const server = Hapi.server({
+    port: 3000,
+    host: 'localhost'
+});
 
 const init = async () => {
+
     await server.start();
     console.log(`Server running at: ${server.info.uri}`);
 };
@@ -33,7 +39,6 @@ process.on('unhandledRejection', (err) => {
 });
 
 init();
-
 ```
 
 First, we require hapi. Then we create a new hapi server object with a configuration object containing a host and a port
@@ -42,7 +47,7 @@ number to listen on. After that we start the server and log that it's running.
 When creating a server, we can also provide a hostname, IP address, or even
 a Unix socket file, or Windows named pipe to bind the server to. For more details, see [the API reference](/api/#-server-options).
 
-## Adding routes
+### Adding routes
 
 Now that we have a server we should add one or two routes so that it actually does something. Let's see what that looks like:
 
@@ -51,7 +56,10 @@ Now that we have a server we should add one or two routes so that it actually do
 
 const Hapi = require('hapi');
 
-const server = Hapi.server({ port: 3000, host: 'localhost' });
+const server = Hapi.server({
+    port: 3000,
+    host: 'localhost'
+});
 
 server.route({
     method: 'GET',
@@ -84,7 +92,6 @@ process.on('unhandledRejection', (err) => {
 });
 
 init();
-
 ```
 
 Save the above as `server.js` and start the server with the command `node server.js`. Now you'll find that if you visit [http://localhost:3000](http://localhost:3000) in your browser, you'll see the text `Hello, world!`, and if you visit [http://localhost:3000/stimpy](http://localhost:3000/stimpy) you'll see `Hello, stimpy!`.
@@ -93,7 +100,7 @@ Note that we URI encode the name parameter, this is to prevent content injection
 
 The `method` parameter can be any valid HTTP method, array of HTTP methods, or an asterisk to allow any method. The `path` parameter defines the path including parameters. It can contain optional parameters, numbered parameters, and even wildcards. For more details, see [the routing tutorial](/tutorials/routing).
 
-## Creating static pages and content
+### Creating static pages and content
 
 We've proven that we can start a simple hapi app with our Hello World application. Next, we'll use a plugin called **inert** to serve a static page. Before you begin, stop the server with **CTRL + C**.
 
@@ -118,7 +125,6 @@ const init = async () => {
     await server.start();
     console.log(`Server running at: ${server.info.uri}`);
 };
-
 ```
 
 The `server.register()` command above adds the [inert](https://github.com/hapijs/inert) plugin to your hapi application.
@@ -133,7 +139,7 @@ Create a folder called `public` at the root of your directory with a file called
 
 More details on how static content is served are detailed on [Serving Static Content](/tutorials/serving-files). This technique is commonly used to serve images, stylesheets, and static pages in your web application.
 
-## Using plugins
+### Using plugins
 
 A common desire when creating any web application, is an access log. To add some basic logging to our application, let's load the [hapi pino](https://github.com/pinojs/hapi-pino) plugin.
 
@@ -150,12 +156,16 @@ Then update your `server.js`:
 
 const Hapi = require('hapi');
 
-const server = Hapi.server({ port: 3000, host: 'localhost' });
+const server = Hapi.server({
+    port: 3000,
+    host: 'localhost'
+});
 
 server.route({
     method: 'GET',
     path: '/',
     handler: (request, h) => {
+
         return 'Hello, world!';
     }
 });
@@ -164,6 +174,7 @@ server.route({
     method: 'GET',
     path: '/{name}',
     handler: (request, h) => {
+
         // request.log(['a', 'name'], "Request name");
         // or
         request.logger.info('In handler %s', request.path);
@@ -216,6 +227,6 @@ The behavior of the logger is configured in `options` passed to the register fun
 
 Great! This is just one short example of what plugins are capable of, for more information check out the [plugins tutorial](/tutorials/plugins).
 
-## Everything else
+### Everything else
 
 hapi has many, many other capabilities and only a select few are documented in tutorials here. Please use the list to your right to check them out. Everything else is documented in the [API reference](/api) and, as always, feel free to ask questions on [github](https://github.com/hapijs/discuss/issues) and [gitter](https://gitter.im/hapijs/hapi) or just visit us on [slack](https://t.co/RLLcGIGmRZ).
