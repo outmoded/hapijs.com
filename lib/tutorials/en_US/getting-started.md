@@ -229,4 +229,4 @@ Great! This is just one short example of what plugins are capable of, for more i
 
 ### Everything else
 
-hapi has many, many other capabilities and only a select few are documented in tutorials here. Please use the list to your right to check them out. Everything else is documented in the [API reference](/api) and, as always, feel free to ask questions on [github](https://github.com/hapijs/discuss/issues) and [gitter](https://gitter.im/hapijs/hapi) or just visit us on [slack](https://t.co/RLLcGIGmRZ).
+hapi has many, many other capabilities and only a select few are documented in tutorials here. Please use the list to your right to check them out. Everything else is documented in the [API reference](/api) and, as always, feel free to ask questions on [github](https://github.com/hapijs/discuss/issues) and [gitter](https://gitter.im/hapijs/hapi) or just visit us on [slack](https://join.slack.com/t/hapihour/shared_invite/enQtMjM5Njk1NDgzNTY5LThmODkxODIzOTg5NjJjODFiYjcxZDMxMTAyMzBkZDk3MWY4MTFlNDAyMTU3MmUwMmM0Y2UwMjU3YjAwYjRkN2E).
