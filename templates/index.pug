@@ -45,25 +45,20 @@ block content
       p Visit us on IRC in <a href='http://webchat.freenode.net/?channels=hapi'>#hapi</a> on <a href='http://freenode.net'>freenode</a>.
 
       p Join us on Slack at <a href='https://hapihour.slack.com'>hapihour.slack.com</a> (<a href='https://join.slack.com/t/hapihour/shared_invite/enQtMjM5Njk1NDgzNTY5LThmODkxODIzOTg5NjJjODFiYjcxZDMxMTAyMzBkZDk3MWY4MTFlNDAyMTU3MmUwMmM0Y2UwMjU3YjAwYjRkN2E'>First time? Join here</a>).
+
     section.bottom-rule.getting-started
       h2 Getting started
-      p Start by creating a
-        code package.json
-        | :
+      p Start by creating a #[code package.json]:
 
       .highlight.highlight-bash
         pre npm init
 
-      p Install hapi and save it to your
-        code package.json
-        |  dependencies:
+      p Install hapi and save it to your #[code package.json] dependencies:
 
       .highlight.highlight-bash
         pre npm install hapi --save
 
-      p Create a
-        code server.js
-        |  file with the following contents:
+      p Create a #[code server.js] file with the following contents:
 
       .highlight.highlight-javascript
         pre
@@ -185,10 +180,6 @@ block content
           | start();
           br
 
-        p Launch the application by running
-          code npm start
-          |  and open
-          em localhost:8000/hello
-          |  in your browser.
+      p Launch the application by running #[code npm start] and open #[em localhost:8000/hello] in your browser.
 
       a(href='/tutorials', class='button button-primary') Read more about getting started with hapi
