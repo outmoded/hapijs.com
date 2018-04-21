@@ -133,7 +133,24 @@ The `server.route`() command registers the `/hello` route, which tells your serv
 
 Start up your server with `node server.js` and go to [`http://localhost:3000/hello`](http://localhost:3000/hello) in your browser. Oh no! We're getting an error because we never created a `hello.html` file. You need to create the missing file to get rid of this error.
 
-Create a folder called `public` at the root of your directory with a file called `hello.html` within it. Inside `hello.html` put the following HTML: `<h2>Hello World.</h2>`. Then reload the page in your browser. You should see a header reading "Hello World."
+Create a folder called `public` at the root of your directory with a file called `hello.html` within it. Inside `hello.html` put the following HTML:
+
+```
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Hapi.js is awesome!</title>
+  </head>
+  <body>
+    <h1>Hello World.</h1>
+  </body>
+</html>
+```.
+
+This is a simple valid HTML5 document.
+
+Now reload the page in your browser. You should see a header reading "Hello World."
 
 [Inert](https://github.com/hapijs/inert) will serve whatever content is saved to your hard drive when the request is made, which is what leads to this live reloading behavior. Customize the page at `/hello` to your liking.
 
