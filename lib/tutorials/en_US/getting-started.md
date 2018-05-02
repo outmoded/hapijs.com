@@ -135,7 +135,7 @@ Start up your server with `node server.js` and go to [`http://localhost:3000/hel
 
 Create a folder called `public` at the root of your directory with a file called `hello.html` within it. Inside `hello.html` put the following HTML:
 
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -146,7 +146,7 @@ Create a folder called `public` at the root of your directory with a file called
     <h1>Hello World.</h1>
   </body>
 </html>
-```.
+```
 
 This is a simple valid HTML5 document.
 
