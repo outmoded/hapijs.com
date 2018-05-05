@@ -1,0 +1,30 @@
+extends layout
+
+block title
+  title hapi Community
+
+block content
+  .content
+    section.bottom-hr.single-column
+      h2 Community
+      p Visit us on IRC in <a href='http://webchat.freenode.net/?channels=hapi'>#hapi</a> on <a href='http://freenode.net'>freenode</a>.
+      p We also have a <a href="https://gitter.im/hapijs/hapi" target="_blank">Gitter instance</a> as well (GitHub account required).
+      p hapi's stability and reliability is empowering these companies today. If you're using hapi too we'd love to <a href='https://github.com/hapijs/hapijs.com#community'>hear from you</a>.
+
+      - var titles = Object.keys(community.all)
+      each title, index in titles
+        - var company = community.all[title]
+
+        section.company(class=index < titles.length - 1 ? "bottom-rule" : "")
+          .cf
+            if (company.logo)
+              a(href=`${company.url}`, class='community-company-logo')
+                img(src=`/public/img/${company.logo}`, width=(company.width ? company.width : undefined), height=(company.height ? company.height : undefined), alt=title)
+              blockquote
+                p= company.quote
+                small &ndash; #{company.person} at #{title}
+            else
+              blockquote.full-width
+                p= company.quote
+                small &ndash; #{company.person} at
+                  a(href=`${company.url}`)= title

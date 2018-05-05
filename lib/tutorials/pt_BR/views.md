@@ -1,6 +1,6 @@
 ## Views
 
-_Este tutorial é compativel com hapi v11.x.x._
+_Este tutorial é compatível com hapi v16_
 
 hapi tem um extenso suporte para renderização de template, incluindo a habilidade de carregar e alavancar múltiplos motores de templates, partials, helpers (funções usada no templates para manipular dados), e layouts.
 
@@ -139,7 +139,7 @@ Podemos passar o contexto para o `reply.view()`, você passa um objeto no segund
 reply.view('index', { title: 'My home page' });
 ```
 
-### Manipulador de visão (view) 
+### Manipulador de visão (view)
 
 O segundo método para renderizar a view, é usando um objeto com a propriedade view no handler. A rota seria algo como:
 
@@ -309,5 +309,5 @@ server.views({
 Você também pode especificar um layout diferente por view:
 
 ```javascript
-    reply.view('myview', null, { layout: 'another_layout' });
+reply.view('myview', null, { layout: 'another_layout' });
 ```

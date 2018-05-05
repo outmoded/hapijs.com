@@ -1,6 +1,6 @@
 ## Instalando o hapi
 
-_Este tutorial é compatível com o hapi v11.x.x._
+_Este tutorial é compatível com hapi v16_
 
 Crie um novo diretório `meuprojeto`, entre nele e:
 

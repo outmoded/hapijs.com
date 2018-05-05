@@ -28,4 +28,4 @@ block content
         ul.unstyled(role='categories')
           each category, categoryName in resources.categories
             li(role='category')
-              a(href='##{spaceToDash(categoryName)}')= categoryName
+              a(href=`#${spaceToDash(categoryName)}`)= categoryName

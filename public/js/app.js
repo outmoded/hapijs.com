@@ -70,6 +70,26 @@ var windowHandler = function () {
 window.addEventListener('scroll', windowHandler);
 window.addEventListener('resize', windowHandler);
 
+window.addEventListener('hashchange', function () {
+
+    if (!document.querySelector(':target')) {
+        var target;
+        try {
+            target = decodeURIComponent(location.hash.slice(1));
+        }
+        catch (err) {
+            target = '';
+        }
+
+        if (target !== '') {
+            var element = document.getElementById('user-content-' + target) || document.getElementsByName('user-content-' + target)[0];
+            if (element) {
+                element.scrollIntoView();
+            }
+        }
+    }
+});
+
 // expand a section
 var expand = function (target) {
 
@@ -324,6 +344,7 @@ document.addEventListener('DOMContentLoaded', function () {
         Array.prototype.forEach.call(navLinks, function (navLink) {
             navLink.addEventListener('click', function (e) {
 
+                e.preventDefault();
                 // make sure we have the a
                 var target = e.target;
                 if (matches(target, 'code')) {
@@ -344,6 +365,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 else if (hasClass(target, 'section-opened')) {
                     collapse(target);
+                }
+                else {
+                    window.location.hash = target.hash;
                 }
 
                 // collapse everything that isn't active and doesn't have an active child

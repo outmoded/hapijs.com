@@ -1,0 +1,185 @@
+extends layout
+
+block title
+  title hapi.js
+
+block header
+
+  .content
+
+    section.bottom-rule.introduction
+      .cf
+
+        h2 A rich framework for building applications and services
+        h4 hapi enables developers to focus on writing reusable application logic instead of spending time building infrastructure.
+
+        .install-hapi.cf
+          p $ npm install hapi
+          .cursor.animated.flash
+
+        .latest-update
+          small Current version: <a href='https://github.com/hapijs/hapi/tags'>#{version.version}</a>
+          small  ● Latest update:
+          small  <a href="#{latestUpdate.url}" role="update">#{latestUpdate.updated}</a>
+          small  ● Downloads last month:
+          small  <a href="http://npm-stat.com/charts.html?package=hapi">#{downloads}</a>
+
+block content
+
+  .content
+
+    section.bottom-rule.community
+      h2 Community
+      p hapi's <strong>stability</strong> and <strong>reliability</strong> is empowering these companies today:
+
+      .cf
+
+        each company in frontPage
+          a(href=company.url, class='community-logo')
+            img(src=`/public/img/${company.logo}`, width=(company.width ? company.width : undefined), height=(company.height ? company.height : undefined), alt=company.name)
+
+      a(href='/community', class='button button-primary') See more
+
+      p Are you using hapi too? <a href='https://github.com/hapijs/hapijs.com#community'>Let us know</a>.
+
+      p Visit us on IRC in <a href='http://webchat.freenode.net/?channels=hapi'>#hapi</a> on <a href='http://freenode.net'>freenode</a>.
+
+      p Join us on Slack at <a href='https://hapihour.slack.com'>hapihour.slack.com</a> (<a href='https://join.slack.com/t/hapihour/shared_invite/enQtMjM5Njk1NDgzNTY5LThmODkxODIzOTg5NjJjODFiYjcxZDMxMTAyMzBkZDk3MWY4MTFlNDAyMTU3MmUwMmM0Y2UwMjU3YjAwYjRkN2E'>First time? Join here</a>).
+
+    section.bottom-rule.getting-started
+      h2 Getting started
+      p Start by creating a #[code package.json]:
+
+      .highlight.highlight-bash
+        pre npm init
+
+      p Install hapi and save it to your #[code package.json] dependencies:
+
+      .highlight.highlight-bash
+        pre npm install hapi --save
+
+      p Create a #[code server.js] file with the following contents:
+
+      .highlight.highlight-javascript
+        pre
+          span.pl-s1
+            span.pl-pds '
+            | use strict
+            span.pl-pds '
+          | ;
+          br
+
+          br
+          span.pl-s const
+          |  Hapi
+          span.pl-k =
+          span.pl-s3 require
+          | (
+          span.pl-s1
+            span.pl-pds '
+            | hapi
+            span.pl-pds '
+          | );
+          br
+
+          br
+          span.pl-c // Create a server with a host and port
+          br
+
+          span.pl-s const
+          |  server
+          span.pl-k =
+          span.pl-en Hapi.server({
+          br
+          |     host:
+          span.pl-s1
+            span.pl-pds '
+            | localhost
+            span.pl-pds '
+          | ,
+          |     port:
+          span.pl-c1 8000
+          |
+          | });
+          br
+
+          br
+          span.pl-c // Add the route
+          br
+
+          | server.route({
+          |     method
+          span.pl-k :
+          span.pl-s1
+            span.pl-pds '
+            | GET
+            span.pl-pds '
+          | ,
+          |     path
+          span.pl-k :
+          span.pl-s1
+            span.pl-pds '
+            | /hello
+            span.pl-pds '
+          | ,
+          |     handler
+          span.pl-k :
+          span.pl-st function
+          | (
+          span.pl-vpf request
+          | ,
+          span.pl-vpf h
+          | ) {
+          br
+          br
+          span.pl-s         return
+          span.pl-s1
+            span.pl-pds '
+            | hello world
+            span.pl-pds '
+          | ;
+          |     }
+          | });
+          br
+
+          br
+          span.pl-c // Start the server
+          br
+
+          span.pl-s async function
+          |  start() {
+          br
+
+          br
+          span.pl-s     try
+          |  {
+          br
+          span.pl-s         await
+          |  server.start();
+          br
+          |     }
+          br
+          span.pl-s     catch
+          |  (err) {
+          |         console.log(err);
+          |         process.exit(1);
+          |     }
+          br
+
+          br
+          |     console.log(
+          span.pl-s1
+            span.pl-pds '
+            | Server running at:
+            span.pl-pds '
+          | , server.info.uri);
+          | };
+          br
+
+          br
+          | start();
+          br
+
+      p Launch the application by running #[code npm start] and open #[em localhost:8000/hello] in your browser.
+
+      a(href='/tutorials', class='button button-primary') Read more about getting started with hapi

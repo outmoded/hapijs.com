@@ -2,3 +2,4 @@ node_modules
 npm-debug.log
 .DS_Store
 config/local.json
+.vscode/settings.json

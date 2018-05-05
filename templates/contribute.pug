@@ -5,9 +5,9 @@ block title
 
 block content
 
-  section.contributing
+  section.bottom-rule.contributing
     .content
-      h3 Contibuting to hapi
+      h3 Contributing to hapi
       p If you're interested in helping out, here's a list of currently open issues that would be a great place to start. Make sure to read the <a href="/styleguide">style guide</a> before you write any code. For further information about the hapijs community, see the <a href="/governance">governance</a> and <a href="/operating">operating guidelines</a>.
 
       .cf
@@ -20,7 +20,7 @@ block content
             each issue in newContributorIssues.slice(0, 20)
               li
                 p.issue-number
-                  a(href='#{issue.html_url}') ##{issue.number}
+                  a(href=issue.html_url) ##{issue.number}
                 p.issue-title (#{issue.repo}) #{issue.title}
 
         .column.help-wanted-issues
@@ -32,5 +32,5 @@ block content
             each issue in helpWantedIssues.slice(0, 20)
               li
                 p.issue-number
-                  a(href='#{issue.html_url}') ##{issue.number}
+                  a(href=issue.html_url) ##{issue.number}
                 p.issue-title (#{issue.repo}) #{issue.title}
