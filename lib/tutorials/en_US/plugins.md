@@ -96,7 +96,7 @@ const start = async function () {
 };
 ```
 
-To pass options to your plugin, we instead pass an object with `register` and `options` keys, such as:
+To pass options to your plugin, we instead pass an object with `plugin` and `options` keys, such as:
 
 ```javascript
 const start = async function () {
