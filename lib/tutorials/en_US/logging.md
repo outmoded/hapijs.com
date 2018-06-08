@@ -38,14 +38,14 @@ server.events.on('log', (event, tags) => {
 
 Events logged with `server.log()` will emit a `log` event and events logged with `request.log()` will emit a `request` event.
 
-You can retrive all logs for a particular request at once via `request.logs`. This will be an array containing all the logged request events. You must first set the `logs.collect` option to `true` on the route, otherwise this array will be empty.
+You can retrive all logs for a particular request at once via `request.logs`. This will be an array containing all the logged request events. You must first set the `log.collect` option to `true` on the route, otherwise this array will be empty.
 
 ```javascript
 server.route({
     method: 'GET',
     path: '/',
     options: {
-        logs: {
+        log: {
             collect: true
         }
     },
