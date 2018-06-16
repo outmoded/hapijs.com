@@ -70,4 +70,4 @@ You can find more information on debug mode in the [API documentation](https://h
 
 ## Logging plugins
 
-The built-in methods provided by hapi for retrieving and printing logs are fairly minimal. For a more feature-rich logging experience, you can look into using a plugin like [good](https://github.com/hapijs/good) or [bucker](https://github.com/nlf/bucker).
+The built-in methods provided by hapi for retrieving and printing logs are fairly minimal. For a more feature-rich logging experience, you can look into using a plugin like [good](https://github.com/hapijs/good).
