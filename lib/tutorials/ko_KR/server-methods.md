@@ -1,21 +1,24 @@
-## 서버 메소드
+## Server methods
 
-서버 메소드는 필요한 곳에서 공통 모듈을 요구하지 않고 서버 객체에 함수를 첨부하여 공유하는 유용한 방법입니다. 서버 메소드를 등록하려면 `server` 객체에 접근해야 합니다. 별도의 인자를 전달하는 두 가지 다른 방식이 가능합니다.
+_이 튜터리얼은 hapi v17과 호환됩니다._
+
+서버 메소드는 필요한 곳에서 공통 모듈을 요구하지 않고 서버 객체에 함수를 첨부하여 공유하는 유용한 방법입니다. 서버 메소드를 등록하려면 [`server.method()`](https://hapijs.com/api#server.method())를 호출합니다. 이 함수를 호출하는 두 가지 다른 방법이 있습니다. `server.method(name, method, [options])` 형식으로 호출할 수 있습니다. 예를 들면:
 
 ```javascript
-const add = function (x, y, next) {
-    // note that the 'next' callback must be used to return values
-    next(null, x + y);
+const add = function (x, y) {
+
+    return x + y;
 };
 
 server.method('add', add, {});
 ```
 
-또는 `name`, `method`, `options` 인자를 가지는 객체(이 객체의 배열을 전달할 수 도 있습니다.):
+또는 `server.method(method)` 형식으로 호출할 수 있습니다. `method`는 `name`, `method`, `options` 인자를 가지는 객체입니다.(이 객체의 배열을 전달할 수 도 있습니다.)
 
 ```javascript
-const add = function (x, y, next) {
-    next(null, x + y);
+const add = function (x, y) {
+
+    return x + y;
 };
 
 server.method({
@@ -25,7 +28,7 @@ server.method({
 });
 ```
 
-## Name
+### Name
 
 `name` 인자는 이 후에 서버에서 `server.methods[name]`을 통해 메소드를 찾을 때 사용되는 문자열입니다. `.` 문자로 `name`을 지정하면 문자열 그대로가 아닌 중첩된 객체로 등록됩니다. 마찬가지로:
 
@@ -33,11 +36,23 @@ server.method({
 server.method('math.add', add);
 ```
 
-server.methods.math.add로 접근 가능하게 됩니다.
+이 서버 메소드는 `server.methods.math.add()`로 호출 가능하게 됩니다.
 
-## Function
+### Function
 
-`method` 인자가 메소드가 불릴 때 호출되는 실제 함수입니다. 여러 개의 인자를 가질 수 있지만 마지막 인자는 callback을 *반드시* 받아야 합니다. 이 callback은 3개의 인자를 받습니다.: `err`, `result` 그리고 `ttl`입니다. 메소드 안에서 에러가 발생하면 에러를 첫 인자로 전달합니다. 에러가 없다면 첫 인자는 undefined 또는 null이고 두 번째 인자에 반환 값이 전달됩니다. `ttl`인자는 hapi에게 반환 값이 얼마 동안 캐시 되는지를 알려줍니다; `0`은 캐시 되지 않음을 나타냅니다.
+`method` 인자는 메소드가 호출될 때 불리는 실제로 함수입니다. 여러개의 인자를 가질 수 있습니다. `async` 함수일 수 있습니다. 예를 들어:
+
+```js
+const add = async function (x, y) {
+
+    const result = await someLongRunningFunction(x, y);
+    return result;
+};
+
+server.method('add', add, {});
+```
+
+서버 메소드 함수는 유효한 결과를 반환하거나 에러가 발생하면 에러를 던져야 합니다.
 
 ## Caching
 
@@ -67,40 +82,64 @@ server.method('add', add, {
 
 캐싱 옵션에 대한 자세한 정보는 [API Reference](/api#servermethodmethod)와 [catbox](https://github.com/hapijs/catbox#policy)의 문서를 참고해주세요.
 
-## 사용자 키 생성하기
+`ttl` flag 설정으로 호출마다 서버 메소드 결과의 `ttl`(time-to-live) 값을 덮어 쓸 수 있습니다. 앞의 예제에서 어떻게 동작하는지 보겠습니다. 
 
-위의 옵션 외에도 메소드에 전달된 인자를 기반으로 키를 생성하는데 사용되는 사용자 함수를 전달할 수 있습니다. 메소드가 단지 문자열 숫자, 논리값을 받는다면 hapi가 정상적인 키를 생성할 수 있습니다. 그러나 메소드가 객체 인자를 받는다면 다음처럼 키를 생성하는 함수를 지정해야 합니다.
+```js
+const add = async function (x, y, flags) {
+
+    const result = await someLongRunningFunction(x, y);
+
+    flags.ttl = 5 * 60 * 1000; // 5 mins
+
+    return result;
+};
+
+server.method('add', add, {
+    cache: {
+        expiresIn: 2000,
+        generateTimeout: 100
+    }
+});
+
+server.methods.add(5, 12);
+```
+
+여기에서는 기대한 것보다 추가 인자를 하나 더 가지고 있는 서버 메소드 함수를 정의했습니다. 추가적인 `flags` 인자는 hapi에 전달됩니다. (밀리 초 단위로) 결과가 캐싱되기는 원하는 시간으로 `ttl` flag를 간단하게 설정합니다. 만약 `0`으로 설정되면 그 값은 캐싱되지 않습니다. 설정하지 않으면 캐시 설정에서 `ttl` 값을 가지고 옵니다.
+
+### 사용자 키 생성하기
+
+위의 옵션 외에도 메소드에 전달된 인자를 기반으로 키를 생성하는데 사용되는 사용자 함수를 전달할 수 있습니다. 메소드가 단지 문자열 숫자, 논리값의 조합 만 받는다면 hapi가 정상적인 키를 생성할 수 있습니다. 그러나 메소드가 객체 인자를 받는다면 다음처럼 키를 생성하는 함수를 지정해야 합니다.
 
 ```javascript
-const sum = function (array, next) {
+const sum = function (array) {
+
     let total = 0;
 
     array.forEach((item) => {
+
         total += item;
     });
 
-    next(null, total);
+    return total;
 };
 
 server.method('sum', sum, {
-    generateKey: function (array) {
-        return array.join(',');
-    }
+    generateKey: (array) => array.join(',')
 });
 ```
 
-메소드에 전달된 인자는 generateKey 메소드에서는 사용가능 하지만 callback에서는 사용할 수 *없습니다*.
+메소드에 전달된 인자는 generateKey 메소드에서는 사용 가능합니다.
 
-## Bind
+### Bind
 
 서버 메소드에서 사용가능한 마지막 옵션은 `bind`입니다. `bind` 옵션은 메소드 안에서 `this` 값을 변경합니다. 메소드가 추가될 때 현재 활성 컨텍스트를 기본 설정됩니다. 이는 사용자 `generateKey` 함수에서 필요한 데이터베이스 클라이언트를 인자로 전달하지 않고 데이터베이스 클라이언트를 다음처럼 전달할 때 유용합니다.:  
 
 ```javascript
-const lookup = function (id, next) {
+const lookup = async function (id) {
+
     // calls myDB.getOne
-    this.getOne({ id: id }, (err, value) => {
-        next(err, value);
-    });
+
+    return await this.getOne({ id });
 };
 
 server.method('lookup', lookup, { bind: myDB });
