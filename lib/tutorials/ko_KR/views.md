@@ -1,12 +1,12 @@
 ## Views
 
-_이 튜터리얼은 hapi v11.x.x와 호환됩니다._
+_이 튜터리얼은 hapi v17과 호환됩니다._
 
-hapi는 다양한 템플릿 엔진, 부분, 헬퍼 그리고 레이아웃을 읽어 들여 활용하는 기능을 포함하여 템플릿 렌더링을 광범위하게 지원합니다.
+hapi는 다양한 템플릿 엔진, 부분, 헬퍼 (데이터를 조작하는 템플릿에서 사용되는 함수들) 그리고 레이아웃을 읽어 들여 활용하는 기능을 포함하여 템플릿 렌더링을 광범위하게 지원합니다. 이런 기능들은 [vision](https://github.com/hapijs/vision) 플러그인에서 제공됩니다.
 
 ## 서버 설정하기
 
-view를 시작하려면 먼저 서버에 최소한 하나의 템플릿 엔진을 설정해야 합니다. `server.views` 메소드를 사용하여 설정합니다.:
+view를 시작하려면 먼저 서버에 최소한 하나의 템플릿 엔진을 설정해야 합니다. vision에서 제공하는 [`server.views()`](https://github.com/hapijs/vision/blob/master/API.md#serverviewsoptions) 메소드를 사용하여 설정합니다.:
 
 ```javascript
 'use strict';
@@ -15,11 +15,11 @@ const Path = require('path');
 const Hapi = require('hapi');
 const Hoek = require('hoek');
 
-const server = new Hapi.Server();
+const server = Hapi.server();
 
-server.register(require('vision'), (err) => {
+const start = async () => {
 
-    Hoek.assert(!err, err);
+    await server.register(require('vision'));
 
     server.views({
         engines: {
@@ -28,28 +28,27 @@ server.register(require('vision'), (err) => {
         relativeTo: __dirname,
         path: 'templates'
     });
-});
+};
 
+start();
 ```
 
-여기에서 몇 가지 작업을 하고 있습니다.
-
-먼저 플러그인으로 [`vision`](https://github.com/hapijs/vision) 모듈을 읽어들입니다. hapi에 템플릿 렌더링 지원을 추가합니다. [`vision`](https://github.com/hapijs/vision)는 더이상 hapi에 포함되어있지 않기 때문에 설치해야 합니다. 
+여기에서 몇 가지 작업을 하고 있습니다. 먼저 플러그인으로 [`vision`](https://github.com/hapijs/vision) 모듈을 읽어들입니다. hapi에 템플릿 렌더링 지원을 추가합니다.
 
 두 번째 `handlebars` 모듈을 `.html` 확장자를 가진 템플릿을 렌더링을 담당하는 엔진으로 등록합니다.
 
-세 번째 현재 경로의 `templates` 디렉터리에 템플릿이 있음을 서버에게 알립니다. 기본적으로 hapi는 현재 작업 디렉터리에서 템플릿을 찾습니다. 템플맀이 있는 모든 곳에 대해서 경로를 지정할 수 있습니다. 
+그 다음 현재 경로의 `templates` 디렉터리에 템플릿이 있음을 서버에게 알립니다. `relativeTo` 옵션을 제공하여 현재 디렉터리의 상대 경로로 이 디렉터리를 가리킬 수 있습니다. 기본적으로 hapi는 현재 작업 디렉터리에서 템플릿을 찾습니다. 
 
 ### View options
 
-hapi에서 view 엔진에 대한 여러가지 옵션이 있습니다. 전체 문서는 [API reference](/api/#server-options)에서 찾을 수 있으나 여기에서 그중 일부를 살펴보겠습니다. 
+hapi에서 view 엔진에 대한 여러가지 옵션이 있습니다. 전체 문서는 [vision API reference](https://github.com/hapijs/vision/blob/master/API.md#serverviewsoptions)에서 찾을 수 있으나 여기에서 그중 일부를 살펴보겠습니다.
 
 모든 옵션은 모든 등록된 엔진에 대해 전역적으로 설정할 수 있거나 특정 엔진에 지역적으로 설정할 수 있습니다. 예제:
 
 ```javascript
 server.views({
     engines: {
-        'html': {
+        html: {
             module: require('handlebars'),
             compileMode: 'sync' // engine specific
         }
@@ -58,7 +57,7 @@ server.views({
 });
 ```
 
-#### 엔진
+### 엔진
 
 hapi에서 view를 사용하려면 서버에 최소한 하나의 템플릿 엔진을 등록해야 합니다. 템플릿 엔진은 동기적 또는 비동기적일 수 있으며 외부 공개된 `compile` 이름을 가진 객체이어야 합니다.
 
@@ -76,7 +75,7 @@ hapi에서 view를 사용하려면 서버에 최소한 하나의 템플릿 엔�
 
 다른 유용한 옵션은 `isCached`입니다. `false`로 설정되면 hapi는 템플릿의 결과를 캐시 하지 않을 것이고 대신에 매 사용 시 파일로부터 템플릿을 읽어 들일것 입니다. 응용프로그램을 개발할 때 템플릿을 사용하는 동안 앱을 다시 시작하지 않아도 되기 때문에 매우 유용할 수 있습니다. 그러나 프로덕션에서는 `isCached`을 기본값인 `true`로 두는 것이 좋습니다.
 
-#### 경로
+### 경로
 
 view는 여러 다른 위치에 파일들을 가질 수 있기 때문에 hapi는 파일들을 찾는 데 도움이 되게 여러 경로를 설정할 수 있습니다. 여기에 옵션이 있습니다.:
 
@@ -116,29 +115,30 @@ server.views({
 
 ## view 렌더링
 
-view를 렌더링하는데 두 가지 옵션이 있습니다. `reply.view()` 또는 view 처리기를 사용하는 것입니다.
+view를 렌더링하는데 두 가지 옵션이 있습니다. [응답 도구](/api#response-toolkit)인 `h`로 `h.view()` 또는 view 처리기를 사용하는 것입니다.
 
-### `reply.view()`
+### [`h.view()`](https://github.com/hapijs/vision/blob/master/API.md#hviewtemplate-context-options)
 
-view를 렌더링하는 첫 번째 방법은 `reply.view()`입니다. 이 방법을 사용하는 route는 다음과 같습니다.: 
+view를 렌더링하는 첫 번째 방법은 `h.view()`입니다. 이 방법을 사용하는 route는 다음과 같습니다.:
 
 ```javascript
 server.route({
     method: 'GET',
     path: '/',
-    handler: function (request, reply) {
-        reply.view('index');
+    handler: function (request, h) {
+
+        return h.view('index');
     }
 });
 ```
 
-context를 `reply.view()`에 전달하려면 두 번째 인자로 겍체를 전달합니다. 예제입니다.:
+context를 `h.view()`에 전달하려면 두 번째 인자로 겍체를 전달합니다. 예제입니다.:
 
 ```javascript
-reply.view('index', { title: 'My home page' });
+return h.view('index', { title: 'My home page' });
 ```
 
-### view 처리기
+### View 핸들러
 
 view를 렌더링하는 두 번째 방법은 hapi의 내장 view 처리기를 사용하는 것입니다. route는 다음과 같습니다.
 
@@ -167,23 +167,23 @@ handler: {
 
 ### 전역 context
 
-view에 context를 직접 전달하는 방법을 살펴보았지만 모든 템플릿에 *항상* 사용가능한 기본 context가 있다면 어떻할까요? 
+view에 context를 직접 전달하는 방법을 살펴보았지만 모든 템플릿에 *항상* 사용가능한 기본 context가 있다면 어떻할까요?
 
 가장 간단한 방법은 `server.view()`를 호출할 때 `context` 옵션을 사용하는 것입니다.
 
 ```javascript
-const defaultContext = {
+const context = {
     title: 'My personal site'
 };
 
 server.views({
     engines: {
-        'html': {
+        html: {
             module: require('handlebars'),
             compileMode: 'sync' // engine specific
         }
     },
-    context: defaultContext
+    context
 });
 ```
 
@@ -197,6 +197,7 @@ server.views({
 
 ```javascript
 module.exports = function () {
+
     const fortunes = [
         'Heisenberg may have slept here...',
         'Wanna buy a duck?',
@@ -209,6 +210,7 @@ module.exports = function () {
         'Fortune favors the lucky.',
         'Have a nice day!'
     ];
+
     const x = Math.floor(Math.random() * fortunes.length);
     return fortunes[x];
 };
@@ -230,16 +232,11 @@ module.exports = function () {
 
 const Hapi = require('hapi');
 
-const server = new Hapi.Server();
+const server = Hapi.server({ port: 8080 });
 
-server.connection({
-    port: Number(process.argv[2] || 8080),
-    host: 'localhost'
-});
+const start = async () => {
 
-server.register(require('vision'), (err) => {
-
-    Hoek.assert(!err, err);
+    await server.register(require('vision'));
 
     server.views({
         engines: {
@@ -253,18 +250,19 @@ server.register(require('vision'), (err) => {
     server.route({
         method: 'GET',
         path: '/',
-        handler: function (request, reply) {
-            reply.view('index');
+        handler: function (request, h) {
+
+            return h.view('index');
         }
     });
-});
+};
 
-server.start();
+start();
 ```
 
 ### Layouts
 
-hapi는 view 레이아웃에 대한 내장 지원을 가지고 있습니다. 특정 view 엔진에서 제공하는 레이아웃 시스템과 충돌을 일으킬 수 있기 때문에 기본으로 비활성 상태입니다. 단 하나의 레이아웃 시스템 선택을 추천합니다.
+vision은 view 레이아웃에 대한 내장 지원을 가지고 있습니다. 특정 view 엔진에서 제공하는 레이아웃 시스템과 충돌을 일으킬 수 있기 때문에 기본으로 비활성 상태입니다. 단 하나의 레이아웃 시스템 선택을 추천합니다.
 
 내장 레이아웃 시스템을 사용하려면 먼저 view 엔진을 설정합니다.:
 
@@ -272,13 +270,13 @@ hapi는 view 레이아웃에 대한 내장 지원을 가지고 있습니다. 특
 server.views({
     // ...
     layout: true,
-    layoutPath: Path.join(__dirname, 'templates/layout')
+    layoutPath: 'templates/layout'
 });
 ```
 
 내장 레이아웃을 활성화하고 기본 레이아웃 페이지를 `templates/layout/layout.html`로 정의합니다. (또는 사용 중인 다른 확장)
 
-`layout.html`에서 콘텐츠 영역을 설정합니다.
+`laylout.html`에서 콘텐츠 영역 설정:
 
 ```html
 <html>
@@ -308,5 +306,5 @@ server.views({
 view 별로 다른 레이아웃을 지정할 수도 있습니다.:
 
 ```javascript
-    reply.view('myview', null, { layout: 'another_layout' });
+return h.view('myview', null, { layout: 'another_layout' });
 ```
