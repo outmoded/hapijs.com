@@ -12,7 +12,7 @@ A última configuração disponível dos parâmetros de validação, é um objet
 
 ## Input
 
-O primeiro tipo de validação que o hapi pode executar é a validação de input. Ela é definida no objeto `config` em uma rota, e é capaz de validar cabeçalhos, parâmetros de rota (path), parâmetros de query, e payloads.
+O primeiro tipo de validação que o hapi pode executar é a validação de input. Ela é definida no objeto `options` em uma rota, e é capaz de validar cabeçalhos, parâmetros de rota (path), parâmetros de query, e payloads.
 
 Vamos observar um exemplo:
 
@@ -23,7 +23,7 @@ server.route({
     handler: function (request, reply) {
         reply('Hello ' + request.params.name + '!');
     },
-    config: {
+    options: {
         validate: {
             params: {
                 name: Joi.string().min(3).max(10)
@@ -35,7 +35,7 @@ server.route({
 
 ### Parâmetros de Rota (path)
 
-Como você pode ver acima, nós passamos um parâmetro `validate.params` para o objeto `config`, essa é a forma que nós informamos ao hapi que um determinado parâmetro especificado na rota deve ser validado. A sintaxe do Joi é muito simples e clara de ler, o validador que nós passamos garante que o parâmetro é uma string, com um tamanho mínimo de 3 caracteres e um tamanho máximo de 10 caracteres.
+Como você pode ver acima, nós passamos um parâmetro `validate.params` para o objeto `options`, essa é a forma que nós informamos ao hapi que um determinado parâmetro especificado na rota deve ser validado. A sintaxe do Joi é muito simples e clara de ler, o validador que nós passamos garante que o parâmetro é uma string, com um tamanho mínimo de 3 caracteres e um tamanho máximo de 10 caracteres.
 
 Com essa configuração, se nós fizermos uma requisição para `/hello/jennifer` nós vamos obter a resposta esperada `Hello jennifer!`, entretanto se nós fizermos uma requisição para `/hello/a` nós vamos obter uma resposta HTTP `400` com o seguinte formato:
 
@@ -82,7 +82,7 @@ server.route({
     handler: function (request, reply) {
         reply(resources.slice(0, request.query.limit));
     },
-    config: {
+    options: {
         validate: {
             query: {
                 limit: Joi.number().integer().min(1).max(100).default(10)
@@ -121,7 +121,7 @@ Também válido é o parâmetro `validate.payload`, que irá validar todos os da
 ## Saída
 
 O Hapi também pode validar as respostas antes delas serem devolvidas para o cliente.
-Essa validação é definida no objeto de `config` e na propriedade `response` da rota.
+Essa validação é definida no objeto de `options` e na propriedade `response` da rota.
 
 Se a resposta não for valida, o cliente irá receber um Erro Interno do Servidor (500) como resposta por padrão (veja `response.failAction` abaixo).
 
@@ -138,9 +138,9 @@ Você pode escolher o que acontece quando sua validação falha, configurando `r
 
 ### response.sample
 Se performance é uma preocupação, é possível configurar para a validar apenas uma porcentagem das respostas.
-Isso pode ser feito usando a propriedade `response.sample` do objeto `config` na rota.
+Isso pode ser feito usando a propriedade `response.sample` do objeto `options` na rota.
 
-### response.status 
+### response.status
 
 Em alguns casos, uma rota pode servir respostas objetos de resposta diferentes.
 Por exemplo. uma rota `POST` pode retornar uma das opções a seguir:
@@ -179,7 +179,7 @@ const bookSchema = Joi.object({
 server.route({
     method: 'GET',
     path: '/books',
-    config: {
+    options: {
         handler: function (request, reply) {
 
             getBooks((err, books) => {
