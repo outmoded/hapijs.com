@@ -21,7 +21,7 @@ server.route({
             response.ttl(request.params.ttl);
         }
     },
-    config: {
+    options: {
         cache: {
             expiresIn: 30 * 1000,
             privacy: 'private'

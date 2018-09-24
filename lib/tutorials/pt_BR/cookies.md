@@ -23,11 +23,11 @@ server.state('data', {
 
 Esta configuração fará com que o cookie chamado `data` tenha o tempo de vida da sessão(será apagado quando o navegador for fechado), e seja sinalizado como seguro e apenas HTTP (veja [RFC 6265](http://tools.ietf.org/html/rfc6265), especificamente as seções [4.1.2.5](http://tools.ietf.org/html/rfc6265#section-4.1.2.5) e [4.1.2.6](http://tools.ietf.org/html/rfc6265#section-4.1.2.6) para mais informações), e informa ao hapi que o valor é um JSON String codificado em base64. A documentação completa para as opções do ` server.state ()` podem ser encontradas em [referência da API](api#serverstatename-options).
 
-Além disso, você pode passar dois parâmetros para o `config` ao adicionar uma rota:
+Além disso, você pode passar dois parâmetros para o `options` ao adicionar uma rota:
 
 ```json5
 {
-    config: {
+    options: {
         state: {
             parse: true, // analisa e armazena em request.state
             failAction: 'error' // também pode ser 'ignore' ou 'log'

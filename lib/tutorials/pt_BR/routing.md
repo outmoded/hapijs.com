@@ -28,7 +28,7 @@ server.route({
 
 ## Caminho
 
-A opção `path` deve ser uma `string` e também poderá conter parâmetros nomeados. Para indicar o parâmetro na `string` basta involve-lo com `{}`. Por exemplo: 
+A opção `path` deve ser uma `string` e também poderá conter parâmetros nomeados. Para indicar o parâmetro na `string` basta involve-lo com `{}`. Por exemplo:
 
 ```javascript
 server.route({
@@ -44,7 +44,7 @@ Como você pode ver acima, temos o parâmetro `{user}` no nosso caminho, isso si
 
 ### Parâmetros Opcionais
 
-Neste exemplo, o parâmetro `user` é obrigatório: uma requisição a `/hello/bob` ou `/hello/susan` irá funcionar, porém uma requisição a `/hello` não funcionará. Para criar um parâmetro opcional, basta colocar um ponto de interrogação no final do nome do parâmetro. Veja o mesmo exemplo anterior alterado para o parâmetro `user` ser adicional: 
+Neste exemplo, o parâmetro `user` é obrigatório: uma requisição a `/hello/bob` ou `/hello/susan` irá funcionar, porém uma requisição a `/hello` não funcionará. Para criar um parâmetro opcional, basta colocar um ponto de interrogação no final do nome do parâmetro. Veja o mesmo exemplo anterior alterado para o parâmetro `user` ser adicional:
 
 ```javascript
 server.route({
@@ -61,7 +61,7 @@ Agora uma requisição para `/hello/mary` irá responder com `Hello mary!` e a r
 
 ### Parâmetros de multisegmentos
 
-Junto com o parâmetro de caminho opcional, você também pode permitir que esses parâmetros correspodam com vários segmentos. Para fazer isso, utilizamos um asterisco e um número. Por Exemplo: 
+Junto com o parâmetro de caminho opcional, você também pode permitir que esses parâmetros correspodam com vários segmentos. Para fazer isso, utilizamos um asterisco e um número. Por Exemplo:
 
 ```javascript
 server.route({
@@ -80,7 +80,7 @@ Ao determinar o manipulador a ser utilizado em um requisição em particular, o 
 
 ## Método manipulador
 
-A opção `handler` é uma função que aceita dois parâmetros, `request` e `reply`.   
+A opção `handler` é uma função que aceita dois parâmetros, `request` e `reply`.
 
 O parâmetro `request` é um objeto com detalhes sobre a solicitação do usuário final, como parâmetros de caminho, carga associada, informações de autenticação, cabeçalhos, etc... Toda a documentação sobre o que o objeto `request` contem pode ser encontrado na [referência de API](/api#request-properties).
 
@@ -88,7 +88,7 @@ O segundo parâmetro, `reply`, é um método usado para responder as requisiçõ
 
 ## Configuração
 
-Além desses três elementos basicos, você também pode especificar um parâmetro `config` para cada rota. É onde você configura coisas como [validação](/tutorials/validation), [autenticação](/tutorials/auth), pré-requisitos, processo de carga, e opções de `cache`. Mais detalhes podem ser encontrados nos tutoriais, assim como na [referência de API](/api#route-options).
+Além desses três elementos basicos, você também pode especificar um parâmetro `options` para cada rota. É onde você configura coisas como [validação](/tutorials/validation), [autenticação](/tutorials/auth), pré-requisitos, processo de carga, e opções de `cache`. Mais detalhes podem ser encontrados nos tutoriais, assim como na [referência de API](/api#route-options).
 
 Aqui vamos exemplificar um par de opções concebidas para ajudar a gerar a documentação:
 
@@ -100,7 +100,7 @@ server.route({
         const user = request.params.user ? encodeURIComponent(request.params.user) : 'stranger';
         reply('Hello ' + user + '!');
     },
-    config: {
+    options: {
         description: 'Say hello!',
         notes: 'The user parameter defaults to \'stranger\' if unspecified',
         tags: ['api', 'greeting']
@@ -108,4 +108,4 @@ server.route({
 });
 ```
 
-Em aspecto de funcionalidades isso não tem nenhum efeito, entretando eles podem ser muito valiosos ao utilizar plugins como [lout](https://github.com/hapijs/lout) para gerar a documentação de sua API. O `metadate` é associado com esta rota, e logo depois se torna disponível para inspeção ou visualização.  
+Em aspecto de funcionalidades isso não tem nenhum efeito, entretando eles podem ser muito valiosos ao utilizar plugins como [lout](https://github.com/hapijs/lout) para gerar a documentação de sua API. O `metadate` é associado com esta rota, e logo depois se torna disponível para inspeção ou visualização.

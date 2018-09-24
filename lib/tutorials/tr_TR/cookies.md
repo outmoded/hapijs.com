@@ -27,7 +27,7 @@ Buna ek olarak, `options.state` nesnesinde bulunan iki özelliği kullanarak kur
 
 ```json5
 {
-    config: {
+    options: {
         state: {
             parse: true,        // kurabiyeleri ayristir ve request.state icerisinde tut
             failAction: 'error' // 'ignore' ya da 'log' da olabilir
