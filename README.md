@@ -12,7 +12,15 @@ Lead Maintainer: [Nathan LaFreniere](https://github.com/nlf)
 
 ## Running/developing
 
-* First, obtain a token from github [here](https://github.com/settings/tokens/new)
+* First, obtain a token from github [here](https://github.com/settings/tokens/new) and select checked scopes only (only two)
+
+  - [ ] **repo**              :   *Full control of private repositories*
+    - [x] **repo status**     :   *Access commit status*
+    - [ ] **repo_deployment** :   *Access deployment status*
+    - [x] **public_repo**     :   *Access public repositories*
+    - [ ] **repo:invite**     :   *Access repository invitations*
+ 
+
 
 * Copy the `config/default.json` file to `config/local.json` and put your token in the `githubToken` field of `local.json`. NOTE: Please do not commit the file that contains your real github token. That would make it public and allow anyone to look at this repo and use your token as though they were you.
 
