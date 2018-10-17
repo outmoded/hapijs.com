@@ -204,7 +204,7 @@ const init = async () => {
         plugin: require('hapi-pino'),
         options: {
             prettyPrint: false,
-            logEvents: ['response']
+            logEvents: ['response', 'onPostStart']
         }
     });
 
