@@ -1,6 +1,6 @@
 ## Métodos nativos
 
-Como todo programa de servidor, o log é muito importante. O Hapi possui alguns métodos nativos de log, bem como uma capacidade limitada para visualização destes logs.  
+Como todo programa de servidor, o log é muito importante. O Hapi possui alguns métodos nativos de log, bem como uma capacidade limitada para visualização destes logs.
 
 Existem dois métodos bem parecidos de log, `server.log`, e `request.log`. A diferença entre os dois está em qual evento eles emitem, qual objeto emite o evento, e qual dado é automaticamente associado. O método `server.log` emite um evento de `log` no server, e possui a URI do server associada a ele. O `request.log` emite um evento de `request` no `server` e tem o id interno da requisição (`request`) associado a ele.
 
@@ -31,4 +31,4 @@ const server = new Hapi.Server({ debug: { request: ['error'] } });
 
 ## Plugins de log
 
-Os métodos nativos são mínimos, no entando, para um log mais completo você realmente deveria pensar em usar um plugin como [good](https://github.com/hapijs/good) or [bucker](https://github.com/nlf/bucker).
+Os métodos nativos são mínimos, no entando, para um log mais completo você realmente deveria pensar em usar um plugin como [good](https://github.com/hapijs/good).

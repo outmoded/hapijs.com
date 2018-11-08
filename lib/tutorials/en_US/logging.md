@@ -38,14 +38,14 @@ server.events.on('log', (event, tags) => {
 
 Events logged with `server.log()` will emit a `log` event and events logged with `request.log()` will emit a `request` event.
 
-You can retrive all logs for a particular request at once via `request.logs`. This will be an array containing all the logged request events. You must first set the `logs.collect` option to `true` on the route, otherwise this array will be empty.
+You can retrieve all logs for a particular request at once via `request.logs`. This will be an array containing all the logged request events. You must first set the `log.collect` option to `true` on the route, otherwise this array will be empty.
 
 ```javascript
 server.route({
     method: 'GET',
     path: '/',
     options: {
-        logs: {
+        log: {
             collect: true
         }
     },
@@ -70,4 +70,4 @@ You can find more information on debug mode in the [API documentation](https://h
 
 ## Logging plugins
 
-The built-in methods provided by hapi for retrieving and printing logs are fairly minimal. For a more feature-rich logging experience, you can look into using a plugin like [good](https://github.com/hapijs/good) or [bucker](https://github.com/nlf/bucker).
+The built-in methods provided by hapi for retrieving and printing logs are fairly minimal. For a more feature-rich logging experience, you can look into using a plugin like [good](https://github.com/hapijs/good).

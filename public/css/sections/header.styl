@@ -26,6 +26,24 @@ header
 
         &:hover
           opacity: .8
+      
+      &.edit
+        
+        svg
+          margin-left: 5px
+          transform: translateY(10%)
+
+        path
+          fill: none
+        
+        .edit-svg-path
+          fill: $orange
+        
+        &:hover
+
+          .edit-svg-path
+            transition: all .3s ease-in
+            fill: $orange-dark
 
   .introduction
 

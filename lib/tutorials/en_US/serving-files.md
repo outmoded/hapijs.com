@@ -134,7 +134,7 @@ server.route({
     path: '/{param*}',
     handler: {
         directory: {
-            path: 'public'
+            path: 'directory-path-here'
         }
     }
 });
@@ -142,7 +142,7 @@ server.route({
 
 ### Directory handler options
 
-The above route will respond to any request by looking for a matching filename in the `public` directory. Note that a request to `/` in this configuration will reply with an HTTP `403` response. We can fix this by adding an index file. By default hapi will search in the directory for a file called `index.html`. We can disable serving an index file by setting the index option to `false`, or alternatively we can specify an array of files that inert should look for as index files:
+The above route will respond to any request by looking for a matching filename in the `directory-path-here` directory. Note that a request to `/` in this configuration will reply with an HTTP `403` response. We can fix this by adding an index file. By default hapi will search in the directory for a file called `index.html`. We can disable serving an index file by setting the index option to `false`, or alternatively we can specify an array of files that inert should look for as index files:
 
 ```javascript
 server.route({
@@ -150,7 +150,7 @@ server.route({
     path: '/{param*}',
     handler: {
         directory: {
-            path: 'public',
+            path: 'directory-path-here',
             index: ['index.html', 'default.html']
         }
     }
@@ -165,7 +165,7 @@ server.route({
     path: '/{param*}',
     handler: {
         directory: {
-            path: 'public',
+            path: 'directory-path-here',
             listing: true
         }
     }

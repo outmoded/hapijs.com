@@ -37,15 +37,15 @@ exports.register.attributes = {
 };
 ```
 
-첫 번째 예제에서 명확하게 `name`과 `version`을 설정했지만, 두 번째 예제에서는 값으로 package.json의 내용으로 `pkg` 인자를 설정했습니다. 두 방법 모두 가능합니다. 
+첫 번째 예제에서 명확하게 `name`과 `version`을 설정했지만, 두 번째 예제에서는 값으로 package.json의 내용으로 `pkg` 인자를 설정했습니다. 두 방법 모두 가능합니다.
 
-또한 `attributes` 객체는 `true`로 설정하여 같은 서버에서 플러그인이 여러 번 등록되도 안전하다는 것을 hapi에 알려주는 `multiple` 키를 포함할 수 있습니다. 
+또한 `attributes` 객체는 `true`로 설정하여 같은 서버에서 플러그인이 여러 번 등록되도 안전하다는 것을 hapi에 알려주는 `multiple` 키를 포함할 수 있습니다.
 
 ### register 메소드
 
-위에서 본 것처럼 `register` 메소드는 `server`, `options`, `next` 3개의 인자를 받습니다. 
+위에서 본 것처럼 `register` 메소드는 `server`, `options`, `next` 3개의 인자를 받습니다.
 
-`options` 인자는 사용자가 전달한 모든 옵션을 플러그인에 전달합니다. 변경되는 것 없이 객체가 `register` 메소드로 바로 전달됩니다.  
+`options` 인자는 사용자가 전달한 모든 옵션을 플러그인에 전달합니다. 변경되는 것 없이 객체가 `register` 메소드로 바로 전달됩니다.
 
 `next`는 플러그인이 등록되는 동안 필요한 모든 단계가 완료되면 호출됩니다. 이 메소드는 플러그인을 등록하는 동안 에러가 발생하면 정의되는 `err`라는 하나의 인자를 받아들입니다.
 
@@ -185,11 +185,11 @@ server.register({ register: require('myplugin') }, {
 });
 ```
 
-이제 플러그인이 로드될 때 `prefix` 옵션 때문에 `/plugins/test`에 `GET` 경로가 만들어질 것입니다.  
+이제 플러그인이 로드될 때 `prefix` 옵션 때문에 `/plugins/test`에 `GET` 경로가 만들어질 것입니다.
 
-비슷하게 `config.vhost` 인자는 플러그인이 로드될 때 생성된 경로의 기본 `vhost`를 설정합니다. `vhost` 설정에 대한 자세한 내용은 [API reference](/api#route-options)에서 찾을 수 있습니다.
+비슷하게 `options.routes.vhost` 인자는 플러그인이 로드될 때 생성된 경로의 기본 `vhost`를 설정합니다. `vhost` 설정에 대한 자세한 내용은 [API reference](/api#route-options)에서 찾을 수 있습니다.
 
-`select` 인자는 `server.select()`와 정확히 같은 방식으로 동작합니다. 하나의 레이블 또는 레이블의 배열과 관련된 연결을 플러그인에 전달합니다. 
+`select` 인자는 `server.select()`와 정확히 같은 방식으로 동작합니다. 하나의 레이블 또는 레이블의 배열과 관련된 연결을 플러그인에 전달합니다.
 
 ```javascript
 server.register({ register: require('myplugin') }, {

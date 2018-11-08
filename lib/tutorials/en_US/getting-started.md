@@ -129,7 +129,7 @@ const init = async () => {
 
 The `server.register()` command above adds the [inert](https://github.com/hapijs/inert) plugin to your hapi application.
 
-The `server.route`() command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file. We've put the route registration after registering the `inert` plugin. It is generally wise to run code that depends on a plugin after the plugin is registered so that you can be absolutely sure that the plugin exists when your code runs.
+The `server.route()` command registers the `/hello` route, which tells your server to accept GET requests to `/hello` and reply with the contents of the `hello.html` file. We've put the route registration after registering the `inert` plugin. It is generally wise to run code that depends on a plugin after the plugin is registered so that you can be absolutely sure that the plugin exists when your code runs.
 
 Start up your server with `node server.js` and go to [`http://localhost:3000/hello`](http://localhost:3000/hello) in your browser. Oh no! We're getting an error because we never created a `hello.html` file. You need to create the missing file to get rid of this error.
 
@@ -206,7 +206,7 @@ const init = async () => {
         plugin: require('hapi-pino'),
         options: {
             prettyPrint: false,
-            logEvents: ['response']
+            logEvents: ['response', 'onPostStart']
         }
     });
 
