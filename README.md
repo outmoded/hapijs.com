@@ -4,7 +4,7 @@
 
 This is the home of [hapijs.com](http://hapijs.com).
 
-Lead Maintainer: [Nathan LaFreniere](https://github.com/nlf)
+Lead Maintainer: [Jonas Pauthier](https://github.com/Nargonath)
 
 **hapijs.com** is generously hosted by [packet](https://www.packet.net).
 
