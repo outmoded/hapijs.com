@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "hapijs.com",
   "main": "server.js",
+  "nodemonConfig": {
+    "events": {
+      "start": "make",
+      "restart": "make"
+    }
+  },
   "dependencies": {
     "boom": "7.x.x",
     "catbox-memory": "3.x.x",
@@ -25,7 +31,7 @@
   "scripts": {
     "build": "make",
     "start": "node server.js",
-    "dev": "DEBUG=* nodemon server.js",
+    "dev": "DEBUG=* nodemon -e js,json,styl server.js",
     "lint:code": "eslint -c eslint-config-hapi .",
     "lint:fix": "eslint --fix  -c eslint-config-hapi .",
     "lint:tutorials": "eslint --ext .md lib/tutorials",
