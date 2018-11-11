@@ -27,7 +27,7 @@ Lead Maintainer: [Jonas Pauthier](https://github.com/Nargonath)
 ```bash
 npm install
 make
-npm start
+npm start or npm run dev (for automatic code reload)
 ```
 
 You may now visit `http://localhost:3000` in your browser to view the site.
