@@ -134,7 +134,7 @@ server.route({
     path: '/{param*}',
     handler: {
         directory: {
-            path: 'public'
+            path: 'directory-path-here'
         }
     }
 });
@@ -142,7 +142,7 @@ server.route({
 
 ### 디렉터리 핸들러 옵션
 
-위의 경로는 `public` 디렉터리 안의 일치하는 파일 이름을 찾아 요청에 응답합니다. 이 설정에서 `/`에 대한 요청은 HTTP `403`으로 응답할 것입니다. index 파일을 추가하여 이를 수정할 수 있습니다. 기본으로 hapi는 `index.html`으로 불리는 파일을 디렉터리에서 찾을 것입니다. index 옵션을 `false`로 설정하여 index 파일을 제공하지 않도록 할 수 있습니다. 또는 inert가 index 파일로 찾을 파일의 배열을 지정할 수 있습니다.
+위의 경로는 `directory-path-here` 디렉터리 안의 일치하는 파일 이름을 찾아 요청에 응답합니다. 이 설정에서 `/`에 대한 요청은 HTTP `403`으로 응답할 것입니다. index 파일을 추가하여 이를 수정할 수 있습니다. 기본으로 hapi는 `index.html`으로 불리는 파일을 디렉터리에서 찾을 것입니다. index 옵션을 `false`로 설정하여 index 파일을 제공하지 않도록 할 수 있습니다. 또는 inert가 index 파일로 찾을 파일의 배열을 지정할 수 있습니다.
  
 ```javascript
 server.route({
@@ -150,7 +150,7 @@ server.route({
     path: '/{param*}',
     handler: {
         directory: {
-            path: 'public',
+            path: 'directory-path-here',
             index: ['index.html', 'default.html']
         }
     }
@@ -165,7 +165,7 @@ server.route({
     path: '/{param*}',
     handler: {
         directory: {
-            path: 'public',
+            path: 'directory-path-here',
             listing: true
         }
     }

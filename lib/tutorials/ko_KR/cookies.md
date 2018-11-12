@@ -27,7 +27,7 @@ server.state('data', {
 
 ```json5
 {
-    config: {
+    options: {
         state: {
             parse: true,        // parse cookies and store in request.state
             failAction: 'error' // may also be 'ignore' or 'log'
