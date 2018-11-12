@@ -82,7 +82,7 @@ start();
 
 `authenticate` 메소드는 `function (request, reply)` 모양을 가지고 scheme에서 유일한 *필수* 메소드입니다.
 
-`request`는 서버에서 생성된 `request` 객체입니다. route 처리기에서 사용 가능한 것과 같은 객체이고 [API reference](/api#request-object)에 문서로 만들어 져 있습니다.  
+`request`는 서버에서 생성된 `request` 객체입니다. route 처리기에서 사용 가능한 것과 같은 객체이고 [API reference](/api#request-object)에 문서로 만들어 져 있습니다.
 
 `h`는 표준 hapi [응답 도구](https://hapijs.com/api#response-toolkit)입니다.
 
@@ -112,7 +112,7 @@ start();
 
 ### 등록하기
 
-scheme을 등록하려면 `server.auth.scheme(name, scheme)`을 사용해야 합니다. `name` 인자는 이 특정 scheme을 식별하는 문자열이고, `scheme` 인자는 위에 설명한 메소드입니다. 
+scheme을 등록하려면 `server.auth.scheme(name, scheme)`을 사용해야 합니다. `name` 인자는 이 특정 scheme을 식별하는 문자열이고, `scheme` 인자는 위에 설명한 메소드입니다.
 
 ## Strategies
 
@@ -150,8 +150,8 @@ strategy를 등록하려면 먼저 등록된 scheme이 있어야 합니다. sche
 마지막 `mode` 설정은 `'try'`입니다. `'try'`와 `'optional'`의 차이점은 `'try'`에서 유효하지 않은 인증도 받아들여지고 사용자는 경로 처리기에 도달할 것입니다.
 
 
-하나의 strategy를 지정할 때 strategy 이름의 문자열로 `strategy` 속성을 설정할 수 있습니다. 하나 이상의 strategy를 지정한다면 인자 이름은 `strategies`가 돼야 하고 시도할 각 strategy의 이름 문자열의 배열이어야 합니다. strategy는 성공할 때 까지 하나씩 시도되거나 모두 실패합니다. 
+하나의 strategy를 지정할 때 strategy 이름의 문자열로 `strategy` 속성을 설정할 수 있습니다. 하나 이상의 strategy를 지정한다면 인자 이름은 `strategies`가 돼야 하고 시도할 각 strategy의 이름 문자열의 배열이어야 합니다. strategy는 성공할 때 까지 하나씩 시도되거나 모두 실패합니다.
 
 마지막으로 `payload` 인자는 payload는 인증되지 않음을 가리키는 `false`, *반드시* 인증돼야 하는 `'required'` 또는 `true`, 클라이언트가 payload 인증 정보를 포함한다면 반드시 유효해야 하는 `'optional'`로 설정될 수 있습니다.
 
-`payload` 인자는 scheme에서 `payload` 메소드를 지원하는 strategy에서만 사용 가능합니다. 
+`payload` 인자는 scheme에서 `payload` 메소드를 지원하는 strategy에서만 사용 가능합니다.

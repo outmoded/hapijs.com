@@ -18,8 +18,12 @@ block content
         section.company(class=index < titles.length - 1 ? "bottom-rule" : "")
           .cf
             if (company.logo)
-              a(href=`${company.url}`, class='community-company-logo')
-                img(src=`/public/img/${company.logo}`, width=(company.width ? company.width : undefined), height=(company.height ? company.height : undefined), alt=title)
+              if (company.url)
+                a(href=`${company.url}`, class='community-company-logo')
+                  img(src=`/public/img/${company.logo}`, width=(company.width ? company.width : undefined), height=(company.height ? company.height : undefined), alt=title)
+              else
+                img(src=`/public/img/${company.logo}`, width=(company.width ? company.width : undefined), height=(company.height ? company.height : undefined), alt=title, class='community-company-logo no-link')
+
               blockquote
                 p= company.quote
                 small &ndash; #{company.person} at #{title}

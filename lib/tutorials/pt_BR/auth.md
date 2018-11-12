@@ -49,7 +49,7 @@ server.register(Basic, (err) => {
     server.route({
         method: 'GET',
         path: '/',
-        config: {
+        options: {
             auth: 'simple',
             handler: function (request, reply) {
                 reply('hello, ' + request.auth.credentials.name);
@@ -163,7 +163,7 @@ Note que qualquer rota adicionada *antes* de `server.auth.default()` ser chamado
 
 ## Configuração de rota
 
-A autenticação também pode ser configurada em uma rota, pelo parâmetro `config.auth`. Se definido para `false`, a autenticação é desabilitada para a rota.
+A autenticação também pode ser configurada em uma rota, pelo parâmetro `options.auth`. Se definido para `false`, a autenticação é desabilitada para a rota.
 
 Também podemos definir com uma string com o nome da estratégia a ser utilizada, ou um objeto com os parâmetros `mode`, `strategies`, e `payload`.
 

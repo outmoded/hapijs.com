@@ -188,7 +188,7 @@ server.register({ register: require('myplugin') }, {
 
 Agora, quando este plugin for carregado, por causa da opção `prexix` a rota `GET` será criada em `/plugins/test`.
 
-De forma análoga o parâmetro `config.vhost` irá designar uma configuração `vhost` padrão para qualquer rota criada pelo plugin sendo carregado. Mais detalhes sobre a configuração `vhost` pode ser encontrado na [API reference](/api#route-options).
+De forma análoga o parâmetro `options.routes.vhost` irá designar uma configuração `vhost` padrão para qualquer rota criada pelo plugin sendo carregado. Mais detalhes sobre a configuração `vhost` pode ser encontrado na [API reference](/api#route-options).
 
 O parâmetro `select` funciona exatamente do mesmo jeito que `server.select()` funciona, de forma que você pode passar uma label ou um array de labels para o plugin para o plugins se associar.
 
