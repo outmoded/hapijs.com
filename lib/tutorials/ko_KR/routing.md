@@ -1,13 +1,16 @@
-## 라우트
+## Routing
 
-hapi에서 라우트를 정의할 때 다른 프레임워크와 마찬가지로 3개의 기본 요소가 필요합니다.: 경로, 메소드, 처리기. 이 객체는 서버에 전달되고 다음처럼 간단할 수 있습니다.:
+_이 튜터리얼은 hapi v17과 호환됩니다._
+
+hapi에서 라우트를 정의할 때 다른 프레임워크와 마찬가지로 3개의 기본 요소가 필요합니다.: 경로, 메소드, 처리기. 서버에 객체로 전달되고 다음처럼 간단할 수 있습니다.:
 
 ```javascript
 server.route({
     method: 'GET',
     path: '/',
-    handler: function (request, reply) {
-        reply('Hello!');
+    handler: function (request, h) {
+
+        return 'Hello!';
     }
 });
 ```
@@ -20,8 +23,9 @@ server.route({
 server.route({
     method: ['PUT', 'POST'],
     path: '/',
-    handler: function (request, reply) {
-        reply('I did something!');
+    handler: function (request, h) {
+
+        return 'I did something!';
     }
 });
 ```
@@ -34,8 +38,9 @@ server.route({
 server.route({
     method: 'GET',
     path: '/hello/{user}',
-    handler: function (request, reply) {
-        reply('Hello ' + encodeURIComponent(request.params.user) + '!');
+    handler: function (request, h) {
+
+        return `Hello ${encodeURIComponent(request.params.user)}!`;
     }
 });
 ```
@@ -50,14 +55,18 @@ server.route({
 server.route({
     method: 'GET',
     path: '/hello/{user?}',
-    handler: function (request, reply) {
-        const user = request.params.user ? encodeURIComponent(request.params.user) : 'stranger';
-        reply('Hello ' + user + '!');
+    handler: function (request, h) {
+
+        const user = request.params.user ?
+            encodeURIComponent(request.params.user) :
+            'stranger';
+
+        return `Hello ${user}!`;
     }
 });
 ```
 
-이제 `/hello/mary`에 대한 요청은 `Hello mary!`로 응답하고 `/hello`에 대한 요청은 `Hello stranger!`로 응답할 것입니다. 경로에서 *마지막* 명명된 인자만이 선택적으로 될 수 있습니다. 선택적 인자 뒤에 다른 인자가 있기 때문에 `/{hone?}/{two}`는 무효한 경로임을 의미합니다. 경로의 부분에서 일부분을 다루는 명명된 인자가 있을 수 있지만 한 부분에서는 하나의 명명된 인자만 존재할 수 있습니다 `/{filename}.jpg`는 유효하지만 `/{filename}.{ext}`는 유효하지 않습니다.
+이제 `/hello/mary`에 대한 요청은 `Hello mary!`로 응답하고 `/hello`에 대한 요청은 `Hello stranger!`로 응답할 것입니다. 경로에서 *마지막* 명명된 인자만이 선택적으로 될 수 있습니다. 선택적 인자 뒤에 다른 인자가 있기 때문에 `/{one?}/{two}`는 무효한 경로임을 의미합니다. 경로의 부분에서 일부분을 다루는 명명된 인자를 가질 수 있습니다. 예를 들어 `/{filename}.jpg`는 유효합니다. 한 부분에서 인자 사이에 인자가 아닌 구분자가 제공되면 여러 인자를 가질 수 있습니다. 이는 `/{filename}.{ext}`는 유효하지만 `/{filename}{ext}`는 유효하지 않음을 의미합니다.
 
 ### 복수 부분 인자
 
@@ -67,24 +76,27 @@ server.route({
 server.route({
     method: 'GET',
     path: '/hello/{user*2}',
-    handler: function (request, reply) {
+    handler: function (request, h) {
+
         const userParts = request.params.user.split('/');
-        reply('Hello ' + encodeURIComponent(userParts[0]) + ' ' + encodeURIComponent(userParts[1]) + '!');
+        return `Hello ${encodeURIComponent(userParts[0])} ${encodeURIComponent(userParts[1])}!`;
     }
 });
 ```
 
-이 설정으로 `/hello/john/doe`에 대한 요청은 문자열 `Hello john doe!` 응답을 받을 것입니다. 중요한 것은 인자는 `/` 글자를 포함한 문자열이라는 것입니다. 그래서 두 개의 분리된 부분을 얻기 위해 그 글자로 나누었습니다. 별표 뒤에 숫자는 인자에 할당될 경로 부분의 개수를 나타냅니다. 숫자를 생략할 수도 있습니다. 그러면 인자는 가능한 부분의 개수와 일치합니다. 선택적 인자같이 복수 부분 인자는(예 `/{files*}`) *오직* 경로의 마지막 인자로만 나타날 수 있습니다.
+이 설정으로 `/hello/john/doe`에 대한 요청은 문자열 `Hello john doe!` 응답을 받을 것입니다. 중요한 것은 인자는 `"john/doe"` 문자열이라는 것입니다. 그래서 두 개의 분리된 부분을 얻기 위해 그 글자로 나누었습니다. 별표 뒤에 숫자는 인자에 할당될 경로 부분의 개수를 나타냅니다. 숫자를 생략할 수도 있습니다. 그러면 인자는 가능한 부분의 개수와 일치합니다. 선택적 인자같이 복수 부분 인자는(예 `/{files*}`) *오직* 경로의 마지막 인자로만 나타날 수 있습니다. 
 
-특정 요청에 대한 처리기를 결정할 때 hapi는 가장 구체적인 것부터 덜 구체적인 순서로 경로를 찾습니다. 만약 하나는 `/filename.jpg`와 다른 하나는 `/filename.{ext}` 이렇게 2개의 라우트를 가지고 있다면 `filename.jpg`에 대한 요청은 첫 번째 라우트에 일치하고 두 번째 라우트에는 일치하지 않습니다. `/{files*}` 경로의 라우트는 테스트 되는 *마지막* 라우트가 될 것이고 다른 라우트가 모수 실패할 경우에만 일치한다는 것을 의미합니다.
+특정 요청에 대한 처리기를 결정할 때 hapi는 가장 구체적인 것부터 덜 구체적인 순서로 경로를 찾습니다. 만약 하나는 `/filename.jpg`와 다른 하나는 `/filename.{ext}` 이렇게 2개의 라우트를 가지고 있다면 `filename.jpg`에 대한 요청은 첫 번째 라우트에 일치하고 두 번째 라우트에는 일치하지 않습니다. `/{files*}` 경로의 라우트는 테스트 되는 *마지막* 라우트가 될 것이고 다른 라우트가 모두 실패할 경우에만 일치한다는 것을 의미합니다. 
 
-## handler 메소드
+## Handler 메소드
 
-handler 옵션은 `request`와 `reply` 2개의 인자를 받습니다.
+handler 옵션은 `request`와 `h` 2개의 인자를 받습니다.
 
 `request` 인자는 경로 인자,연관된 페이로드, 인증 정보, 헤더 같은 최종 사용자에 대한 자세한 정보를 가진 객체입니다. `request` 객체에 대한 전체 문서는 [API reference](/api#request-properties)에서 찾을 수 있습니다.
 
-두 번째 인자 `reply`는 요청에 응답하는데 사용되는 메소드입니다. 앞의 예제에서 본 것처럼 페이로드를 단순히 페이로드로 응답하려고 한다면 페이로드를 인자로 `reply`에 전달하면 됩니다. 페이로드는 문자열, 버퍼 JSON 직렬화 객체 또는 스트림이 될 수 있습니다 `reply`의 결과는 응답객체입니다. 이 객체는 전송 전에 응답을 변경하는 추가 메소드로 연결될 수 있습니다. 예를 들면 `reply('created').code(201)`은 HTTP 201 상태 코드와 `created`의 페이로드로 보낼 것입니다. 헤더, 콘텐츠 타입 콘텐츠 길이를 설정하고 리다이렉션 응답을 보낼 수 있습니다. 그리고 많은 다른 것들은 [API reference](/api#response-object)에서 문서화 되어있습니다
+두 번째 인자인 `h`는 요청에 응답하기 위해 사용하는 몇 가지 메소드를 가지고 있는 객체인 응답 도구입니다. 앞의 예제에서 본 것처럼 요청에 어떤 값으로 응답하기를 원하면 처리기에서 단순히 그 값을 반환하면 됩니다. payload는 문자열, 버퍼, 직렬화된 JSON 객체, 스트림 또는 Promise 이어야 합니다. 
+
+또는 같은 값을 `h.response(value)`에 전달하고 처리기에서 반환하면 됩니다. 이 호출의 결과는 응답 객체이고 이 객체는 응답을 전송하기 전에 응답을 변경하는 추가적인 메소드로 연결될 수 있습니다. 예를 들어 `h.response('created').code(201)`은 HTTP 상태 코드 `201`과 함께 `created`의 payload를 전송할 것입니다. 헤더, 내용물 종류, 내용물 길이를 설정하거나 리다이렉션 응답을 전송할 수 있습니다. 많은 다른 것들에 대해서는 [API reference](/api#response-toolkit)에 정리되어 있습니다.
 
 ## 설정
 
@@ -96,9 +108,13 @@ handler 옵션은 `request`와 `reply` 2개의 인자를 받습니다.
 server.route({
     method: 'GET',
     path: '/hello/{user?}',
-    handler: function (request, reply) {
-        const user = request.params.user ? encodeURIComponent(request.params.user) : 'stranger';
-        reply('Hello ' + user + '!');
+    handler: function (request, h) {
+
+        const user = request.params.user ?
+            encodeURIComponent(request.params.user) :
+            'stranger';
+
+        return `Hello ${user}!`;
     },
     options: {
         description: 'Say hello!',
