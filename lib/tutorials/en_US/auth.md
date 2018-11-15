@@ -90,7 +90,7 @@ When authentication is successful, you must call and return `h.authenticated({ c
 
 The `credentials` and `artifacts` properties can be accessed later (in a route handler, for example) as part of the `request.auth` object.
 
-If authentication is unsuccesful, you can either throw an error or call and return `h.unauthenticated(error, [data])` where `error` is an authentication error and `data` is an optional object containing `credentials` and `artifacts`. There's no difference between calling `return h.unauthenticated(error)` or throwing an error if no `data` object is provided. The specifics of the error passed will affect the behavior. More information can be found in the API documentation for [`server.auth.scheme(name, scheme)`](https://hapijs.com/api#-serverauthschemename-scheme). It is recommend to use [boom](https://github.com/hapijs/boom) for errors.
+If authentication is unsuccessful, you can either throw an error or call and return `h.unauthenticated(error, [data])` where `error` is an authentication error and `data` is an optional object containing `credentials` and `artifacts`. There's no difference between calling `return h.unauthenticated(error)` or throwing an error if no `data` object is provided. The specifics of the error passed will affect the behavior. More information can be found in the API documentation for [`server.auth.scheme(name, scheme)`](https://hapijs.com/api#-serverauthschemename-scheme). It is recommend to use [boom](https://github.com/hapijs/boom) for errors.
 
 ### `payload`
 
