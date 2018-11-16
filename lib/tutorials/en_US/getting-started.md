@@ -47,7 +47,7 @@ number to listen on. After that we start the server and log that it's running.
 When creating a server, we can also provide a hostname, IP address, or even
 a Unix socket file, or Windows named pipe to bind the server to. For more details, see [the API reference](/api/#-server-options).
 
-The host field set to `localhost` is likely the safest choice. In a docker container, however, the localhost may not be accessible outside of the container, and using `host: '0.0.0.0'` may be needed.
+The host field set to `localhost` is likely the safest choice. In a docker container, however, the localhost may not be accessible outside of the container and using `host: '0.0.0.0'` may be needed.
 
 ### Adding routes
 
