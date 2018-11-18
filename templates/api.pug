@@ -10,6 +10,12 @@ block content
     .column.api-description.api-reference
       .reference !{html}
 
+      if apiModules.length
+        .module-reference
+          h1#modules Modules
+          each module in apiModules
+            div(data-module-name=module.name) !{module.html}
+
     .column.nav-secondary
 
       .search

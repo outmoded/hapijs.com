@@ -318,9 +318,52 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     var nav = document.querySelectorAll('.api-reference ul');
+    var modules = document.querySelectorAll('.module-reference div[data-module-name]');
     if (nav.length) {
         // move the first UL to the sidebar
         nav = nav[0];
+
+        // append modules api first UL to hapi api UL
+        var modulesLi = document.createElement('li');
+        var modulesLink = document.createElement('a');
+        modulesLink.href = '#modules';
+        modulesLink.textContent = 'Modules';
+        modulesLi.appendChild(modulesLink);
+        var moduleInternUl = document.createElement('ul');
+
+        Array.prototype.forEach.call(modules, function (module) {
+            var li = document.createElement('li');
+            var moduleContent = module.querySelector('ul');
+            var moduleLink = document.createElement('a');
+            var moduleName = module.dataset.moduleName;
+
+            // we need to update all links in module summary to prepend with the module name
+            // this way we prevent anchor name duplicate between modules
+            var moduleSummaryLinks = moduleContent.querySelectorAll('a');
+            Array.prototype.forEach.call(moduleSummaryLinks, function(summaryLink) {
+                var hastagPosition = summaryLink.href.indexOf('#');
+
+                if (summaryLink.href && hastagPosition > -1) {
+                    var anchorValue = summaryLink.href.substring(hastagPosition + 1);
+                    var newAnchorValue = moduleName + '-' + anchorValue;
+                    // when loading the content from github ids are prefixed with 'user-content-'
+                    // later on that prefix will be removed
+                    var linkDestination = document.getElementById('user-content-' + anchorValue);
+
+                    summaryLink.href = summaryLink.href.substring(0, hastagPosition + 1) + newAnchorValue;
+                    linkDestination.id = newAnchorValue;
+                }
+            });
+
+            moduleLink.href = '#' + moduleName;
+            moduleLink.textContent = moduleName.charAt(0).toUpperCase() + moduleName.substr(1);
+            li.appendChild(moduleLink);
+            li.appendChild(moduleContent);
+            moduleInternUl.appendChild(li);
+        });
+        modulesLi.appendChild(moduleInternUl);
+        nav.appendChild(modulesLi);
+
         var sidebar = document.querySelectorAll('.nav-secondary nav')[0];
         sidebar.appendChild(nav);
 
