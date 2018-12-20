@@ -244,4 +244,4 @@ init();
 
 ### 其他
 
-hapi 拥有许多其他的功能，此教程只记录了其中少数几个功能，你可以在右侧的列表中找到它们。 其余内容请参阅 [API reference](/api)。 欢迎在 [github](https://github.com/hapijs/discuss/issues) 以及 [gitter](https://gitter.im/hapijs/hapi) 提问，或者在 [slack](https://join.slack.com/t/hapihour/shared_invite/enQtMjM5Njk1NDgzNTY5LThmODkxODIzOTg5NjJjODFiYjcxZDMxMTAyMzBkZDk3MWY4MTFlNDAyMTU3MmUwMmM0Y2UwMjU3YjAwYjRkN2E) 找到我们。
+hapi 拥有许多其他的功能，此教程只记录了其中少数几个功能，你可以在右侧的列表中找到它们。 其余内容请参阅 [API reference](/api)。 欢迎在 [github](https://github.com/hapijs/discuss/issues) 以及 [gitter](https://gitter.im/hapijs/hapi) 提问，或者在 [slack](https://join.slack.com/t/hapihour/shared_invite/enQtNTA5MDUzOTAzOTU4LTUyZmFiYjkyMTBmNDcyMmI2MmRjMzg4Y2YzNTlmNzUzNjViN2U1NmYyY2NjYjhiYWU4MGE2OTFhZDRlYWMyZDY) 找到我们。

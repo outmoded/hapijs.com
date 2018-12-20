@@ -244,4 +244,4 @@ init();
 
 ### 그 밖의 모든 것
 
-hapi는 많은 다른 기능들을 가지고 있으며 여기에서는 선택된 몇가지만 기술했습니다. 많은 기능들을 확인하려면 오른쪽 목록을 사용해주세요. 다른 모든 것은 [API reference](/api)에 문서화 되어 있으며 언제나처럼 [github](https://github.com/hapijs/discuss/issues)과 [gitter](https://gitter.im/hapijs/hapi)에 자유롭게 질문을 하거나 [slack](https://join.slack.com/t/hapihour/shared_invite/enQtMjM5Njk1NDgzNTY5LThmODkxODIzOTg5NjJjODFiYjcxZDMxMTAyMzBkZDk3MWY4MTFlNDAyMTU3MmUwMmM0Y2UwMjU3YjAwYjRkN2E)을 방문해주세요.
+hapi는 많은 다른 기능들을 가지고 있으며 여기에서는 선택된 몇가지만 기술했습니다. 많은 기능들을 확인하려면 오른쪽 목록을 사용해주세요. 다른 모든 것은 [API reference](/api)에 문서화 되어 있으며 언제나처럼 [github](https://github.com/hapijs/discuss/issues)과 [gitter](https://gitter.im/hapijs/hapi)에 자유롭게 질문을 하거나 [slack](https://join.slack.com/t/hapihour/shared_invite/enQtNTA5MDUzOTAzOTU4LTUyZmFiYjkyMTBmNDcyMmI2MmRjMzg4Y2YzNTlmNzUzNjViN2U1NmYyY2NjYjhiYWU4MGE2OTFhZDRlYWMyZDY)을 방문해주세요.
