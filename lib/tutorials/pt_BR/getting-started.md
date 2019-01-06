@@ -201,4 +201,4 @@ E acessando `http://localhost:3000/` no navegador, você verá:
 
 ## Outras informações
 
-Hapi tem muitos outros recursos e somente alguns são documentados em tutoriais aqui. Por favor, use a lista da direita para vê-los. Ademais, o restante da documentação pode ser vista na [API de referência](/api) e, como sempre, sinta-se a vontade para fazer perguntas ou visite-nos no freenode em [#hapi](http://webchat.freenode.net/?channels=hapi).
+Hapi oferece  muitas mais capacidades, no entanto apenas algumas estão documentadas em tutoriais como este. Por favor, use a lista da direita para vê-los. Ademais, o restante da documentação pode ser vista na [API de referência](/api) e, como sempre, sinta-se à vontade para fazer perguntas no [github](https://github.com/hapijs/discuss/issues) ou visite-nos no [slack](https://join.slack.com/t/hapihour/shared_invite/enQtNTA5MDUzOTAzOTU4LTUyZmFiYjkyMTBmNDcyMmI2MmRjMzg4Y2YzNTlmNzUzNjViN2U1NmYyY2NjYjhiYWU4MGE2OTFhZDRlYWMyZDY).
