@@ -114,7 +114,7 @@ Note that we call `init` rather than `start` to set up the server, which means t
 
 You will note the use of `inject` on the server. `inject` uses [Shot](https://github.com/hapijs/shot) to `inject` a request directly into Hapi's route handler. This is the magic which allows us to test HTTP methods.
 
-To run the tests, you can modify the `package.json` of your project to run mocha:
+To run the tests, you can modify the `package.json` of your project to run your test runner:
 
 ```json
   "scripts": {
