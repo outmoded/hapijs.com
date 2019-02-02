@@ -72,7 +72,7 @@ What we've created here is a way of starting the server normally by calling its 
 
 In this example we'll use [lab](https://github.com/hapijs/lab), but the same method can be used for any testing tool such as [Mocha](https://mochajs.org/), [Jest](https://jestjs.io/), [Tap](https://www.node-tap.org/), [Ava](https://github.com/avajs) etc.
 
-You should probably install mocha and code before trying to run this:
+You should probably install lab and code before trying to run this:
 
 ```bash
 npm install --save-dev lab code
