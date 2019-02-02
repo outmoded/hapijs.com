@@ -54,7 +54,7 @@ process.on('unhandledRejection', (err) => {
 
 ```
 
-Note that we call `server.initialize` in our `init` method. We stil want Hapi to set up all our server concerns, such as [caching](https://hapijs.com/tutorials/caching).
+Note that we call `server.initialize` in our `init` method. We still want Hapi to set up all our server concerns, such as [caching](https://hapijs.com/tutorials/caching).
 
 Next, we create our main entrypoint for the server. This might be the file referenced by the `main` attribute of your `package.json`. It is run when your application starts. 
 
@@ -70,21 +70,23 @@ What we've created here is a way of starting the server normally by calling its 
 
 ### Writing a route test
 
-In this example we'll use `mocha`, but the same method can be used for any testing tool.
+In this example we'll use [lab](https://github.com/hapijs/lab), but the same method can be used for any testing tool such as [Mocha](https://mochajs.org/), [Jest](https://jestjs.io/), [Tap](https://www.node-tap.org/), [Ava](https://github.com/avajs) etc.
 
 You should probably install mocha and code before trying to run this:
 
 ```bash
-npm install --save-dev mocha code
+npm install --save-dev lab code
 ```
 
 Then, create a file called `example.test.js` in the `test` directory.
 
 ```javascript
-'use strict';
+'use strict'
 
-const { init } = require('../lib/server');
+const Lab = require('lab');
 const { expect } = require('code');
+const { afterEach, beforeEach, describe, it } = exports.lab = Lab.script();
+const { init } = require('../lib/server');
 
 describe('GET /some/route', () => {
     let server;
@@ -92,11 +94,11 @@ describe('GET /some/route', () => {
     beforeEach(async () => {
         server = await init();
     });
-
+    
     afterEach(async () => {
         await server.stop();
     });
-
+    
     it('responds with 200', async () => {
         const res = await server.inject({
             method: 'get',
@@ -105,6 +107,7 @@ describe('GET /some/route', () => {
         expect(res.statusCode).to.equal(200);
     });
 });
+
 ```
 
 Note that we call `init` rather than `start` to set up the server, which means that the server starts, but does not listen on a socket. After each test we call `stop` to cleanup and stop the server.
@@ -115,6 +118,6 @@ To run the tests, you can modify the `package.json` of your project to run mocha
 
 ```json
   "scripts": {
-    "test": "mocha test **/*.spec.js"
+    "test": "lab -v **/*.spec.js"
   }
 ```
