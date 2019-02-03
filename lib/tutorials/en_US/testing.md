@@ -81,7 +81,7 @@ npm install --save-dev lab code
 Then, create a file called `example.test.js` in the `test` directory.
 
 ```javascript
-'use strict'
+'use strict';
 
 const Lab = require('lab');
 const { expect } = require('code');
@@ -94,11 +94,11 @@ describe('GET /some/route', () => {
     beforeEach(async () => {
         server = await init();
     });
-    
+
     afterEach(async () => {
         await server.stop();
     });
-    
+
     it('responds with 200', async () => {
         const res = await server.inject({
             method: 'get',
