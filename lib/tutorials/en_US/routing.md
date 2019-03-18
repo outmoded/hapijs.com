@@ -135,12 +135,8 @@ server.route({
 ```
 In the above example, the handler receives data via `request.payload`.  In this case, the `request.payload` contains an object that stores user sign up data:
 
-```js
-{
-    username: 'stimpy',
-    password: 'hapiHapi'
-}
-```
+`{ username: 'ferris', password: 'password' }`
+
 Note: It's always best practice to validate the incoming payload, as it may contain unsafe data.  See validation tutorial for more info.
 
 ## <a name="handler" /> Handler
