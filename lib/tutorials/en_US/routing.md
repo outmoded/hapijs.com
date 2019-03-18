@@ -23,7 +23,7 @@ server.route({
     path: '/',
     handler: (request, h) => {
 
-        return 'Hello World!'
+        return 'Hello World!';
     }
 });
 ```
@@ -38,7 +38,7 @@ server.route({
     path: '/',
     handler: (request, h) => {
 
-        return 'I did something!'
+        return 'I did something!';
     }
 });
 ```
@@ -53,7 +53,7 @@ server.route({
     path: '/hello/{user}',
     handler: (request, h) => {
 
-        return `Hello ${encodeURIComponent(request.params.user)}!`
+        return `Hello ${encodeURIComponent(request.params.user)}!`;
     }
 });
 ```
@@ -86,11 +86,11 @@ Along with optional path parameters, you can also allow parameters that match mu
 ```js
 server.route({
     method: 'GET',
-    path: '/hello/{user*2}'
+    path: '/hello/{user*2}',
     handler: (request, h) => {
 
         const userParts = request.params.user.split('/');
-        return `Hello ${encodeURLComponent(userParts[0])} ${encodeURLComponent(userParts[1])}!`
+        return `Hello ${encodeURLComponent(userParts[0])} ${encodeURLComponent(userParts[1])}!`;
     }
 });
 ```
@@ -112,9 +112,9 @@ server.route({
     path: '/',
     handler: (request, h) => {
 
-        return `Hello ${request.query.name}!`
+        return `Hello ${request.query.name}!`;
     }
-})
+});
 ```
 Here, we simply access the `name` query parameter and return it in the handler, which would read `Hello ferris!`.
 
@@ -129,7 +129,7 @@ server.route({
     handler: (request, h) => {
 
         const payload = request.payload;
-        return `Welcome ${encodeURIComponent(payload.username)}!`
+        return `Welcome ${encodeURIComponent(payload.username)}!`;
     }
 });
 ```
@@ -137,8 +137,8 @@ In the above example, the handler receives data via `request.payload`.  In this 
 
 ```js
 {
-    username: stimpy
-    password: hapiHapi
+    username: 'stimpy',
+    password: 'hapiHapi'
 }
 ```
 Note: It's always best practice to validate the incoming payload, as it may contain unsafe data.  See validation tutorial for more info.
@@ -168,7 +168,7 @@ server.route({
     handler: (request, h) => {
 
         const payload = request.payload;
-        return `Welcome ${encodeURIComponent(payload.username)}!`
+        return `Welcome ${encodeURIComponent(payload.username)}!`;
     },
     options: {
         auth: false,
