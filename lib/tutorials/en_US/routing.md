@@ -134,24 +134,46 @@ server.route({
 ```
 If you sent the request `localhost:3000?foo[bar]=baz`, hapi, by default would return `{ "foo[bar]": "baz" }`.  
 
-With the `qs` module, we can parse the query string out.  An example: 
+With the [qs](https://github.com/ljharb/qs) module, we can parse the query string out.  An example: 
 
 ```js
-const QS = require('qs');
+const Hapi = require('hapi');
+const Qs = require('qs');
+
+const server = Hapi.server({
+    port: 3000,
+    host: 'localhost',
+    query: {
+        parser: (query) => Qs.parse(query)
+    }
+});
 
 server.route({
     method: 'GET',
     path: '/',
     handler: function (request, h) {
 
-        const query = QS.parse(request.query);
-        return query;
+        return request.query;
     }
 });
+
+const init = async () => {
+
+    await server.start();
+    console.log('Server running on %ss', server.info.uri);
+};
+
+process.on('unhandledRejection', (err) => {
+
+    console.log(err);
+    process.exit(1);
+});
+
+init();
 ```
 Here, we first require the `qs` module.  
 
-Second, we parse the query string by calling `qs.parse()`.  
+Second, we set the query parameters parser method by setting the `server.options.query.parser` value.  In this case, we use the `Qs.parse()` method where `query` is an object containing the incoming `request.query` parameters.  Now, anything coming into `request.query` will be parsed with `Qs.parse()`.
 
 Lastly, we returned the parsed query string, which would now be:
 
@@ -242,15 +264,6 @@ const server = Hapi.server({
     host: 'localhost'
 });
 
-server.route({
-    method: '*',
-    path: '/{any*}',
-    handler: function (request, h) {
-
-        return h.view('404').code(404);
-    }
-});
-
 const init = async () => {
 
     await server.register(require('vision'));
@@ -262,9 +275,20 @@ const init = async () => {
         path: '../views'
     });
 
+    server.route({
+        method: '*',
+        path: '/{any*}',
+        handler: function (request, h) {
+
+            return h.view('404').code(404);
+        }
+    });
+
     await server.start();
     console.log('Server running on %ss', server.info.uri);
 };
+
+init();
 ```
 First we register the `vision` plugin and set up `server.views`.  For more info on views, please see the [views tutorial](/tutorials/views). 
 
