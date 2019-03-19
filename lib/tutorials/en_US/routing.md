@@ -1,5 +1,7 @@
 # Routing
 
+_This tutorial is compatible with hapi v17_
+
 
 - [Overview](#overview)
 - [Methods](#methods)
@@ -21,7 +23,7 @@ When defining a route in hapi, you need three basic elements: the path, the meth
 server.route({
     method: 'GET',
     path: '/',
-    handler: (request, h) => {
+    handler: function (request, h) {
 
         return 'Hello World!';
     }
@@ -30,13 +32,13 @@ server.route({
 
 ## <a name="methods" /> Methods
 
-The route above responds to a `GET` request to `/` with the string `Hello World!`. The method option can be any valid HTTP method, or an array of methods. Let's say you want the same response when your user sends either a PUT or a POST request, you could do that with the following:
+The route above responds to a `GET` request to `/` with the string `Hello World!`. The method option can be any valid HTTP method, or an array of methods. Let's say you want the same response when your user sends either a `PUT` or a `POST` request, you could do that with the following:
 
 ```js
 server.route({
     method: ['PUT', 'POST'],
     path: '/',
-    handler: (request, h) => {
+    handler: function (request, h) {
 
         return 'I did something!';
     }
@@ -51,7 +53,7 @@ The path option must be a string, though it can contain named parameters. To nam
 server.route({
     method: 'GET',
     path: '/hello/{user}',
-    handler: (request, h) => {
+    handler: function (request, h) {
 
         return `Hello ${encodeURIComponent(request.params.user)}!`;
     }
@@ -61,13 +63,13 @@ As you can see above, we have the string `{user}` in our path, which means we're
 
 ## <a name="optionalParameters" /> Optional Parameters
 
-In the above example, the user parameter is required: a request to `/hello/ferris` or `/hello/cameron` will work, but a request to `/hello` will not. In order to make a parameter optional, put a question mark at the end of the parameter's name. Here is the same route, but updated to make the `user` parameter optional:
+In the above example, the user parameter is required: a request to `/hello/bob` or `/hello/susan` will work, but a request to `/hello` will not. In order to make a parameter optional, put a question mark at the end of the parameter's name. Here is the same route, but updated to make the `user` parameter optional:
 
 ```js
 server.route({
     method: 'GET',
     path: '/hello/{user?}',
-    handler: (request, h) => {
+    handler: function (request, h) {
 
         const user = request.params.user ?
             encodeURIComponent(request.params.user) :
@@ -87,7 +89,7 @@ Along with optional path parameters, you can also allow parameters that match mu
 server.route({
     method: 'GET',
     path: '/hello/{user*2}',
-    handler: (request, h) => {
+    handler: function (request, h) {
 
         const userParts = request.params.user.split('/');
         return `Hello ${encodeURLComponent(userParts[0])} ${encodeURLComponent(userParts[1])}!`;
@@ -110,13 +112,56 @@ There are two query parameters here, `name=ferris` and `location=chicago`.  In h
 server.route({
     method: 'GET',
     path: '/',
-    handler: (request, h) => {
+    handler: function (request, h) {
 
         return `Hello ${request.query.name}!`;
     }
 });
 ```
 Here, we simply access the `name` query parameter and return it in the handler, which would read `Hello ferris!`.
+
+For more complex query structures, you may opt to use the `qs` module.  Consider the following:
+
+```js
+server.route({
+    method: 'GET',
+    path: '/',
+    handler: function (request, h) {
+
+        return request.params;
+    }
+});
+```
+If you sent the request `localhost:3000?foo[bar]=baz`, hapi, by default would return `{ "foo[bar]": "baz" }`.  
+
+With the `qs` module, we can parse the query string out.  An example: 
+
+```js
+const QS = require('qs');
+
+server.route({
+    method: 'GET',
+    path: '/',
+    handler: function (request, h) {
+
+        const query = QS.parse(request.query);
+        return query;
+    }
+});
+```
+Here, we first require the `qs` module.  
+
+Second, we parse the query string by calling `qs.parse()`.  
+
+Lastly, we returned the parsed query string, which would now be:
+
+```
+{
+    "foo": {
+        "bar": "baz"
+    }
+}
+```
 
 ## <a name="requestpayload" /> Request Payload
 
@@ -126,7 +171,7 @@ Anytime you send request data to your API, you will be able to access this data 
 server.route({
     method: 'POST',
     path: '/signup',
-    handler: (request, h) => {
+    handler: function (request, h) {
 
         const payload = request.payload;
         return `Welcome ${encodeURIComponent(payload.username)}!`;
@@ -161,7 +206,7 @@ Here we will look at some options of validating with Joi.
 server.route({
     method: 'POST',
     path: '/signup',
-    handler: (request, h) => {
+    handler: function (request, h) {
 
         const payload = request.payload;
         return `Welcome ${encodeURIComponent(payload.username)}!`;
@@ -183,21 +228,50 @@ The second property is `validate`.  This allows you to set validate rules for va
 
 ## <a name="missing" /> 404 Handling
 
-404 errors will happen whenever your server can't find what was a resource that was requested.  It is best practice to handle these errors the proper way.  This is easy to do in hapi, by just employing a route that will catch everything your other routes will not.  
+404 errors will happen whenever your server can't find what was a resource that was requested.  It is best practice to handle these errors the proper way.  This is easy to do in hapi, by just employing a route that will catch everything your other routes will not.  The following example shows how to use the `vision` plugin with `handlebars` to return a custom 404 page:
 
 ```js
+'use strict';
+
+const Hapi = require('hapi');
+
+const internals = {};
+
+const server = Hapi.server({
+    port: 3000,
+    host: 'localhost'
+});
+
 server.route({
     method: '*',
     path: '/{any*}',
-    handler: (request, h) => {
+    handler: function (request, h) {
 
         return h.view('404').code(404);
     }
 });
+
+const init = async () => {
+
+    await server.register(require('vision'));
+
+    server.views({
+        engines: {
+            html: require('handlebars')
+        },
+        path: '../views'
+    });
+
+    await server.start();
+    console.log('Server running on %ss', server.info.uri);
+};
 ```
+First we register the `vision` plugin and set up `server.views`.  For more info on views, please see the [views tutorial](/tutorials/views). 
 
-First, we use a wildcard, `*`, for the method, so it covers all available methods.
+Next, we setup our route that return our custom 404 page.  
 
-Second, we use a very broad, generic path, `'/{any*}`.  This will catch any route that our other routes do not.  hapi routes will go the the most specific path first, then get broader, till it finds a match.  For example, `localhost:3000/login` will go to the `/login` route and not the `/{any*}` route.  
+We use a wildcard, `*`, for the method, so it covers all available methods.
+
+Then, we use a very broad, generic path, `'/{any*}`.  This will catch any route that our other routes do not.  hapi routes will go the the most specific path first, then get broader, till it finds a match.  For example, `localhost:3000/login` will go to the `/login` route and not the `/{any*}` route.  
 
 Lastly, we return a custom 404 page in our handler.  Its best to create a custom 404 page so that the user knows that the request resource does not exists.  The 404 page should also include a link back to the appropriate page, such as the home page.  We then change the status code, `404`,  to match the html response status.  
