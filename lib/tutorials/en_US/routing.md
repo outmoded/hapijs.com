@@ -214,9 +214,11 @@ The `request` parameter is an object with details about the end user's request, 
 
 The second parameter, `h`, is the response toolkit, an object with several methods used to respond to the request. As you've seen in the previous examples, if you wish to respond to a request with some value, you simply return it from the handler. The payload may be a string, a buffer, a JSON serializable object, a stream or a promise.
 
-Alternatively you may pass the same value to `h.response(value)` and return that from the handler. The result of this call is a response object, that can be chained with additional methods to alter the response before it is sent. For example `h.response('created').code(201)` will send a payload of created with an HTTP status code of 201. You may also set headers, content type, content length, send a redirection response, and many other things that are documented in the [API reference](/api#response-toolkit).
+Alternatively you may pass the same value to `h.response(value)` and return that from the handler. The result of this call is a response object, that can be chained with additional methods to alter the response before it is sent. For example `h.response('created').code(201)` will send a payload of created with an HTTP status code of 201. You may also set headers, content type,content length, send a redirection response, and many other things that are documented in the [API reference](/api#response-toolkit).
 
 The `handler` option must return a value, a promise, or throw an error.
+
+Note: handlers using a fat arrow style function cannot be bound to any `bind` property. Instead, the bound context is available under [`h.context`](https://hapijs.com/api#h.context).
 
 ## <a name="options" /> Options
 
