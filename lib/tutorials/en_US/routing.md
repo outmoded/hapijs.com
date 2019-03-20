@@ -171,7 +171,7 @@ process.on('unhandledRejection', (err) => {
 
 init();
 ```
-Here, we first require the `qs` module.  
+Here, we first require the [qs](https://github.com/ljharb/qs) module.  
 
 Second, we set the query parameters parser method by setting the `server.options.query.parser` value.  In this case, we use the `Qs.parse()` method where `query` is an object containing the incoming `request.query` parameters.  Now, anything coming into `request.query` will be parsed with `Qs.parse()`.
 
@@ -184,6 +184,7 @@ Lastly, we returned the parsed query string, which would now be:
     }
 }
 ```
+Note: In the above example, we used the [qs](https://github.com/ljharb/qs) module to handle our parsing, but any parser will do, be it from `npm` or even custom.  Just be aware that the method must return an object where each key is a parameter and matching value is the parameter value.  
 
 ## <a name="requestpayload" /> Request Payload
 
@@ -218,7 +219,7 @@ Alternatively you may pass the same value to `h.response(value)` and return that
 
 The `handler` option must return a value, a promise, or throw an error.
 
-Note: handlers using a fat arrow style function cannot be bound to any `bind` property. Instead, the bound context is available under [`h.context`](https://hapijs.com/api#h.context).
+Note: handlers using a fat arrow style function cannot be bound to any `server.bind()` property. Instead, the bound context is available under [`h.context`](https://hapijs.com/api#h.context).
 
 ## <a name="options" /> Options
 
@@ -248,7 +249,7 @@ server.route({
 ```
 The first property under `options` is `auth`.  `auth` will set the authentication configuration for the route.  Since this route is for a new user signing up, we will disable authentication.  
 
-The second property is `validate`.  This allows you to set validate rules for various request components, such as `headers`, `params`, `payload`, and `failAction`.  We use the Joi to validate the `request.payload`.  For more info, please check the [validation tutorial](/tutorials/validation).
+The second property is `validate`.  This allows you to set validate rules for various request components, such as `headers`, `params`, `payload`, and `failAction`.  We use the [joi](https://github.com/hapijs/joi) to validate the `request.payload`.  For more info, please check the [validation tutorial](/tutorials/validation).
 
 ## <a name="missing" /> 404 Handling
 
