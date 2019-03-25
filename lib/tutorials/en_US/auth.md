@@ -230,7 +230,7 @@ const start = async () => {
             path: '/',
             handler: function (request, h) {
 
-                return 'Welcome to the restricted home page!'
+                return 'Welcome to the restricted home page!';
             }
         },
         {
