@@ -253,7 +253,7 @@ The second property is `validate`.  This allows you to set validation rules for 
 
 ## <a name="missing" /> 404 Handling
 
-404 errors will happen whenever your server can't find what was a resource that was requested.  It is best practice to handle these errors the proper way.  This is easy to do in hapi, by just employing a route that will catch everything your other routes will not.  The following example shows how to use the `vision` plugin with `handlebars` to return a custom 404 page:
+404 errors will happen whenever your server can't find what was a resource that was requested.  It is best practice to handle these errors the proper way.  This is easy to do in hapi, by just employing a route that will catch everything your other routes will not.  The following example shows how to setup a route to return a custom `404` response.
 
 ```js
 'use strict';
@@ -262,20 +262,11 @@ const Hapi = require('hapi');
 
 const internals = {};
 
-const server = Hapi.server({
-    port: 3000,
-    host: 'localhost'
-});
-
 const init = async () => {
 
-    await server.register(require('vision'));
-
-    server.views({
-        engines: {
-            html: require('handlebars')
-        },
-        path: '../views'
+    const server = Hapi.server({
+        port: 3000,
+        host: 'localhost'
     });
 
     server.route({
@@ -283,7 +274,7 @@ const init = async () => {
         path: '/{any*}',
         handler: function (request, h) {
 
-            return h.view('404').code(404);
+            return '404 Error! Page Not Found!';
         }
     });
 
@@ -293,12 +284,8 @@ const init = async () => {
 
 init();
 ```
-First we register the `vision` plugin and set up `server.views`.  For more info on views, please see the [views tutorial](/tutorials/views). 
+First, we configure our server.
 
-Next, we setup our route that return our custom 404 page.  
+Next, we setup our route that return our custom 404 response. We use a wildcard, `*`, for the method, so it covers all available methods. Then, we use a very broad, generic path, `'/{any*}`. This will catch any route that our other routes do not.  hapi routes will go the the most specific path first, then get broader, till it finds a match.  For example, `localhost:3000/login` will go to the `/login` route and not the `/{any*}` route.  
 
-We use a wildcard, `*`, for the method, so it covers all available methods.
-
-Then, we use a very broad, generic path, `'/{any*}`.  This will catch any route that our other routes do not.  hapi routes will go the the most specific path first, then get broader, till it finds a match.  For example, `localhost:3000/login` will go to the `/login` route and not the `/{any*}` route.  
-
-Lastly, we return a custom 404 page in our handler.  Its best to create a custom 404 page so that the user knows that the request resource does not exists.  The 404 page should also include a link back to the appropriate page, such as the home page.  We then change the status code, `404`,  to match the html response status.  
+Lastly, we return a custom 404 response in our handler, letting our users know that the resource they are asking for could not be found.
