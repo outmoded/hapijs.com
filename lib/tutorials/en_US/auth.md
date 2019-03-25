@@ -16,7 +16,7 @@ _This tutorial is compatible with hapi v17_
 
 ## <a name="overview" /> Overview
 
-Most modern web apps use some form of authentication.  Authentication within hapi is based on the concept of `schemes` and `strategies`.  `Schemes` are a way of handling authentication within hapi.  For example, the `hapi-auth-basic` and `hapi-auth-cookie` plugins would be considered `schemes`.  A `strategy` is a pre-configured instance of a `scheme`.  You use `strategies` to implement authentication `schemes` into your application.  
+Most modern web apps use some form of authentication. Authentication within hapi is based on the concept of `schemes` and `strategies`. `Schemes` are a way of handling authentication within hapi. For example, the `hapi-auth-basic` and `hapi-auth-cookie` plugins would be considered `schemes`. A `strategy` is a pre-configured instance of a `scheme`. You use `strategies` to implement authentication `schemes` into your application.  
 
 ## <a name="schemes" /> Schemes
 
@@ -107,7 +107,7 @@ The `payload` parameter is only possible to use with a strategy that supports th
 
 ## <a name="basic" /> hapi-auth-basic
 
-The first `scheme` we will look at is the [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) plugin.  Just like the name says, the `hapi-auth-basic` plugin uses basic authentication to validate users.  Here is an example of setting up `hapi-auth-basic`:
+The first `scheme` we will look at is the [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) plugin. Just like the name says, the `hapi-auth-basic` plugin uses basic authentication to validate users. Here is an example of setting up `hapi-auth-basic`:
 
 ```js
 'use strict';
@@ -175,9 +175,9 @@ The last thing we do is tell a route to use the strategy named `simple` for auth
 
 ## <a name="cookie" /> hapi-auth-cookie
 
-[hapi-auth-cookie](https://github.com/hapijs/hapi-auth-cookie) is a plugin that will store a cookie in the users browser once they are authenticated.  This has the option of keeping the user logged in, even after they leave the site.  Here is an example of setting up `hapi-auth-cookie`:
+[hapi-auth-cookie](https://github.com/hapijs/hapi-auth-cookie) is a plugin that will store a cookie in the users browser once they are authenticated. This has the option of keeping the user logged in, even after they leave the site. Here is an example of setting up `hapi-auth-cookie`:
 
-Note:  In this example, we are using the `vision` plugin with `handlebars` to serve our pages.  For more info, please see the [views tutorial](/tutorials/views)
+In this example, the home route, "/", is restricted and can only be accessed once a user has authenticated themselves:  
 
 ```js
 'use strict';
@@ -199,14 +199,6 @@ const start = async () => {
     const server = Hapi.server({ port: 4000 });
 
     await server.register(require('hapi-auth-cookie'));
-    await server.register(require('vision'));
-
-    server.views({
-        engines: {
-            html: require('handlebars')
-        },
-        path: '../views'
-    });
 
     server.auth.strategy('session', 'cookie', {
         cookie: {
@@ -230,13 +222,15 @@ const start = async () => {
         }
     });
 
+    server.auth.default('session');
+
     server.route([
         {
             method: 'GET',
             path: '/',
             handler: function (request, h) {
 
-                return h.view('home');
+                return 'Welcome to the restricted home page!'
             }
         },
         {
@@ -244,7 +238,18 @@ const start = async () => {
             path: '/login',
             handler: function (request, h) {
 
-                return h.view('login');
+                return ` <html>
+                            <head>
+                                <title>Login page</title>
+                            </head>
+                            <body>
+                                <h3>Please Log In</h3
+                                <form method="post" action="/login">
+                                    Username: <input type="text" name="username"><br>
+                                    Password: <input type="password" name="password"><br/>
+                                <input type="submit" value="Login"></form>
+                            </body>
+                        </html>`;
             },
             options: {
                 auth: false
@@ -279,22 +284,24 @@ const start = async () => {
 
 start();
 ```
-First, we need to do is register the `hapi-auth-cookie` plugin with `server.register`.  Once the plugin is registered, we configure our `strategy` by calling `server.auth.strategy`. `server.auth.strategy` takes three parameters: name of the strategy, what scheme you are using, and an options object.  For our strategy, we name it `session`.  For the scheme, we will be using the `cookie` scheme.  If you were using `hapi-auth-basic`, this parameter would be `basic`.  The last parameter is an options object.  This is how we can customized our auth strategy to fit our needs.
+First, we need to do is register the `hapi-auth-cookie` plugin with `server.register`. Once the plugin is registered, we configure our `strategy` by calling `server.auth.strategy`. `server.auth.strategy` takes three parameters: name of the strategy, what scheme you are using, and an options object. For our strategy, we name it `session`. For the scheme, we will be using the `cookie` scheme. If you were using `hapi-auth-basic`, this parameter would be `basic`. The last parameter is an options object. This is how we can customized our auth strategy to fit our needs.
 
-The first property we configure is the `cookie` object.  In our `strategy`, we will configure three properties of the `cookie` object.  First, we set the name of the cookie, in this case `sid-example`.  Next, we set the password that will be used to encrypt the cookie.  This should be at least 32 characters long.  Last, we set `isSecure` to `false`.  This is ok for development while working over HTTP.  In production, this should be switched back to `true`, which is the default setting. 
+The first property we configure is the `cookie` object. In our `strategy`, we will configure three properties of the `cookie` object. First, we set the name of the cookie, in this case `sid-example`.  Next, we set the password that will be used to encrypt the cookie. This should be at least 32 characters long. Last, we set `isSecure` to `false`. This is ok for development while working over HTTP. In production, this should be switched back to `true`, which is the default setting. 
 
-The next property is`redirectTo`.  This will tell the server where to redirect to if an unauthenticated user tries to access a resource that requires authentication.  
+The next property is`redirectTo`. This will tell the server where to redirect to if an unauthenticated user tries to access a resource that requires authentication.  
 
-The last property is the `validateFunc` function.  The `validateFunc` validates that a current cookie is still valid.  For example, if a user authenticates themselves successfully, receives a cookie, and then leaves the site.  Once they return, the `validateFunc` will check if their current cookie is still valid.  
+The last property is the `validateFunc` function. The `validateFunc` validates that a current cookie is still valid. For example, if a user authenticates themselves successfully, receives a cookie, and then leaves the site. Once they return, the `validateFunc` will check if their current cookie is still valid. 
 
-Once our strategy is set up, we need to set up route that will validate the provided username and password.  In this case, our `POST` route to `'/login'` will do just that.  First, it will pull the user provided `username` and `password` from `request.payload`.  Next, we find the user from the database by searching for their username:
+We setup the default strategy by calling `server.auth.default('session')`. This will set set the default auth strategy for all routes.   
+
+Once our strategy is set up, we need to set up route that will validate the provided username and password. In this case, our `POST` route to `'/login'` will do just that. First, it will pull the `username` and `password` from `request.payload`, which the user provided in the form from the `'/login'` `'GET'` route. Next, we find the user from the database by searching for their username:
 
 ```js
 const account = users.find(
     (user) => user.username === username
 );
 ```
-If the user doesn't not exists, or if the provided password is wrong, we redirect the user back to the login page.  We use `Bcrypt` to compare the user provided password with the hashed password from the database.  
+If the user doesn't not exists, or if the provided password is wrong, we redirect the user back to the login page. We use `Bcrypt` to compare the user provided password with the hashed password from the database.  
 
 Lastly, if the user does exist, and the passwords match, the user is then redirected to the homepage.  
 
