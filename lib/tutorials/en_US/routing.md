@@ -59,7 +59,7 @@ server.route({
     }
 });
 ```
-As you can see above, we have the string `{user}` in our path, which means we're asking for that segment of the path to be assigned to a named parameter. These parameters are stored in the object `request.params` within the handler. Since we named our parameter user we are able to access the value with the property `request.params.user`, after URI encoding it so as to prevent content injection attacks.  For example, going to `/hello/ferris` in your browser, you will see `Hello ferris!`.
+As you can see above, we have the string `{user}` in our path, which means we're asking for that segment of the path to be assigned to a named parameter. These parameters are stored in the object `request.params` within the handler. Since we named our parameter user we are able to access the value with the property `request.params.user`, after URI encoding it so as to prevent content injection attacks. For example, going to `/hello/ferris` in your browser, you will see `Hello ferris!`.
 
 ## <a name="optionalParameters" /> Optional Parameters
 
@@ -102,11 +102,11 @@ When determining what handler to use for a particular request, hapi searches pat
 
 ## <a name="query" /> Query Parameters
 
-Query parameters are common way of sending data to the server.  Query parameters are sent via the URL in a `key=value` format.  For example:
+Query parameters are common way of sending data to the server. Query parameters are sent via the URL in a `key=value` format. For example:
 
 `localhost:3000?name=ferris&location=chicago`
 
-There are two query parameters here, `name=ferris` and `location=chicago`.  In hapi, you can access query parameters by the `request.query` object.
+There are two query parameters here, `name=ferris` and `location=chicago`. In hapi, you can access query parameters by the `request.query` object.
 
 ```js
 server.route({
@@ -120,7 +120,7 @@ server.route({
 ```
 Here, we simply access the `name` query parameter and return it in the handler, which would read `Hello ferris!`.
 
-For more complex query structures, you may opt to use the `qs` module.  Consider the following:
+For more complex query structures, you may opt to use the `qs` module. Consider the following:
 
 ```js
 server.route({
@@ -134,7 +134,7 @@ server.route({
 ```
 If you sent the request `localhost:3000?foo[bar]=baz`, hapi, by default would return `{ "foo[bar]": "baz" }`.  
 
-With the [qs](https://github.com/ljharb/qs) module, we can parse the query string out.  An example: 
+With the [qs](https://github.com/ljharb/qs) module, we can parse the query string out. An example: 
 
 ```js
 const Hapi = require('hapi');
@@ -173,7 +173,7 @@ init();
 ```
 Here, we first require the [qs](https://github.com/ljharb/qs) module.  
 
-Second, we set the query parameters parser method by setting the `server.options.query.parser` value.  In this case, we use the `Qs.parse()` method where `query` is an object containing the incoming `request.query` parameters.  Now, anything coming into `request.query` will be parsed with `Qs.parse()`.
+Second, we set the query parameters parser method by setting the `server.options.query.parser` value. In this case, we use the `Qs.parse()` method where `query` is an object containing the incoming `request.query` parameters. Now, anything coming into `request.query` will be parsed with `Qs.parse()`.
 
 Lastly, we returned the parsed query string, which would now be:
 
@@ -184,11 +184,11 @@ Lastly, we returned the parsed query string, which would now be:
     }
 }
 ```
-Note: In the above example, we used the [qs](https://github.com/ljharb/qs) module to handle our parsing, but any parser will do, be it from `npm` or even custom.  Just be aware that the method must return an object where each key is a parameter and matching value is the parameter value.  
+Note: In the above example, we used the [qs](https://github.com/ljharb/qs) module to handle our parsing, but any parser will do, be it from `npm` or even custom. Just be aware that the method must return an object where each key is a parameter and matching value is the parameter value.  
 
 ## <a name="requestpayload" /> Request Payload
 
-Anytime you send request data to your API, you will be able to access this data in the route handler with `request.payload`.  See the following:
+Anytime you send request data to your API, you will be able to access this data in the route handler with `request.payload`. See the following:
 
 ```js
 server.route({
@@ -201,11 +201,11 @@ server.route({
     }
 });
 ```
-In the above example, the handler receives data via `request.payload`.  In this case, the `request.payload` contains an object that stores user sign up data:
+In the above example, the handler receives data via `request.payload`. In this case, the `request.payload` contains an object that stores user sign up data:
 
 `{ username: 'ferris', password: 'password' }`
 
-Note: It's always best practice to validate the incoming payload, as it may contain unsafe data.  See validation tutorial for more info.
+Note: It's always best practice to validate the incoming payload, as it may contain unsafe data. See validation tutorial for more info.
 
 ## <a name="handler" /> Handler
 
@@ -215,7 +215,7 @@ The `request` parameter is an object with details about the end user's request, 
 
 The second parameter, `h`, is the response toolkit, an object with several methods used to respond to the request. As you've seen in the previous examples, if you wish to respond to a request with some value, you simply return it from the handler. The payload may be a string, a buffer, a JSON serializable object, a stream or a promise.
 
-Alternatively you may pass the same value to `h.response(value)` and return that from the handler. The result of this call is a response object, that can be chained with additional methods to alter the response before it is sent. For example `h.response('created').code(201)` will send a payload of created with an HTTP status code of 201. You may also set headers, content type,content length, send a redirection response, and many other things that are documented in the [API reference](/api#response-toolkit).
+Alternatively you may pass the same value to `h.response(value)` and return that from the handler. The result of this call is a response object, that can be chained with additional methods to alter the response before it is sent. For example `h.response('created').code(201)` will send a payload of created with an HTTP status code of 201. You may also set headers, content type, content length, send a redirection response, and many other things that are documented in the [API reference](/api#response-toolkit).
 
 The `handler` option must return a value, a promise, or throw an error.
 
@@ -247,13 +247,13 @@ server.route({
     }
 });
 ```
-The first property under `options` is `auth`.  `auth` will set the authentication configuration for the route.  Since this route is for a new user signing up, we will disable authentication.  
+The first property under `options` is `auth`. `auth` will set the authentication configuration for the route. Since this route is for a new user signing up, we will disable authentication.  
 
-The second property is `validate`.  This allows you to set validation rules for various request components, such as `headers`, `params`, `payload`, and `failAction`.  We use the [joi](https://github.com/hapijs/joi) package to validate the `request.payload`.  For more info, please check the [validation tutorial](/tutorials/validation).
+The second property is `validate`. This allows you to set validation rules for various request components, such as `headers`, `params`, `payload`, and `failAction`. We use the [joi](https://github.com/hapijs/joi) package to validate the `request.payload`. For more info, please check the [validation tutorial](/tutorials/validation).
 
 ## <a name="missing" /> 404 Handling
 
-404 errors will happen whenever your server can't find what was a resource that was requested.  It is best practice to handle these errors the proper way.  This is easy to do in hapi, by just employing a route that will catch everything your other routes will not.  The following example shows how to setup a route to return a custom `404` response.
+404 errors will happen whenever your server can't find what was the resource that was requested. It is best practice to handle these errors the proper way. This is easy to do in hapi, by just employing a route that will catch everything your other routes will not. The following example shows how to setup a route to return a custom `404` response.
 
 ```js
 'use strict';
