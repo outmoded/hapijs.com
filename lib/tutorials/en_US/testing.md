@@ -1,20 +1,41 @@
-## Testing
+# Testing
 
 _This tutorial is compatible with hapi v17_
 
-### Testing routes
+- [Overview](#overview)
+- [lab](#lab)
+- [code](#code)
+- [Server Setup](#server)
+- [Writing a Route Test](#writingTest)
 
+
+
+## <a name="overview" /> Overview
 Hapi is designed for creating robust, testable applications. To this end, Hapi includes the ability to test routes without having to actually start a server, completely avoiding the time overheads and added complexity of the TCP protocol.
 
-This tutorial goes into a basic setup for testing routes, and outlines one possible setup for a testable application.
+This tutorial goes into a basic setup for testing routes, and outlines one possible setup for a testable application using [lab](https://github.com/hapijs/lab) and [code](https://github.com/hapijs/code).
 
-### The server
+## <a name="lab" /> lab
 
-Taking the server example from the [Getting Started](https://hapijs.com/tutorials/getting-started) tutorial, we make a minor modification to it, such that it doesn't automatically start when referenced from our tests. We also add a simple route from the [Routing Tutorial](https://hapijs.com/tutorials/routing) that we want to test.
+`lab` is a simple test utility for Node.js. Unlike other test utilities, lab uses only async/await features and includes everything you should expect from a modern Node.js test utility. `lab` works with any assertion library that throws an error when a condition isn't met. For this tutorial, we will be using the `code` assertion library.
 
-You might call this file `server.js` and place it in the `lib` directory of your project.
+To install `lab`, type the following in your terminal:
 
-```javascript
+`npm install --save-dev lab`
+
+## <a name="code" /> code
+
+`code` is based on the `chai` assertions library. It was created to be a small, simple, and intuitive assertions library that could be run without plugins, extensions, and have low overhead.
+
+To install `code`, type the following in your terminal:
+
+`npm install --save-dev code`
+
+## <a name="server" /> Server Setup
+
+Taking the server example from the Getting Started tutorial, we make a minor modification to it, such that it doesn't automatically start when referenced from our tests. You might call this file `server.js` and place it in the `lib` directory of your project:
+
+```js
 'use strict';
 
 const Hapi = require('hapi');
@@ -26,10 +47,10 @@ const server = Hapi.server({
 
 server.route({
   method: 'GET',
-  path: '/some/route',
+  path: '/',
   handler: function () {
 
-      return 'Hello!';
+      return 'Hello World!';
   }
 });
 
@@ -51,36 +72,29 @@ process.on('unhandledRejection', (err) => {
     console.log(err);
     process.exit(1);
 });
-
 ```
+We now export, but do not call, `init()` and `start()`. This will allow us to initialize and start the server from different files. The `init()` function will initialize the server (starts the caches, finalizes plugin registration) but does not start the server. This is what we will use in our tests. The `start()` function will actually start the server. This is what we will use in our main entry-point for the server:
 
-Note that we call `server.initialize` in our `init` method. We still want Hapi to set up all our server concerns, such as [caching](https://hapijs.com/tutorials/caching).
+```js
+`use strict`;
 
-Next, we create our main entrypoint for the server. This might be the file referenced by the `main` attribute of your `package.json`. It is run when your application starts. 
-
-```javascript
-'use strict';
-
-const { start, stop } = require('lib/server');
+const { start } = require('lib/server');
 
 start();
 ```
+What we've created here is a way of starting the server normally by calling its start function in our entry-point, and exposing a port for external HTTP traffic, but we've also got a module which doesn't do anything by default, which we can use in our tests.
 
-What we've created here is a way of starting the server normally by calling its `start` function in our entrypoint, and exposing a port for external HTTP traffic, but we've also got a module which doesn't do anything by default, which we can use in our tests.
-
-### Writing a route test
+## <a name="writingTest" /> Writing a Route Test
 
 In this example we'll use [lab](https://github.com/hapijs/lab), but the same method can be used for any testing tool such as [Mocha](https://mochajs.org/), [Jest](https://jestjs.io/), [Tap](https://www.node-tap.org/), [Ava](https://github.com/avajs) etc.
 
-You should probably install lab and code before trying to run this:
+By default, `lab` loads all the '*.js' files inside the local `test` directory and executes the tests found. To use different directories or files, pass the file or directories as arguments:
 
-```bash
-npm install --save-dev lab code
-```
+`$  lab unit.js`
 
-Then, create a file called `example.test.js` in the `test` directory.
+To get started, create a file called `example.test.js` in the `test` directory:
 
-```javascript
+```js
 'use strict';
 
 const Lab = require('lab');
@@ -88,7 +102,7 @@ const { expect } = require('code');
 const { afterEach, beforeEach, describe, it } = exports.lab = Lab.script();
 const { init } = require('../lib/server');
 
-describe('GET /some/route', () => {
+describe('GET /', () => {
     let server;
 
     beforeEach(async () => {
@@ -102,17 +116,19 @@ describe('GET /some/route', () => {
     it('responds with 200', async () => {
         const res = await server.inject({
             method: 'get',
-            url: '/some/route'
+            url: '/'
         });
         expect(res.statusCode).to.equal(200);
     });
 });
-
 ```
+Here we are testing whether or not our `'GET'` route will respond with a `200` status code. We first call `describe()` to provide the structure of our test. `describe()` takes two parameters, a description of the test, and the function that will setup the test.  
 
 Note that we call `init` rather than `start` to set up the server, which means that the server starts, but does not listen on a socket. After each test we call `stop` to cleanup and stop the server.
 
-You will note the use of `inject` on the server. `inject` uses [Shot](https://github.com/hapijs/shot) to `inject` a request directly into Hapi's route handler. This is the magic which allows us to test HTTP methods.
+The `it()` function is what will run our test. `it()` takes two parameters, a description of a successful test, and a function to run the test. 
+
+You will note the use of `inject` on the server. `inject` uses [Shot](https://github.com/hapijs/shot) to `inject` a request directly into hapi's route handler. This is the magic which allows us to test HTTP methods.
 
 To run the tests, you can modify the `package.json` of your project to run your test runner:
 
