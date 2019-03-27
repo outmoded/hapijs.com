@@ -17,7 +17,7 @@ _This tutorial is compatible with hapi v17_
 
 ## <a name="overview" /> Overview
 
-Inevitably while building any web application, the need arises to server a simple file from disk.  There is a hapi plugin called [inert](https://github.com/hapijs/inert) that adds this functionality to hapi through the use of additional handlers. 
+Inevitably while building any web application, the need arises to server a simple file from disk. There is a hapi plugin called [inert](https://github.com/hapijs/inert) that adds this functionality to hapi through the use of additional handlers. 
 
 First you need to install and add `inert` as a dependency to your project:
 
@@ -93,7 +93,7 @@ const start = async () => {
 
 start();
 ```
-By requiring the `inert` plugin, you get access `h.file()` method.  Here, we tell `h.file()` the path of the image we want to return.  In this case, `'/path/to/picture.jpg'`. 
+By requiring the `inert` plugin, you get access `h.file()` method. Here, we tell `h.file()` the path of the image we want to return. In this case, `'/path/to/picture.jpg'`. 
 
 ## <a name="filehandler" /> File handler
 
@@ -189,11 +189,11 @@ server.route({
     }
 });
 ```
-Now a request to `/` will reply with HTML showing the contents of the directory.  When using the directory handler with listing enabled, by default hidden files will not be shown in the listing. That can be changed by setting the `showHidden` option to `true`. Like the file handler, the directory handler also has a `lookupCompressed` option to serve precompressed files when possible. You can also set a `defaultExtension` that will be appended to requests if the original path is not found. This means that a request for `/bacon` will also try the file `/bacon.html`.
+Now a request to `/` will reply with HTML showing the contents of the directory. When using the directory handler with listing enabled, by default hidden files will not be shown in the listing. That can be changed by setting the `showHidden` option to `true`. Like the file handler, the directory handler also has a `lookupCompressed` option to serve precompressed files when possible. You can also set a `defaultExtension` that will be appended to requests if the original path is not found. This means that a request for `/bacon` will also try the file `/bacon.html`.
 
 ## <a name="fileserver" /> Static file server
 
-One common case for serving static content is setting up a file server.  The following example shows how to setup a basic file serve in hapi:
+One common case for serving static content is setting up a file server. The following example shows how to setup a basic file serve in hapi:
 
 ```js
 const Path = require('path');
@@ -231,9 +231,9 @@ const init = async () => {
 
 init();
 ```
-The first thing we do is require both `inert` and `path`.  As you will see, we will need both of these to get our file server up and running.
+The first thing we do is require both `inert` and `path`. As you will see, we will need both of these to get our file server up and running.
 
-Next, we configure `server.options.routes`.  We set the location the server will look for the static files by setting the `relativeTo` option.  
+Next, we configure `server.options.routes`. We set the location the server will look for the static files by setting the `relativeTo` option.  
 
-After our server is configured, we then register the `inert` plugin.  This will allow us to have access to the `directory` handler, which will enable us to server our files.  In the `directory` handler, we configure `path`, which is required, to look in the entire `public` directory which we specified in the `relativeTo` option.  The second option is the `redirectToSlash` option.  By setting this to `true`, we tell the server to redirect requests without trailing slashes to the same path with the missing slash.
+After our server is configured, we then register the `inert` plugin. This will allow us to have access to the `directory` handler, which will enable us to server our files. In the `directory` handler, we configure `path`, which is required, to look in the entire `public` directory which we specified in the `relativeTo` option. The second option is the `redirectToSlash` option. By setting this to `true`, we tell the server to redirect requests without trailing slashes to the same path with the missing slash.
 
