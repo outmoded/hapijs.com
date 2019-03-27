@@ -22,9 +22,9 @@ hapi has extensive support for template rendering, including the ability to load
 
 ## <a name="vision" /> Vision
 
-[Vision](https://github.com/hapijs/vision) is a templates rendering plugin for hapi.js.  `Vision` decorates the `server`, `request`, and `h` response toolkit interfaces with additional methods for managing view engines that can be used to render templated responses.  `Vision` also provides a built-in handler implementation for creating templated responses.  
+[Vision](https://github.com/hapijs/vision) is a templates rendering plugin for hapi.js. `Vision` decorates the `server`, `request`, and `h` response toolkit interfaces with additional methods for managing view engines that can be used to render templated responses. `Vision` also provides a built-in handler implementation for creating templated responses.  
 
-`Vision` is compatible with most major templating engines out of the box, such as ejs, handlebars, pug, twig, etc.  Engines that don't follow the normal API pattern can still be used by mapping their API to the [vision API](https://github.com/hapijs/vision/blob/master/API.md).
+`Vision` is compatible with most major templating engines out of the box, such as ejs, handlebars, pug, twig, etc. Engines that don't follow the normal API pattern can still be used by mapping their API to the [vision API](https://github.com/hapijs/vision/blob/master/API.md).
 
 For more info, please see [here](https://github.com/hapijs/vision).
 
