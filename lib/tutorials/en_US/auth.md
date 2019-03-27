@@ -34,7 +34,7 @@ In this context, `request` is the `request` object created by the server. It is 
 
 `h` is the standard hapi [response toolkit](https://hapijs.com/api#response-toolkit).
 
-When authentication is successful, you must call and return `h.authenticated({ credentials, artifacts })`. `credentials` property is an object representing the authenticated user (or the credentials the user attempted to authenticate with) Additionally, you may also have an `artifacts` key, which can contain any authentication related data that is not part of the user's credentials.
+When authentication is successful, you must call and return `h.authenticated({ credentials, artifacts })`. `credentials` property is an object representing the authenticated user (or the credentials the user attempted to authenticate with). Additionally, you may also have an `artifacts` key, which can contain any authentication related data that is not part of the user's credentials.
 
 The `credentials` and `artifacts` properties can be accessed later (in a route handler, for example) as part of the `request.auth` object.
 
@@ -75,7 +75,7 @@ server.auth.strategy('session', 'cookie', {
     isSecure: false
 });
 ```
-In the above example, we register the `strategy` with `server.auth.strategy()`.  We name the `strategy` `session`, and say that we are using the `cookie` scheme.  Lastly, we configure the `strategy` by giving it a `name`, `password`, and setting `isSecure: false`. 
+In the above example, we register the `strategy` with `server.auth.strategy()`. We name the `strategy` `session`, and say that we are using the `cookie` scheme. Lastly, we configure the `strategy` by giving it a `name`, `password`, and setting `isSecure: false`. 
 
 ## <a name="default" /> Default Strategy
 
@@ -165,7 +165,7 @@ const start = async () => {
 start();
 ```
 
-First, we define our `users` database, which is a simple object in this example. Then we define a validation function, which is a feature specific to [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) and allows us to verify that the user has provided valid credentials.  For this validation function, we use `Bcrypt` to compare the user provided password with the hashed password in our database.  
+First, we define our `users` database, which is a simple object in this example. Then we define a validation function, which is a feature specific to [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) and allows us to verify that the user has provided valid credentials. For this validation function, we use `Bcrypt` to compare the user provided password with the hashed password in our database.  
 
 Next, we register the plugin, which creates a scheme with the name of `basic`. This is done within the plugin via [server.auth.scheme()](/api#serverauthschemename-scheme).
 
