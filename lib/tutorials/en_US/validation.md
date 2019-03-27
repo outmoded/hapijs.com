@@ -25,7 +25,7 @@ Validating data can be very helpful in making sure that your application is stab
 
 ## <a name="joi" /> Joi
 
-[Joi](https://github.com/hapijs/joi) is an object schema description language and validator for JavaScript objects.  Joi allows you to create blueprints or schemas for JavaScript objects to ensure validation of key information.  Joi can validate both input and output data.  To get started with `joi`, you must first install and add it as a dependencyh to your project:
+[Joi](https://github.com/hapijs/joi) is an object schema description language and validator for JavaScript objects. Joi allows you to create blueprints or schemas for JavaScript objects to ensure validation of key information. Joi can validate both input and output data. To get started with `joi`, you must first install and add it as a dependency to your project:
 
 `npm install joi`
 
@@ -35,11 +35,11 @@ Then, you must import it to your project:
 
 ## <a name="input" /> Input Validation
 
-The first type of validation hapi can perform is input validation. This is defined in the `options` object on a route, and is able to validate headers, path parameters, query parameters, and payload data.  Keep reading for examples of input validation with `joi`.
+The first type of validation hapi can perform is input validation. This is defined in the `options` object on a route, and is able to validate headers, path parameters, query parameters, and payload data. Keep reading for examples of input validation with `joi`.
 
 ### <a name="pathparams" /> Path parameters
 
-The first input type that `joi` can validate is path parameters.  Consider the following:
+The first input type that `joi` can validate is path parameters. Consider the following:
 
 ```javascript
 server.route({
@@ -103,7 +103,7 @@ We got an error because the `offset` parameter is not allowed. That's because we
 
 ### <a name="payloadparams" /> Payload parameters
 
-Also valid is the `validate.payload` option, which will validate payload data sent to a route by the user. It works exactly the same way as query parameters, in that if you validate one key, you must validate them all.  Here is an example: 
+Also valid is the `validate.payload` option, which will validate payload data sent to a route by the user. It works exactly the same way as query parameters, in that if you validate one key, you must validate them all. Here is an example: 
 
 ```js
 server.route({
@@ -123,7 +123,7 @@ server.route({
     }
 });
 ```
-The above example is a very basic route that handles an incoming blog post.  The user submits the blog post and date in the `request.payload` object.  Typically, this would then be stored to a database.  Before that can happen though, we must validate the payload.  First, `joi` states that `post` must be a minimum of 1 character, and a maximum of 140 characters.  It also states that `date` must be a valid date in the MM-DD-YYYY format and is required. 
+The above example is a very basic route that handles an incoming blog post. The user submits the blog post and date in the `request.payload` object. Typically, this would then be stored to a database.  Before that can happen though, we must validate the payload. First, `joi` states that `post` must be a minimum of 1 character, and a maximum of 140 characters. It also states that `date` must be a valid date in the MM-DD-YYYY format and is required. 
 
 If any of payload fails validation, the following error will be thrown:
 
@@ -137,7 +137,7 @@ If any of payload fails validation, the following error will be thrown:
 
 ### <a name="headers" /> Headers
 
-You may validate incoming headers as well, with a `validate.headers` option.  For example: 
+You may validate incoming headers as well, with a `validate.headers` option. For example: 
 
 ```js
 server.route({
@@ -159,18 +159,15 @@ server.route({
     }
 });
 ```
-Here, we are validating the cookie header as a string and making sure it is required.  The `allowUnknown` option allows other incoming headers to be accepted without being validated.   
+Here, we are validating the cookie header as a string and making sure it is required. The `allowUnknown` option allows other incoming headers to be accepted without being validated.   
 
 ## <a name="output" /> Output
 
-hapi can also validate responses before they are sent back to the client.
-This validation is defined in the `response` property of the route `options` object.
+hapi can also validate responses before they are sent back to the client. This validation is defined in the `response` property of the route `options` object.
 
 If a response does not pass the response validation, the client will receive an Internal Server Error (500) response by default (see `response.failAction` below).
 
-Output validation is useful for ensuring that your API is serving data that is consistent with its documentation/contract.
-Additionally, plugins like [hapi-swagger](https://github.com/glennjones/hapi-swagger) and [lout](https://github.com/hapijs/lout) can use the response-validation schemas to automatically document each
-endpoint's output format, thus ensuring that your documentation is always up to date.
+Output validation is useful for ensuring that your API is serving data that is consistent with its documentation/contract. Additionally, plugins like [hapi-swagger](https://github.com/glennjones/hapi-swagger) and [lout](https://github.com/hapijs/lout) can use the response-validation schemas to automatically document each endpoint's output format, thus ensuring that your documentation is always up to date.
 
 hapi supports quite a few options to fine-tune output validation. Here are a few of them:
 
@@ -180,7 +177,7 @@ You can choose what to do when response validation fails by setting `response.fa
 * `error`: send an Internal Server Error (500) response (default)
 * `log`: just log the offense and send the response as-is
 * `ignore`: take no action and continue processing the request
-* A lifcycle method with signature `async function(request, h, err)` where `request` is the request object, `h` is the response toolkit and `err` is the validation error.
+* A lifecycle method with signature `async function(request, h, err)` where `request` is the request object, `h` is the response toolkit and `err` is the validation error.
 
 For example: 
 
@@ -208,12 +205,11 @@ server.route({
     }
 });
 ```
-This is a route that will return a list of books.  We can see that since `failAction` is set to `log`, the server will just log the error and send the response as-is.  
+This is a route that will return a list of books. We can see that since `failAction` is set to `log`, the server will just log the error and send the response as-is.  
 
 ### <a name="sample" /> response.sample
 
-If performance is a concern, hapi can be configured to validate only a percentage of responses
-This can be achieved with the `response.sample` property of the route `options`. It should be set to a number between `0`-`100`, representing the percentage of responses that should be validated.  Consider the following:
+If performance is a concern, hapi can be configured to validate only a percentage of response. This can be achieved with the `response.sample` property of the route `options`. It should be set to a number between `0`-`100`, representing the percentage of responses that should be validated. Consider the following:
 
 ```javascript
 const bookSchema = Joi.object({
@@ -239,17 +235,15 @@ server.route({
     }
 });
 ```
-Looking at our book route again, you can see, the `sample` value is set to `50`.  This means the server will validate one half of the responses.
+Looking at our book route again, you can see, the `sample` value is set to `50`. This means the server will validate one half of the responses.
 
 ### <a name="status" /> response.status
 
-Sometimes one endpoint can serve different response objects.
-For instance, a `POST` route may return one of the following:
+Sometimes one endpoint can serve different response objects. For instance, a `POST` route may return one of the following:
 * `201` with the newly created resource if a new resource is created.
 * `202` with the old and new values if an existing resource was updated.
 
-hapi supports this by allowing you to specify a different validation schema for each response status code.
-`response.status` is an object with keys that are numeric status codes, and properties that are joi schemas:
+hapi supports this by allowing you to specify a different validation schema for each response status code. `response.status` is an object with keys that are numeric status codes, and properties that are joi schemas:
 
 ```json5
 {
@@ -264,7 +258,7 @@ hapi supports this by allowing you to specify a different validation schema for 
 
 ### <a name="options" /> response.options
 
-Options to pass to joi during validation.  Useful to set global options such as `stripUnknown` or `abortEarly` (the complete list is available [here](https://github.com/hapijs/joi/blob/master/API.md#validatevalue-schema-options-callback)). If a custom validation function is defined via `schema` or `status` then `options` can an arbitrary object that will be passed to this function as the second argument.
+Options to pass to joi during validation. Useful to set global options such as `stripUnknown` or `abortEarly` (the complete list is available [here](https://github.com/hapijs/joi/blob/master/API.md#validatevalue-schema-options-callback)). If a custom validation function is defined via `schema` or `status` then `options` can an arbitrary object that will be passed to this function as the second argument.
 
 ## <a name="alternatives" /> Alternatives to Joi
 
