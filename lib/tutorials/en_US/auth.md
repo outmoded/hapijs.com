@@ -169,7 +169,7 @@ First, we define our `users` database, which is a simple object in this example.
 
 Next, we register the plugin, which creates a scheme with the name of `basic`. This is done within the plugin via [server.auth.scheme()](/api#-serverauthschemename-scheme).
 
-Once the plugin has been registered, we use [server.auth.strategy()](/api#-serverauthstrategyname-scheme-mode-options) to create a strategy with the name of `simple` that refers to our scheme named `basic`. We also pass an options object that gets passed to the scheme and allows us to configure its behavior.
+Once the plugin has been registered, we use [server.auth.strategy()](/api#server.auth.strategy()) to create a strategy with the name of `simple` that refers to our scheme named `basic`. We also pass an options object that gets passed to the scheme and allows us to configure its behavior.
 
 The last thing we do is tell a route to use the strategy named `simple` for authentication.
 
