@@ -58,7 +58,7 @@ Once any decoration is complete, you must return `h.continue`, and the response 
 
 If an error occurs, you should instead throw an error where the error is recommended to be a [boom](https://github.com/hapijs/boom).
 
-## <a name="Strategies" /> Strategies
+## <a name="strategies" /> Strategies
 
 Once you've registered your scheme, you need a way to use it. This is where strategies come in.
 
@@ -167,9 +167,9 @@ start();
 
 First, we define our `users` database, which is a simple object in this example. Then we define a validation function, which is a feature specific to [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) and allows us to verify that the user has provided valid credentials. For this validation function, we use `Bcrypt` to compare the user provided password with the hashed password in our database.  
 
-Next, we register the plugin, which creates a scheme with the name of `basic`. This is done within the plugin via [server.auth.scheme()](/api#serverauthschemename-scheme).
+Next, we register the plugin, which creates a scheme with the name of `basic`. This is done within the plugin via [server.auth.scheme()](/api#-serverauthschemename-scheme).
 
-Once the plugin has been registered, we use [server.auth.strategy()](/api#serverauthstrategyname-scheme-mode-options) to create a strategy with the name of `simple` that refers to our scheme named `basic`. We also pass an options object that gets passed to the scheme and allows us to configure its behavior.
+Once the plugin has been registered, we use [server.auth.strategy()](/api#-serverauthstrategyname-scheme-mode-options) to create a strategy with the name of `simple` that refers to our scheme named `basic`. We also pass an options object that gets passed to the scheme and allows us to configure its behavior.
 
 The last thing we do is tell a route to use the strategy named `simple` for authentication.
 
@@ -210,7 +210,7 @@ const start = async () => {
         validateFunc: async (request, session) => {
 
             const account = await users.find(
-                (user) => (user.id = session.id)
+                (user) => (user.id === session.id)
             );
 
             if (!account) {
@@ -288,7 +288,7 @@ First, we need to do is register the `hapi-auth-cookie` plugin with `server.regi
 
 The first property we configure is the `cookie` object. In our `strategy`, we will configure three properties of the `cookie` object. First, we set the name of the cookie, in this case `sid-example`.  Next, we set the password that will be used to encrypt the cookie. This should be at least 32 characters long. Last, we set `isSecure` to `false`. This is ok for development while working over HTTP. In production, this should be switched back to `true`, which is the default setting. 
 
-The next property is`redirectTo`. This will tell the server where to redirect to if an unauthenticated user tries to access a resource that requires authentication.  
+The next property is `redirectTo`. This will tell the server where to redirect to if an unauthenticated user tries to access a resource that requires authentication.  
 
 The last property is the `validateFunc` function. The `validateFunc` validates that a current cookie is still valid. For example, if a user authenticates themselves successfully, receives a cookie, and then leaves the site. Once they return, the `validateFunc` will check if their current cookie is still valid. 
 
