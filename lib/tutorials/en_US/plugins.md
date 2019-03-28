@@ -1,10 +1,19 @@
-## Plugins
+# Plugins
 
 _This tutorial is compatible with hapi v17_
 
-hapi has an extensive and powerful plugin system that allows you to very easily break your application up into isolated pieces of business logic, and reusable utilities.
+- [Overview](#overview)
+- [Creating a plugin](#create)
+    - [Register Method](#register)
+- [Loading a Plugin](#loading)
+    - [Registration Options](#registration)
 
-## Creating a plugin
+
+## <a name="overview" /> Overview
+
+hapi has an extensive and powerful plugin system that allows you to very easily break your application up into isolated pieces of business logic, and reusable utilities. You can either add an existing plugin to your application, or create your own.  
+
+## <a name="create" /> Creating a plugin
 
 Plugins are very simple to write. At their core they are an object with a `register` property, that is a function with the signature `async function (server, options)`. Additionally the plugin object has a required `name` property and several optional properties including `version`.
 
@@ -34,8 +43,9 @@ const myPlugin = {
     }
 };
 ```
+Once this plugin is registered, the server will display `'hello, world'` when the user goes to route `/test`. 
 
-Or when written as an external module, you can specify a `pkg` property:
+To write a plugin as an external module, you can specify a `pkg` property:
 
 ```javascript
 'use strict';
@@ -69,7 +79,7 @@ Additionally, the plugin object may contain the property `multiple` that when se
 
 Another available property is `once`. When set to `true` will mean hapi ignores subsequent registers of the same plugin without throwing an error.
 
-### The register method
+### <a name="register" /> The register method
 
 As we've seen above, the `register` method accepts two parameters, `server` and `options`.
 
@@ -79,7 +89,7 @@ The `options` parameter is simply whatever options the user passes to your plugi
 
 The `server` object is a reference to the `server` your plugin is being loaded in.
 
-## Loading a plugin
+## <a name="loading" /> Loading a plugin
 
 Plugins can be loaded one at a time, or as a group in an array, by the `server.register()` method, for example:
 
@@ -125,7 +135,7 @@ const start = async function () {
 };
 ```
 
-### Registration options
+### <a name="registration" /> Registration options
 
 You may also pass a second optional parameter to `server.register()`. Documentation for this object can be found in the [API reference](/api#-await-serverregisterplugins-options).
 
