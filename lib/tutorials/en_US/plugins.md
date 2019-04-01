@@ -96,6 +96,8 @@ Plugins can be loaded one at a time, or as a group in an array, by the `server.r
 ```javascript
 const start = async function () {
 
+    const server = Hapi.server();
+
     // load one plugin
 
     await server.register(require('myplugin'));
@@ -111,6 +113,8 @@ To pass options to your plugin, we instead pass an object with `plugin` and `opt
 ```javascript
 const start = async function () {
 
+    const server = Hapi.server();
+
     await server.register({
         plugin: require('myplugin'),
         options: {
@@ -124,6 +128,8 @@ These objects can also be passed in an array:
 
 ```javascript
 const start = async function () {
+
+    const server = Hapi.server();
 
     await server.register([{
         plugin: require('plugin1'),
@@ -169,6 +175,8 @@ Normally, when this plugin is loaded it will create a `GET` route at `/test`. Th
 
 ```javascript
 const start = async function () {
+
+    const server = Hapi.server();
 
     await server.register(require('myplugin'), {
         routes: {
