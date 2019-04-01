@@ -37,15 +37,15 @@ To simplify things, especially if you have multiple routes that respond with fil
 const Hapi = require('hapi');
 const Path = require('path');
 
-const server = Hapi.server({
-    routes: {
-        files: {
-            relativeTo: Path.join(__dirname, 'public')
-        }
-    }
-});
-
 const start = async () => {
+
+    const server = Hapi.server({
+        routes: {
+            files: {
+                relativeTo: Path.join(__dirname, 'public')
+            }
+        }
+    });
 
     await server.register(require('inert'));
 
@@ -74,6 +74,8 @@ Now, let's see how to use the [`h.file()`](https://github.com/hapijs/inert#hfile
 
 ```javascript
 const start = async () => {
+
+    const server = Hapi.server();
 
     await server.register(require('inert'));
 
@@ -200,16 +202,16 @@ const Path = require('path');
 const Hapi = require('hapi');
 const Inert = require('inert');
 
-const server = new Hapi.Server({
-    port: 3000,
-    routes: {
-        files: {
-            relativeTo: Path.join(__dirname, 'public')
-        }
-    }
-});
-
 const init = async () => {
+
+    const server = new Hapi.Server({
+        port: 3000,
+        routes: {
+            files: {
+                relativeTo: Path.join(__dirname, 'public')
+            }
+        }
+    });
 
     await server.register(Inert);
 
