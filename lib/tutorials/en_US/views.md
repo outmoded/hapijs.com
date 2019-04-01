@@ -39,9 +39,9 @@ const Path = require('path');
 const Hapi = require('hapi');
 const Hoek = require('hoek');
 
-const server = Hapi.server();
-
 const start = async () => {
+
+    const server = Hapi.server();
 
     await server.register(require('vision'));
 
@@ -204,9 +204,9 @@ For reference, here is a complete server script that uses the fortune view helpe
 
 const Hapi = require('hapi');
 
-const server = Hapi.server({ port: 8080 });
-
 const start = async () => {
+
+    const server = Hapi.server({ port: 8080 });
 
     await server.register(require('vision'));
 
