@@ -138,6 +138,8 @@ In the above example, we've defined two catbox clients; mongoCache and redisCach
 ```javascript
 const start = async () => {
 
+    const server = Hapi.server();
+
     const add = async (a, b) => {
 
         await Hoek.wait(1000);   // Simulate some slow I/O
@@ -200,7 +202,7 @@ But it can get better than that! In 95% cases you will use [server methods](/tut
 ```javascript
 const start = async () => {
 
-    // ...
+    const server = Hapi.server();
 
     server.method('sum', add, {
         cache: {
@@ -222,7 +224,6 @@ const start = async () => {
 
     await server.start();
 
-    // ...
 };
 
 start();
@@ -238,7 +239,7 @@ An example of server-side and client-side caching working together is using the 
 ```javascript
 const start = async () => {
 
-    //...
+    const server = Hapi.server();
 
     server.method('sum', add, {
         cache: {
@@ -265,7 +266,6 @@ const start = async () => {
 
     await server.start();
 
-    // ...
 };
 ```
 
