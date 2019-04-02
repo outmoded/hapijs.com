@@ -237,5 +237,5 @@ The first thing we do is require both `inert` and `path`. As you will see, we wi
 
 Next, we configure `server.options.routes`. We set the location the server will look for the static files by setting the `relativeTo` option.  
 
-After our server is configured, we then register the `inert` plugin. This will allow us to have access to the `directory` handler, which will enable us to server our files. In the `directory` handler, we configure `path`, which is required, to look in the entire `public` directory which we specified in the `relativeTo` option. The second option is the `redirectToSlash` option. By setting this to `true`, we tell the server to redirect requests without trailing slashes to the same path with the missing slash.
+After our server is configured, we then register the `inert` plugin. This will allow us to have access to the `directory` handler, which will enable us to server our files. In the `directory` handler, we configure `path`, which is required, to look in the entire `public` directory which we specified in the `relativeTo` option. The second option is the `redirectToSlash` option. By setting this to `true`, we tell the server to redirect requests without trailing slashes to the same path with those with the trailing slash.
 
