@@ -24,11 +24,11 @@ There are two nearly identical logging methods, `server.log(tags, [data, [timest
 
 ### <a name="request.log" /> request.log()
 
-You want to call `request.log()` whenever in the context of a request, such as a route handler, request lifecycle extension, or authentication scheme. The method takes two argument:
+You want to call `request.log()` whenever you want to log something in the context of a request, such as a route handler, request lifecycle extension, or authentication scheme. The method takes two argument:
 
 `tags`: a string or an array of strings (e.g. `['error', 'database', 'read']`) used to identify the event. Tags are used instead of log levels and provide a much more expressive mechanism for describing and filtering events.
 
-`data`: (optional) an message string or object with the application data being logged. If data is a function, the function signature is `function()` and it called once to generate (return value) the actual data emitted to the listeners.
+`data`: (optional) a message string or object with the application data being logged. If data is a function, the function signature is `function()` and it called once to generate (return value) the actual data emitted to the listeners.
 
 For example:
 
@@ -43,7 +43,7 @@ server.route({
     }
 });
 ```
-In this example, if there is a request-specific event with a tag of `error`, the event will get logged. We also send a `data` parameter of `Event error`. This can be anything you want, such as an error message or any other details.  
+In this example, if there is a request-specific event with a tag of `error`, the event will get logged. You also send a `data` parameter of `Event error`. This can be anything you want, such as an error message or any other details.  
 
 ### <a name="server.log" /> server.log()
 
@@ -55,16 +55,9 @@ In this example, if there is a request-specific event with a tag of `error`, the
 const Hapi = require('hapi');
 const server = Hapi.server({ port: 80 });
 
-server.events.on('log', (event, tags) => {
-
-    if (tags.error) {
-        console.log(event);
-    }
-});
-
 server.log(['test', 'error'], 'Test event');
 ```
-In this example, we see that server will log any event with `tags` `'test'` and `'error'`. Since there is no specific request in scope in this example, we use `server.log()`.
+In this example, you'll see that server will log an event with `tags` `'test'` and `'error'`. Since there is no specific request in scope in this example, you use `server.log()`.
 
 ## <a name="display" /> Retrieving and Displaying Logs
 
@@ -78,7 +71,7 @@ server.events.on('log', (event, tags) => {
     }
 });
 ```
-In this example, we call `server.events.on()` to listen for any `log` event, in this case any logged with `server.log()`. Events logged with `server.log()` will emit a `log` event and events logged with `request.log()` will emit a `request` event.  
+In this example, you call `server.events.on()` to listen for any `log` event, in this case anything logged with `server.log()`. Events logged with `server.log()` will emit a `log` event and events logged with `request.log()` will emit a `request` event.  
 
 You can retrieve all logs for a particular request at once via `request.logs`. This will be an array containing all the logged request events. You must first set the `log.collect` option to `true` on the route, otherwise this array will be empty.
 
