@@ -10,13 +10,13 @@ _This tutorial is compatible with hapi v17_
     - [Cache](#cache)
     - [Generate a Custom Key](#key)
     - [Bind](#key)
-- [server.methods()](#server.methods)
+- [server.methods](#server.methods)
 
 
 
 ## <a name="overview" /> Overview
 
-Server methods are a useful way of sharing functions by attaching them to your server object rather than requiring a common module everywhere it is needed. To register a server method, you call [`server.method()`](https://hapijs.com/api#server.method()). There are two different ways to call this function. You can call it with the signature `server.method(name, method, [options])`, or you can call it with the signature `server.method(method)`, where `method` is an object with `name`, `method`, and `options` parameters (note that you may also pass an array of these objects).
+Server methods are a useful way of sharing functions by attaching them to your server object rather than requiring a common module everywhere it is needed. Server methods are also used heavily for caching purposes. Since server methods leverage hapi's native caching, they can help reduce your boilerplate to a minimum. See the [caching](https://hapijs.com/tutorials/caching) for more. To register a server method, you call [`server.method()`](https://hapijs.com/api#server.method()). There are two different ways to call this function. You can call it with the signature `server.method(name, method, [options])`, or you can call it with the signature `server.method(method)`, where `method` is an object with `name`, `method`, and `options` parameters (note that you may also pass an array of these objects).
 
 ## <a name="server.method" /> server.method()
 
@@ -30,7 +30,7 @@ const add = function (x, y) {
 
 server.method('add', add, {});
 ```
-Here, we create a function called `add`, which takes two parameters and adds them together. Then we call `server.method()` with the name of the method being `add`, the method we are using, the one we just created called `add`, and no options.  
+Here, you create a function called `add`, which takes two parameters and adds them together. Then you call `server.method()` with the name of the method being `add`, the method you are using, the one we just created called `add`, and no options.  
 
 The second way to call `server.method()` is with the signature `server.method(method)`:
 
@@ -46,7 +46,7 @@ server.method({
     options: {}
 });
 ```
-We create the same function again, called `add`. When we register it this time, configure the `method` object. This case, `name` is the name of the method, `method` is the method we are using, and `options` is an object to configure various options.
+You create the same function again, called `add`. When you register it this time, configure the `method` object. This case, `name` is the name of the method, `method` is the method you are using, and `options` is an object to configure various options.
 
 ### <a name="name" /> Name
 
@@ -124,11 +124,9 @@ server.method('add', add, {
         generateTimeout: 100
     }
 });
-
-server.methods.add(5, 12);
 ```
 
-Here we defined our server method function to have one more parameter than we're expecting to pass to it, the additional `flags` parameter is passed by hapi. We simply then set the `ttl` flag to however long we want the result to be cached for (in milliseconds); if it is set to `0` then the value will never be cached. If we set no flag then the `ttl` will be taken from the cache configuration.
+Here you defined your server method function to have one more parameter than you're expecting to pass to it, the additional `flags` parameter is passed by hapi. You then simply set the `ttl` flag to however long you want the result to be cached for (in milliseconds); if it is set to `0` then the value will never be cached. If you set no flag then the `ttl` will be taken from the cache configuration.
 
 ### <a name="key" /> Generate a Custom Key
 
@@ -169,7 +167,7 @@ const lookup = async function (id) {
 server.method('lookup', lookup, { bind: myDB });
 ```
 
-## <a name="server.methods" /> server.methods()
+## <a name="server.methods" /> server.methods
 
 To call the server methods we registered above, you would use `server.methods()`. Consider our add function:
 
