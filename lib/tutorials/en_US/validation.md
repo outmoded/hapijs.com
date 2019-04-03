@@ -35,7 +35,18 @@ Then, you must import it to your project:
 
 ## <a name="input" /> Input Validation
 
-The first type of validation hapi can perform is input validation. This is defined in the `options` object on a route, and is able to validate headers, path parameters, query parameters, and payload data. Keep reading for examples of input validation with `joi`.
+The first type of validation hapi can perform is input validation. This is defined in the `options` object on a route, and is able to validate headers, path parameters, query parameters, and payload data. Note: In the below examples, you'll see that we give a JS object to `route.options.validate`. Be aware that the `validate` option accepts either JS or `joi` objects for its properties. The latter allows you to set `joi` options for that particular schema. Here is a partial rewrite of the [Query Parameters](#queryparams) example:
+
+```js
+options: {
+    validate: {
+        query: Joi.object({
+            limit: Joi.number().integer().min(1).max(100).default(10)
+        }).options({ stripUnknown: true });
+    }
+}
+```
+Look [here](https://github.com/hapijs/joi/blob/v14.3.1/API.md#anyoptionsoptions) for details about such options.
 
 ### <a name="pathparams" /> Path parameters
 
@@ -59,9 +70,9 @@ server.route({
 });
 ```
 
-As you can see here, we've passed a `validate.params` option to the `options` object, this is how we tell hapi that the named parameter specified in the path should be validated. Joi's syntax is very simple and clear to read, the validator we passed here makes sure that the parameter is a string with a minimum length of 3 and a maximum length of 10.
+As you can see here, you've passed a `validate.params` option to the `options` object, this is how you tell hapi that the named parameter specified in the path should be validated. Joi's syntax is very simple and clear to read, the validator you passed here makes sure that the parameter is a string with a minimum length of 3 and a maximum length of 10.
 
-With this configuration, if we make a request to `/hello/jennifer` we will get the expected `Hello jennifer!` reply, however if we make a request to `/hello/a` we will get an HTTP `400` response that looks like the following:
+With this configuration, if you make a request to `/hello/jennifer` you will get the expected `Hello jennifer!` reply, however if you make a request to `/hello/a` you will get an HTTP `400` response that looks like the following:
 
 ```json
 {
@@ -71,11 +82,11 @@ With this configuration, if we make a request to `/hello/jennifer` we will get t
 }
 ```
 
-Likewise, if we were to make a request to `/hello/thisnameiswaytoolong`, we'd also get the same error.
+Likewise, if you were to make a request to `/hello/thisnameiswaytoolong`, you'd also get the same error.
 
 ### <a name="queryparams" /> Query parameters
 
-To validate query parameters, we simply specify a `validate.query` option in the route's options, and we will get similar effects. By default hapi will not validate anything. If you specify a validator for even one query parameter, that means you *must* specify a validator for all possible query parameters that you would like to accept.
+To validate query parameters, you simply specify a `validate.query` option in the route's options, and you will get similar effects. By default hapi will not validate anything. If you specify a validator for even one query parameter, that means you *must* specify a validator for all possible query parameters that you would like to accept.
 
 For example, if you have a route that returns a list of blog posts and you would like the user to limit their result set by count, you could use the following configuration:
 
@@ -97,9 +108,9 @@ server.route({
 });
 ```
 
-This makes sure that the `limit` query parameter is always an integer between 1 and 100, and if unspecified defaults to 10. However, if we make a request to `/posts?limit=15&offset=15` we get another HTTP `400` response and error.
+This makes sure that the `limit` query parameter is always an integer between 1 and 100, and if unspecified defaults to 10. However, if you make a request to `/posts?limit=15&offset=15` you get another HTTP `400` response and error.
 
-We got an error because the `offset` parameter is not allowed. That's because we didn't provide a validator for it, but we did provide one for the `limit` parameter.
+You get an error because the `offset` parameter is not allowed. That's because you didn't provide a validator for it, but you did provide one for the `limit` parameter.
 
 ### <a name="payloadparams" /> Payload parameters
 
@@ -159,7 +170,7 @@ server.route({
     }
 });
 ```
-Here, we are validating the cookie header as a string and making sure it is required. The `allowUnknown` option allows other incoming headers to be accepted without being validated.   
+Here, you are validating the cookie header as a string and making sure it is required. The `allowUnknown` option allows other incoming headers to be accepted without being validated.   
 
 ## <a name="output" /> Output
 
@@ -235,7 +246,7 @@ server.route({
     }
 });
 ```
-Looking at our book route again, you can see, the `sample` value is set to `50`. This means the server will validate one half of the responses.
+Looking at your book route again, you can see, the `sample` value is set to `50`. This means the server will validate one half of the responses.
 
 ### <a name="status" /> response.status
 
