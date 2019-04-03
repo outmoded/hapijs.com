@@ -21,7 +21,7 @@ One of the best ways to improve website performance is to configure caching on y
 
 ## <a name="client-side" /> Client-side Caching
 
-The HTTP protocol defines several HTTP headers to instruct how clients, such as browsers, should cache resources. To learn more about these headers and to decide which are suitable for your use-case check out this useful  [guide put together by Google](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching).
+The HTTP protocol defines several HTTP headers to instruct how clients, such as browsers, should cache resources. To learn more about these headers and to decide which are suitable for your use-case check out this useful [guide put together by Google](https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching).
 
 The first part of this tutorial shows how to easily configure hapi to send these headers to clients.
 
@@ -29,7 +29,7 @@ The first part of this tutorial shows how to easily configure hapi to send these
 
 The `Cache-Control` header tells the browser and any intermediate caches if a resource is cacheable and for what duration. For example, `Cache-Control:max-age=30, must-revalidate, private` means that the browser can cache the associated resource for thirty seconds and `private` means it should not be cached by intermediate caches, only by the browser. `must-revalidate` means that once it expires it has to request the resource again from the server.
 
-Let's see how we can set this header in hapi:
+Let's see how you can set this header in hapi:
 
 ```javascript
 server.route({
@@ -54,10 +54,10 @@ server.route({
 });
 ```
 
-The above example shows how you can set a `cache` options object on a route. Here we set `expiresIn` to 30 seconds and `privacy` to private.
+The above example shows how you can set a `cache` options object on a route. Here you set `expiresIn` to 30 seconds and `privacy` to private.
 The example also illustrates that the `expiresIn` value can be overridden with the `ttl(msec)` method provided by the [response object](/api#response-object) interface.
 
-If we make a request to `/hapi` we'll receive the response header `cache-control: max-age=30, must-revalidate, private`. If we make a request to `/hapi/5000` we'll instead get the header `cache-control: max-age=5, must-revalidate, private`.
+If you make a request to `/hapi` you'll receive the response header `cache-control: max-age=30, must-revalidate, private`. If you make a request to `/hapi/5000` you'll instead get the header `cache-control: max-age=5, must-revalidate, private`.
 
 See [route-options](/api#route-options) for more information about common `cache` configuration options.
 
@@ -73,7 +73,7 @@ Assuming `lastModified` is a `Date` object you can set this header via the [resp
 return h.response(result)
     .header('Last-Modified', lastModified.toUTCString());
 ```
-There is one more example using `Last-Modified` in the [last section](#client-and-server-caching) of this tutorial.
+There is one more example using `Last-Modified` in the [last section](#clientandserver) of this tutorial.
 
 ### <a name="etag" /> ETag
 
@@ -89,21 +89,21 @@ Check the documentation of `etag` under the [response object](/api#response-obje
 
 ## <a name="server-side" /> Server-side Caching
 
-hapi provides powerful, convenient server side caching via [catbox](https://www.github.com/hapijs/catbox). This tutorial section will help you understand how to use `catbox`.
+hapi provides powerful, convenient server-side caching via [catbox](https://www.github.com/hapijs/catbox). This tutorial section will help you understand how to use catbox.
 
 ### <a name="catbox" /> catbox
 
 [catbox](https://github.com/hapijs/catbox) is a multi-strategy key-value object store. It comes with extensions supporting a memory cache, [Redis](https://redis.io), [MongoDB](https://www.mongodb.com), [Memcached](http://memcached.org), and [Amazon S3](https://aws.amazon.com/s3).
 
-In order to reduce module dependencies, `catbox` does not include the external caching strategies. To use other strategies, each service must be manually installed via npm or package dependencies manually.
+In order to reduce module dependencies, catbox does not include the external caching strategies. To use other strategies, each service must be manually installed via npm or package dependencies manually.
 
-`catbox` has two interfaces; client and policy.
+catbox has two interfaces; client and policy.
 
 ### <a name="client" /> Client
 
 [Client](https://github.com/hapijs/catbox#client) is a low-level interface that allows you set/get key-value pairs. It is initialized with one of the available adapters: ([Memory](https://github.com/hapijs/catbox-memory), [Redis](https://github.com/hapijs/catbox-redis), [mongoDB](https://github.com/hapijs/catbox-mongodb), [Memcached](https://github.com/hapijs/catbox-memcached), or [Riak](https://github.com/DanielBarnes/catbox-riak)).
 
-hapi initializes a default [client](https://github.com/hapijs/catbox#client) using the [catbox memory](https://github.com/hapijs/catbox-memory) adapter. Let's see how we can define more clients.
+hapi initializes a default [client](https://github.com/hapijs/catbox#client) using the [catbox memory](https://github.com/hapijs/catbox-memory) adapter. Let's see how you can define more clients.
 
 ```javascript
 'use strict';
@@ -129,7 +129,7 @@ const server = Hapi.server({
 });
 ```
 
-In the above example, we've defined two catbox clients; mongoCache and redisCache. Including the default memory cache created by hapi, there are now three available cache clients. You can replace the default client by omitting the `name` property when registering a new cache client. `partition` tells the adapter how cache should be named ('catbox' by default). In the case of [mongoDB](http://www.mongodb.org/), this becomes the database name and in the case of [redis](http://redis.io/) it is used as key prefix.
+In the above example, you defined two catbox clients; mongoCache and redisCache. Including the default memory cache created by hapi, there are now three available cache clients. You can replace the default client by omitting the `name` property when registering a new cache client. `partition` tells the adapter how cache should be named ('catbox' by default). In the case of [mongoDB](http://www.mongodb.org/), this becomes the database name and in the case of [redis](http://redis.io/) it is used as key prefix.
 
 ### <a name="policy" /> Policy
 
@@ -179,13 +179,13 @@ start();
 ```
 If you make a request to http://localhost:8000/add/1/5, you should get the response `6` after about a second. If you hit that endpoint again the response should come immediately because it's being served from the cache. If you were to wait 10s and then call it again, you'd see that it took a while because the cached value has now been ejected from the cache.
 
-`server.cache(options)` provisions a cache segment within the server cache facility. In this case, our policy will be using `'mongoCache'` which we created above with `server.cache`.
+`server.cache(options)` provisions a cache segment within the server cache facility. In this case, your policy will be using `'mongoCache'` which you created above with `server.cache`.
 
-`expiresIn`states the time, in milliseconds, the cache will expire in relation to the time the item was saved in the cache. In this case, our cache will expire 10 seconds after the item was saved. 
+`expiresIn` states the time, in milliseconds, the cache will expire in relation to the time the item was saved in the cache. In this case, our cache will expire 10 seconds after the item was saved. 
 
 `segment` that allow you to further isolate caches within one [client](https://github.com/hapijs/catbox#client) partition. If you want to cache results from two different methods, you usually don't want mix the results together. In [mongoDB](http://www.mongodb.org/) adapters, `segment` represents a collection and in [redis](http://redis.io/) it's an additional prefix along with the `partition` option. The default value for `segment` when [server.cache()](/api#-servercacheoptions) is called inside of a plugin will be `'!pluginName'`. When creating [server methods](/tutorials/server-methods), the `segment` value will be `'#methodName'`. If you have a use case for multiple policies sharing one segment there is a [shared](/api#-servercacheoptions) option available as well.
 
-`generateFunc` is a function that will generate a new cache item if one is not found in the cache when calling `get()`. Here, our function will generate a value of two numbers added together. 
+`generateFunc` is a function that will generate a new cache item if one is not found in the cache when calling `get()`. In this example, the generate function will generate a value of two numbers add together. The `generateFunc` function will also be called if an item in the cache exists, but is found to be stale. You can set the time when an item in the cache will be stale by configuring the `staleIn` option. `staleIn` is a number in milliseconds to mark an item stored in cache as stale and attempt to regenerate it when `generateFunc` is provided. `staleIn` must be less than `expiredIn`.
 
 `generateTimeout` is the number of milliseconds to wait before returning a timeout error when the `generateFunc` function takes too long to return a value.
 
@@ -197,7 +197,7 @@ Look into catbox policy [options](https://github.com/hapijs/catbox#policy) and p
 
 ### <a name="serverMethods" /> Server methods
 
-But it can get better than that! In 95% cases you will use [server methods](/tutorials/server-methods) for caching purposes, because it reduces boilerplate to minimum. Let's rewrite the previous example using a server method:
+But it can get better than that! In 95% cases you will use [server methods](/tutorials/server-methods) for caching purposes, because it reduces boilerplate to minimum. Here's a rewrite of the previous example using a server method:
 
 ```javascript
 const start = async () => {
