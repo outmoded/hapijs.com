@@ -158,7 +158,7 @@ exports.plugin = {
 Normally, when this plugin is loaded it will create a `GET` route at `/test`. This can be changed by using the `prefix` setting in the options, which will prepend a string to all routes created in the plugin:
 
 ```javascript
-const start = async function () {
+const start = async function (server) {
 
     await server.register(require('myplugin'), {
         routes: {
