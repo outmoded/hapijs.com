@@ -52,15 +52,15 @@ process.on('unhandledRejection', (err) => {
 
 init();
 ```
-First, we require hapi. Then we initialize a new `Hapi.server()` with connection details containing a port number to listen on and the host information. After that we start the server and log that it's running.
+First, you require hapi. Then you initialize a new `Hapi.server()` with connection details containing a port number to listen on and the host information. After that you start the server and log that it's running.
 
-When creating a server, we can provide a hostname, IP address, a Unix socket file, or Windows named pipe to bind the server to. For more details, see the API reference.
+When creating a server, you can provide a hostname, IP address, a Unix socket file, or Windows named pipe to bind the server to. For more details, see the API reference.
 
 The `host` property set to `localhost` is likely the safest choice. In a docker container, however, the localhost may not be accessible outside of the container and using `host: '0.0.0.0'` may be needed.
 
 ## <a name="routes" /> Adding Routes
 
-After we get the server up and running, its time to add a route that will display "Hello World!" in our browser.
+After you get the server up and running, its time to add a route that will display "Hello World!" in your browser.
 
 ```js
 'use strict';
