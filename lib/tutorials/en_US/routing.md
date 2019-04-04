@@ -59,7 +59,7 @@ server.route({
     }
 });
 ```
-As you can see above, we have the string `{user}` in our path, which means we're asking for that segment of the path to be assigned to a named parameter. These parameters are stored in the object `request.params` within the handler. Since we named our parameter user we are able to access the value with the property `request.params.user`, after URI encoding it so as to prevent content injection attacks. For example, going to `/hello/ferris` in your browser, you will see `Hello ferris!`.
+As you can see above, you have the string `{user}` in your path, which means you're asking for that segment of the path to be assigned to a named parameter. These parameters are stored in the object `request.params` within the handler. Since you named your parameter user, you are able to access the value with the property `request.params.user`, after URI encoding it so as to prevent content injection attacks. For example, going to `/hello/ferris` in your browser, you will see `Hello ferris!`.
 
 ## <a name="optionalParameters" /> Optional Parameters
 
@@ -83,7 +83,7 @@ Now a request to `/hello/sloan` will reply with `Hello sloan!` and a request to 
 
 ## <a name="multiParameters" /> Multi-Segment Parameters
 
-Along with optional path parameters, you can also allow parameters that match multiple segments. In order to do this, we use an asterisk and a number. For example:
+Along with optional path parameters, you can also allow parameters that match multiple segments. In order to do this, you use an asterisk and a number. For example:
 
 ```js
 server.route({
@@ -96,7 +96,7 @@ server.route({
     }
 });
 ```
-With this configuration, a request to `/hello/john/doe` will reply with the string `Hello john doe!`. The important thing to note here is that the parameter is actually the string `"john/doe"`. That's why we did a split on that character to get the two separate parts. The number after the asterisk represents how many path segments should be assigned to the parameter. You can also omit the number entirely, and the parameter will match any number of segments available. Like the optional parameters, a wildcard parameter (for example `/{files*}`) may only appear as the last parameter in your path.
+With this configuration, a request to `/hello/john/doe` will reply with the string `Hello john doe!`. The important thing to note here is that the parameter is actually the string `"john/doe"`. That's why you did a split on that character to get the two separate parts. The number after the asterisk represents how many path segments should be assigned to the parameter. You can also omit the number entirely, and the parameter will match any number of segments available. Like the optional parameters, a wildcard parameter (for example `/{files*}`) may only appear as the last parameter in your path.
 
 When determining what handler to use for a particular request, hapi searches paths in order from most specific to least specific. That means if you have two routes, one with the path `/filename.jpg` and a second route `/filename.{ext}` a request to `/filename.jpg` will match the first route, and not the second. This also means that a route with the path `/{files*}` will be the last route tested, and will only match if all other routes fail.
 
@@ -118,7 +118,7 @@ server.route({
     }
 });
 ```
-Here, we simply access the `name` query parameter and return it in the handler, which would read `Hello ferris!`.
+Here, you simply access the `name` query parameter and return it in the handler, which would read `Hello ferris!`.
 
 For more complex query structures, you may opt to use the `qs` module. Consider the following:
 
@@ -134,7 +134,7 @@ server.route({
 ```
 If you sent the request `localhost:3000?foo[bar]=baz`, hapi, by default would return `{ "foo[bar]": "baz" }`.  
 
-With the [qs](https://github.com/ljharb/qs) module, we can parse the query string out. An example: 
+With the [qs](https://github.com/ljharb/qs) module, you can parse the query string out. An example: 
 
 ```js
 const Hapi = require('hapi');
@@ -171,11 +171,11 @@ process.on('unhandledRejection', (err) => {
 
 init();
 ```
-Here, we first require the [qs](https://github.com/ljharb/qs) module.  
+Here, you first require the [qs](https://github.com/ljharb/qs) module.  
 
-Second, we set the query parameters parser method by setting the `server.options.query.parser` value. In this case, we use the `Qs.parse()` method where `query` is an object containing the incoming `request.query` parameters. Now, anything coming into `request.query` will be parsed with `Qs.parse()`.
+Second, you set the query parameters parser method by setting the `server.options.query.parser` value. In this case, you use the `Qs.parse()` method where `query` is an object containing the incoming `request.query` parameters. Now, anything coming into `request.query` will be parsed with `Qs.parse()`.
 
-Lastly, we returned the parsed query string, which would now be:
+Lastly, you returned the parsed query string, which would now be:
 
 ```
 {
@@ -184,7 +184,7 @@ Lastly, we returned the parsed query string, which would now be:
     }
 }
 ```
-Note: In the above example, we used the [qs](https://github.com/ljharb/qs) module to handle our parsing, but any parser will do, be it from `npm` or even custom. Just be aware that the method must return an object where each key is a parameter and matching value is the parameter value.  
+Note: In the above example, you used the [qs](https://github.com/ljharb/qs) module to handle our parsing, but any parser will do, be it from `npm` or even custom. Just be aware that the method must return an object where each key is a parameter and matching value is the parameter value.  
 
 ## <a name="requestpayload" /> Request Payload
 
@@ -247,9 +247,9 @@ server.route({
     }
 });
 ```
-The first property under `options` is `auth`. `auth` will set the authentication configuration for the route. Since this route is for a new user signing up, we will disable authentication.  
+The first property under `options` is `auth`. `auth` will set the authentication configuration for the route. Since this route is for a new user signing up, you will disable authentication.  
 
-The second property is `validate`. This allows you to set validation rules for various request components, such as `headers`, `params`, `payload`, and `failAction`. We use the [joi](https://github.com/hapijs/joi) package to validate the `request.payload`. For more info, please check the [validation tutorial](/tutorials/validation).
+The second property is `validate`. This allows you to set validation rules for various request components, such as `headers`, `params`, `payload`, and `failAction`. You use the [joi](https://github.com/hapijs/joi) package to validate the `request.payload`. For more info, please check the [validation tutorial](/tutorials/validation).
 
 ## <a name="missing" /> 404 Handling
 
@@ -284,8 +284,8 @@ const init = async () => {
 
 init();
 ```
-First, we configure our server.
+First, you configure our server.
 
-Next, we setup our route that return our custom 404 response. We use a wildcard, `*`, for the method, so it covers all available methods. Then, we use a very broad, generic path, `'/{any*}`. This will catch any route that our other routes do not.  hapi routes will go the the most specific path first, then get broader, till it finds a match.  For example, `localhost:3000/login` will go to the `/login` route and not the `/{any*}` route.  
+Next, you setup your route that return your custom 404 response. You use a wildcard, `*`, for the method, so it covers all available methods. Then, you use a very broad, generic path, `'/{any*}`. This will catch any route that our other routes do not.  hapi routes will go the the most specific path first, then get broader, till it finds a match.  For example, `localhost:3000/login` will go to the `/login` route and not the `/{any*}` route.  
 
-Lastly, we return a custom 404 response in our handler, letting our users know that the resource they are asking for could not be found.
+Lastly, you return a custom 404 response in your handler, letting your users know that the resource they are asking for could not be found.
