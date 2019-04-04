@@ -17,7 +17,7 @@ This tutorial goes into a basic setup for testing routes, and outlines one possi
 
 ## <a name="lab" /> lab
 
-`lab` is a simple test utility for Node.js. Unlike other test utilities, lab uses only async/await features and includes everything you should expect from a modern Node.js test utility. `lab` works with any assertion library that throws an error when a condition isn't met. For this tutorial, we will be using the `code` assertion library.
+`lab` is a simple test utility for Node.js. Unlike other test utilities, lab uses only async/await features and includes everything you should expect from a modern Node.js test utility. `lab` works with any assertion library that throws an error when a condition isn't met. For this tutorial, you will be using the `code` assertion library.
 
 To install `lab`, type the following in your terminal:
 
@@ -73,7 +73,7 @@ process.on('unhandledRejection', (err) => {
     process.exit(1);
 });
 ```
-We now export, but do not call, `init()` and `start()`. This will allow us to initialize and start the server from different files. The `init()` function will initialize the server (starts the caches, finalizes plugin registration) but does not start the server. This is what we will use in our tests. The `start()` function will actually start the server. This is what we will use in our main entry-point for the server:
+You now export, but do not call, `init()` and `start()`. This will allow you to initialize and start the server from different files. The `init()` function will initialize the server (starts the caches, finalizes plugin registration) but does not start the server. This is what you will use in your tests. The `start()` function will actually start the server. This is what you will use in our main entry-point for the server:
 
 ```js
 `use strict`;
@@ -82,11 +82,11 @@ const { start } = require('lib/server');
 
 start();
 ```
-What we've created here is a way of starting the server normally by calling its start function in our entry-point, and exposing a port for external HTTP traffic, but we've also got a module which doesn't do anything by default, which we can use in our tests.
+What you've created here is a way of starting the server normally by calling its start function in our entry-point, and exposing a port for external HTTP traffic, but you've also got a module which doesn't do anything by default, which you can use in our tests.
 
 ## <a name="writingTest" /> Writing a Route Test
 
-In this example we'll use [lab](https://github.com/hapijs/lab), but the same method can be used for any testing tool such as [Mocha](https://mochajs.org/), [Jest](https://jestjs.io/), [Tap](https://www.node-tap.org/), [Ava](https://github.com/avajs) etc.
+In this example you'll use [lab](https://github.com/hapijs/lab), but the same method can be used for any testing tool such as [Mocha](https://mochajs.org/), [Jest](https://jestjs.io/), [Tap](https://www.node-tap.org/), [Ava](https://github.com/avajs) etc.
 
 By default, `lab` loads all the '*.js' files inside the local `test` directory and executes the tests found. To use different directories or files, pass the file or directories as arguments:
 
@@ -122,11 +122,11 @@ describe('GET /', () => {
     });
 });
 ```
-Here we are testing whether or not our `'GET'` route will respond with a `200` status code. We first call `describe()` to provide the structure of our test. `describe()` takes two parameters, a description of the test, and the function that will setup the test.  
+Here you are testing whether or not our `'GET'` route will respond with a `200` status code. You first call `describe()` to provide the structure of your test. `describe()` takes two parameters, a description of the test, and the function that will setup the test.  
 
-Note that we call `init` rather than `start` to set up the server, which means that the server starts, but does not listen on a socket. After each test we call `stop` to cleanup and stop the server.
+Note that you call `init` rather than `start` to set up the server, which means that the server starts, but does not listen on a socket. After each test you call `stop` to cleanup and stop the server.
 
-The `it()` function is what will run our test. `it()` takes two parameters, a description of a successful test, and a function to run the test. 
+The `it()` function is what will run your test. `it()` takes two parameters, a description of a successful test, and a function to run the test. 
 
 You will note the use of `inject` on the server. `inject` uses [Shot](https://github.com/hapijs/shot) to `inject` a request directly into hapi's route handler. This is the magic which allows us to test HTTP methods.
 
