@@ -30,7 +30,7 @@ For more info, please see [here](https://github.com/hapijs/vision).
 
 ## <a name="server" /> Configuring the server
 
-To get started with views, first we have to configure at least one templating engine on the server. This is done by using the [`server.views()`](https://github.com/hapijs/vision/blob/master/API.md#serverviewsoptions) method provided by `vision`:
+To get started with views, first you have to configure at least one templating engine on the server. This is done by using the [`server.views()`](https://github.com/hapijs/vision/blob/master/API.md#serverviewsoptions) method provided by `vision`:
 
 ```javascript
 'use strict';
@@ -57,11 +57,11 @@ const start = async () => {
 start();
 ```
 
-We're doing several things here. First, we load the [vision](https://github.com/hapijs/vision) module as a plugin. It adds template rendering support to hapi.
+You're doing several things here. First, you load the [vision](https://github.com/hapijs/vision) module as a plugin. It adds template rendering support to hapi.
 
-Secondly, we register the `handlebars` module as the engine responsible for rendering templates with an extension of `.html`.
+Secondly, you register the `handlebars` module as the engine responsible for rendering templates with an extension of `.html`.
 
-Next, we tell the server that our templates are located in the `templates` directory. We indicate that this directory should be taken relative to the current directory by providing a `relativeTo` option. By default, hapi will look for templates relative to the current working directory.
+Next, you tell the server that your templates are located in the `templates` directory. You indicate that this directory should be taken relative to the current directory by providing a `relativeTo` option. By default, hapi will look for templates relative to the current working directory.
 
 ## <a name="options" /> server.views() Options
 
@@ -139,7 +139,7 @@ server.views({
 
 ### <a name="global" /> Global context
 
-In the [rendering a view](#render) tutorial, we see how to pass context directly into a view, but what if we have some default context that should *always* be available on all templates?
+In the [rendering a view](#render) tutorial, you saw how to pass context directly into a view, but what if you have some default context that should *always* be available on all templates?
 
 The simplest way to achieve this is by using the `context` option when calling `server.views()`:
 
@@ -163,9 +163,9 @@ The default global context will be merged with any local context passed taking t
 
 ### <a name="helpers" /> View helpers
 
-JavaScript modules located in the defined `helpersPath` are available in templates. For this example, we will create a view helper `fortune` which will pick and print out one element out of an array of strings, when used in a template.
+JavaScript modules located in the defined `helpersPath` are available in templates. For this example, you will create a view helper `fortune` which will pick and print out one element out of an array of strings, when used in a template.
 
-The following snippet is the complete helper function which we will store in a file called `fortune.js` in the `helpers` directory.
+The following snippet is the complete helper function which you will store in a file called `fortune.js` in the `helpers` directory.
 
 ```javascript
 module.exports = function () {
@@ -188,14 +188,14 @@ module.exports = function () {
 };
 ```
 
-Now we can use the view helper in our templates. Here's a code snippet that show's the helper function in `templates/index.html` using handlebars as a rendering engine:
+Now you can use the view helper in your templates. Here's a code snippet that show's the helper function in `templates/index.html` using handlebars as a rendering engine:
 
 ```html
 <h1>Your fortune</h1>
 <p>{{fortune}}</p>
 ```
 
-Now when we start the server and point our browser to the route which uses our template (which uses our view helper), we should see a paragraph with a randomly selected fortune right below the header.
+Now when you start the server and point your browser to the route which uses your template (which uses your view helper), you should see a paragraph with a randomly selected fortune right below the header.
 
 For reference, here is a complete server script that uses the fortune view helper method in a template.
 
