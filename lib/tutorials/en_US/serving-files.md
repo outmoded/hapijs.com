@@ -95,7 +95,7 @@ const start = async () => {
 
 start();
 ```
-By requiring the `inert` plugin, you get access `h.file()` method. Here, we tell `h.file()` the path of the image we want to return. In this case, `'/path/to/picture.jpg'`. 
+By requiring the `inert` plugin, you get access `h.file()` method. Here, you tell `h.file()` the path of the image you want to return. In this case, `'/path/to/picture.jpg'`. 
 
 ## <a name="filehandler" /> File handler
 
@@ -113,7 +113,7 @@ server.route({
 
 ### <a name="fileoptions" /> File handler options
 
-We can also specify the parameter as a function that accepts the `request` object and returns a string representing the file's path (absolute or relative):
+You can also specify the parameter as a function that accepts the `request` object and returns a string representing the file's path (absolute or relative):
 
 ```javascript
 server.route({
@@ -127,7 +127,7 @@ server.route({
 });
 ```
 
-It can also be an object with a `path` property. When using the object form of the handler, we can do a few additional things, like setting the `Content-Disposition` header and allowing compressed files like so:
+It can also be an object with a `path` property. When using the object form of the handler, you can do a few additional things, like setting the `Content-Disposition` header and allowing compressed files like so:
 
 ```javascript
 server.route({
@@ -162,7 +162,7 @@ server.route({
 
 ### <a name="directoryoptions" /> Directory handler options
 
-The above route will respond to any request by looking for a matching filename in the `directory-path-here` directory. Note that a request to `/` in this configuration will reply with an HTTP `403` response. We can fix this by adding an index file. By default hapi will search in the directory for a file called `index.html`. We can disable serving an index file by setting the index option to `false`, or alternatively we can specify an array of files that inert should look for as index files:
+The above route will respond to any request by looking for a matching filename in the `directory-path-here` directory. Note that a request to `/` in this configuration will reply with an HTTP `403` response. You can fix this by adding an index file. By default hapi will search in the directory for a file called `index.html`. You can disable serving an index file by setting the index option to `false`, or alternatively you can specify an array of files that inert should look for as index files:
 
 ```javascript
 server.route({
@@ -233,9 +233,9 @@ const init = async () => {
 
 init();
 ```
-The first thing we do is require both `inert` and `path`. As you will see, we will need both of these to get our file server up and running.
+The first thing you do is require both `inert` and `path`. As you will see, you will need both of these to get our file server up and running.
 
-Next, we configure `server.options.routes`. We set the location the server will look for the static files by setting the `relativeTo` option.  
+Next, you configure `server.options.routes`. You set the location the server will look for the static files by setting the `relativeTo` option.  
 
-After our server is configured, we then register the `inert` plugin. This will allow us to have access to the `directory` handler, which will enable us to server our files. In the `directory` handler, we configure `path`, which is required, to look in the entire `public` directory which we specified in the `relativeTo` option. The second option is the `redirectToSlash` option. By setting this to `true`, we tell the server to redirect requests without trailing slashes to the same path with those with the trailing slash.
+After your server is configured, you then register the `inert` plugin. This will allow you to have access to the `directory` handler, which will enable you to server your files. In the `directory` handler, you configure `path`, which is required, to look in the entire `public` directory which you specified in the `relativeTo` option. The second option is the `redirectToSlash` option. By setting this to `true`, you tell the server to redirect requests without trailing slashes to the same path with those with the trailing slash.
 
