@@ -64,7 +64,7 @@ Once you've registered your scheme, you need a way to use it. This is where stra
 
 As mentioned above, a strategy is essentially a pre-configured instance of a scheme.
 
-To register a strategy, we must first have a scheme registered. Once that's complete, use `server.auth.strategy(name, scheme, [options])` to register your strategy.
+To register a strategy, you must first have a scheme registered. Once that's complete, use `server.auth.strategy(name, scheme, [options])` to register your strategy.
 
 The `name` parameter must be a string, and will be used later to identify this specific strategy. `scheme` is also a string, and is the name of the scheme this strategy is to be an instance of. The `options` parameter is use to customize the options of the `strategy`.  
 
@@ -75,7 +75,7 @@ server.auth.strategy('session', 'cookie', {
     isSecure: false
 });
 ```
-In the above example, we register the `strategy` with `server.auth.strategy()`. We name the `strategy` `session`, and say that we are using the `cookie` scheme. Lastly, we configure the `strategy` by giving it a `name`, `password`, and setting `isSecure: false`. 
+In the above example, you register the `strategy` with `server.auth.strategy()`. You name the `strategy` `session`, and say that you are using the `cookie` scheme. Lastly, you configure the `strategy` by giving it a `name`, `password`, and setting `isSecure: false`. 
 
 ## <a name="default" /> Default Strategy
 
@@ -165,13 +165,13 @@ const start = async () => {
 start();
 ```
 
-First, we define our `users` database, which is a simple object in this example. Then we define a validation function, which is a feature specific to [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) and allows us to verify that the user has provided valid credentials. For this validation function, we use `Bcrypt` to compare the user provided password with the hashed password in our database.  
+First, you define your `users` database, which is a simple object in this example. Then you define a validation function, which is a feature specific to [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) and allows you to verify that the user has provided valid credentials. For this validation function, you use `Bcrypt` to compare the user provided password with the hashed password in your database.  
 
-Next, we register the plugin, which creates a scheme with the name of `basic`. This is done within the plugin via [server.auth.scheme()](/api#-serverauthschemename-scheme).
+Next, you register the plugin, which creates a scheme with the name of `basic`. This is done within the plugin via [server.auth.scheme()](/api#-serverauthschemename-scheme).
 
-Once the plugin has been registered, we use [server.auth.strategy()](/api#server.auth.strategy()) to create a strategy with the name of `simple` that refers to our scheme named `basic`. We also pass an options object that gets passed to the scheme and allows us to configure its behavior.
+Once the plugin has been registered, you use [server.auth.strategy()](/api#server.auth.strategy()) to create a strategy with the name of `simple` that refers to your scheme named `basic`. You also pass an options object that gets passed to the scheme and allows you to configure its behavior.
 
-The last thing we do is tell a route to use the strategy named `simple` for authentication.
+The last thing you do is tell a route to use the strategy named `simple` for authentication.
 
 ## <a name="cookie" /> hapi-auth-cookie
 
@@ -284,24 +284,24 @@ const start = async () => {
 
 start();
 ```
-First, we need to do is register the `hapi-auth-cookie` plugin with `server.register`. Once the plugin is registered, we configure our `strategy` by calling `server.auth.strategy`. `server.auth.strategy` takes three parameters: name of the strategy, what scheme you are using, and an options object. For our strategy, we name it `session`. For the scheme, we will be using the `cookie` scheme. If you were using `hapi-auth-basic`, this parameter would be `basic`. The last parameter is an options object. This is how we can customized our auth strategy to fit our needs.
+First, you need to do is register the `hapi-auth-cookie` plugin with `server.register`. Once the plugin is registered, you configure your `strategy` by calling `server.auth.strategy`. `server.auth.strategy` takes three parameters: name of the strategy, what scheme you are using, and an options object. For your strategy, you name it `session`. For the scheme, you will be using the `cookie` scheme. If you were using `hapi-auth-basic`, this parameter would be `basic`. The last parameter is an options object. This is how you can customized your auth strategy to fit your needs.
 
-The first property we configure is the `cookie` object. In our `strategy`, we will configure three properties of the `cookie` object. First, we set the name of the cookie, in this case `sid-example`.  Next, we set the password that will be used to encrypt the cookie. This should be at least 32 characters long. Last, we set `isSecure` to `false`. This is ok for development while working over HTTP. In production, this should be switched back to `true`, which is the default setting. 
+The first property you configure is the `cookie` object. In your `strategy`, you will configure three properties of the `cookie` object. First, you set the name of the cookie, in this case `sid-example`.  Next, you set the password that will be used to encrypt the cookie. This should be at least 32 characters long. Last, you set `isSecure` to `false`. This is ok for development while working over HTTP. In production, this should be switched back to `true`, which is the default setting. 
 
 The next property is `redirectTo`. This will tell the server where to redirect to if an unauthenticated user tries to access a resource that requires authentication.  
 
 The last property is the `validateFunc` function. The `validateFunc` validates that a current cookie is still valid. For example, if a user authenticates themselves successfully, receives a cookie, and then leaves the site. Once they return, the `validateFunc` will check if their current cookie is still valid. 
 
-We setup the default strategy by calling `server.auth.default('session')`. This will set set the default auth strategy for all routes.   
+You setup the default strategy by calling `server.auth.default('session')`. This will set set the default auth strategy for all routes.   
 
-Once our strategy is set up, we need to set up route that will validate the provided username and password. In this case, our `POST` route to `'/login'` will do just that. First, it will pull the `username` and `password` from `request.payload`, which the user provided in the form from the `'/login'` `'GET'` route. Next, we find the user from the database by searching for their username:
+Once your strategy is set up, you need to set up route that will validate the provided username and password. In this case, your `POST` route to `'/login'` will do just that. First, it will pull the `username` and `password` from `request.payload`, which the user provided in the form from the `'/login'` `'GET'` route. Next, you find the user from the database by searching for their username:
 
 ```js
 const account = users.find(
     (user) => user.username === username
 );
 ```
-If the user doesn't not exists, or if the provided password is wrong, we redirect the user back to the login page. We use `Bcrypt` to compare the user provided password with the hashed password from the database.  
+If the user doesn't not exists, or if the provided password is wrong, you redirect the user back to the login page. You use `Bcrypt` to compare the user provided password with the hashed password from the database.  
 
 Lastly, if the user does exist, and the passwords match, the user is then redirected to the homepage.  
 
