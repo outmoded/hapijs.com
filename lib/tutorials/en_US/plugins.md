@@ -83,15 +83,54 @@ Another available property is `once`. When set to `true` will mean hapi ignores 
 
 As we've seen above, the `register` method accepts two parameters, `server` and `options`.
 
-The `options` parameter is simply whatever options the user passes to your plugin when calling `server.register(plugin, options)`. No changes are made and the object is passed directly to your `register` method.
-
 `register` should be an async function that returns once your plugin has completed whatever steps are necessary for it to be registered. Alternatively your register plugin should throw an error if an error occurred while registering your plugin.
 
 The `server` object is a reference to the `server` your plugin is being loaded in.
 
+The `options` parameter is simply whatever options the user passes to your plugin when calling `server.register(plugins, [options])`. No changes are made and the object is passed directly to your `register` method. Here is an example:
+
+```javascript
+'use strict';
+
+exports.plugin = {
+    pkg: require('./package.json'),
+    register: async function (server, options) {
+
+        // Create a route for example
+
+        server.route({
+            method: 'GET',
+            path: '/test',
+            handler: function (request, h) {
+
+                const name = options.name;
+                return `Hello ${name}`;
+            }
+        });
+
+        // etc...
+        await someAsyncMethods();
+    }
+};
+```
+Here, you grab a name from the `options` object via `options.name`. You then use that name to return a message to the user. Lets see how you pass that name to the plugin:
+
+```javascript
+const start = async function () {
+
+    await server.register({
+        plugin: require('myplugin'),
+        options: {
+            name: 'Bob'
+        }
+    });
+};
+```
+When you register the plugin, you can pass whatever options to it with `server.register(plugins, [options])`. Here you are passing `{  name: "Bob" }` to your plugin, which as you see above, can be accessed with the `options` object when you create the plugin. 
+
 ## <a name="loading" /> Loading a plugin
 
-Plugins can be loaded one at a time, or as a group in an array, by the `server.register()` method, for example:
+Plugins can be loaded one at a time, or as a group in an array, by the `server.register(plugins, [options])` method, for example:
 
 ```javascript
 const start = async function () {
