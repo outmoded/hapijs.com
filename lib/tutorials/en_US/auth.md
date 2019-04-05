@@ -243,7 +243,7 @@ const start = async () => {
                                 <title>Login page</title>
                             </head>
                             <body>
-                                <h3>Please Log In</h3
+                                <h3>Please Log In</h3>
                                 <form method="post" action="/login">
                                     Username: <input type="text" name="username"><br>
                                     Password: <input type="password" name="password"><br/>
