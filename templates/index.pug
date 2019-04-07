@@ -28,25 +28,6 @@ block content
 
   .content
 
-    section.bottom-rule.community
-      h2 Community
-      p hapi's <strong>stability</strong> and <strong>reliability</strong> is empowering these companies today:
-
-      .cf
-
-        each company in frontPage
-          if company.url
-            a(href=company.url, class='community-logo')
-              img(src=`/public/img/${company.logo}`, width=(company.width ? company.width : undefined), height=(company.height ? company.height : undefined), alt=company.name)
-          else
-            img(src=`/public/img/${company.logo}`, width=(company.width ? company.width : undefined), height=(company.height ? company.height : undefined), alt=company.name)
-
-      a(href='/community', class='button button-primary') See more
-
-      p Are you using hapi too? <a href='https://github.com/hapijs/hapijs.com#community'>Let us know</a>.
-
-      p Join us on Slack at <a href='https://hapihour.slack.com'>hapihour.slack.com</a> (<a href='https://join.slack.com/t/hapihour/shared_invite/enQtNTA5MDUzOTAzOTU4LTUyZmFiYjkyMTBmNDcyMmI2MmRjMzg4Y2YzNTlmNzUzNjViN2U1NmYyY2NjYjhiYWU4MGE2OTFhZDRlYWMyZDY'>First time? Join here</a>).
-
     section.bottom-rule.getting-started
       h2 Getting started
       p Start by creating a #[code package.json]:
@@ -184,3 +165,6 @@ block content
       p Launch the application by running #[code npm start] and open #[em localhost:8000/hello] in your browser.
 
       a(href='/tutorials', class='button button-primary') Read more about getting started with hapi
+
+    section.bottom-rule.community
+      p Having questions ? Join us on Slack at <a href='https://hapihour.slack.com'>hapihour.slack.com</a> (<a href='https://join.slack.com/t/hapihour/shared_invite/enQtNTA5MDUzOTAzOTU4LTUyZmFiYjkyMTBmNDcyMmI2MmRjMzg4Y2YzNTlmNzUzNjViN2U1NmYyY2NjYjhiYWU4MGE2OTFhZDRlYWMyZDY'>First time? Join here</a>).
