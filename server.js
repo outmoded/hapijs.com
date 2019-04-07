@@ -28,7 +28,6 @@ const start = async function () {
     server.method(require('./lib/npm').methods);
     server.method(require('./lib/github').methods);
     server.method(require('./lib/markdown').methods);
-    server.method(require('./lib/community').methods);
     server.method(require('./lib/changelog').methods);
 
     const plugins = [
