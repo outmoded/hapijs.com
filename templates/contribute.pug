@@ -12,27 +12,6 @@ block content
 
       p Several issues are raised across the hapijs organization that are waiting for contributors to show them some love. Those are marked with <a href="https://github.com/search?q=is%3Aissue+user%3Ahapijs+label%3A%22backlog%22"> backlog label</a>.
 
-      .cf.content
-        .column.new-contributor-issues
-          header.cf
-            h4.pull-left Issues for new contributors
-            a.pull-right(href='https://github.com/issues?q=is%3Aopen+is%3Aissue+user%3Ahapijs+label%3A%22good+first+issue%22+', title='See all issues for new contributors') See all
+      p We also labelled issues for newcomers that would like to contribute to our community. They are marked with <a href="https://github.com/issues?q=is%3Aopen+is%3Aissue+user%3Ahapijs+label%3A%2hgood+first+issue%22+">good first issue label</a>.
 
-          ul.unstyled
-            each issue in newContributorIssues.slice(0, 20)
-              li
-                p.issue-number
-                  a(href=issue.html_url) ##{issue.number}
-                p.issue-title (#{issue.repo}) #{issue.title}
-
-        .column.help-wanted-issues
-          header.cf
-            h4.pull-left Help wanted
-            a.pull-right(href='https://github.com/issues?q=is%3Aopen+is%3Aissue+user%3Ahapijs+label%3A%22help+wanted%22', title='See all issues where help is wanted') See all
-
-          ul.unstyled
-            each issue in helpWantedIssues.slice(0, 20)
-              li
-                p.issue-number
-                  a(href=issue.html_url) ##{issue.number}
-                p.issue-title (#{issue.repo}) #{issue.title}
+      p Finally we also have issues labelled with <a href="https://github.com/issues?q=is%3Aopen+is%3Aissue+user%3Ahapijs+label%3A%22help+wanted%22">help wanted</a>. These issues might not be as easy to tackle than the previous one.
