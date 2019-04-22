@@ -339,30 +339,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // we need to update all links in module summary to prepend with the module name
             // this way we prevent anchor name duplicate between modules
-            var moduleSummaryLinks = moduleContent.querySelectorAll('a');
-            Array.prototype.forEach.call(moduleSummaryLinks, function(summaryLink) {
-                var hastagPosition = summaryLink.href.indexOf('#');
+            if (moduleContent) {
+                var moduleSummaryLinks = moduleContent.querySelectorAll('a');
+                Array.prototype.forEach.call(moduleSummaryLinks, function(summaryLink) {
+                    var hastagPosition = summaryLink.href.indexOf('#');
 
-                if (summaryLink.href && hastagPosition > -1) {
-                    var anchorValue = summaryLink.href.substring(hastagPosition + 1);
-                    var newAnchorValue = moduleName + '-' + anchorValue;
-                    // when loading the content from github ids are prefixed with 'user-content-'
-                    // later on that prefix will be removed
-                    var linkDestination = document.getElementById('user-content-' + anchorValue);
+                    if (summaryLink.href && hastagPosition > -1) {
+                        var anchorValue = summaryLink.href.substring(hastagPosition + 1);
+                        var newAnchorValue = moduleName + '-' + anchorValue;
+                        // when loading the content from github ids are prefixed with 'user-content-'
+                        // later on that prefix will be removed
+                        var linkDestination = document.getElementById('user-content-' + anchorValue);
 
-                    // might not be an internal link
-                    if (linkDestination) {
-                        summaryLink.href = summaryLink.href.substring(0, hastagPosition + 1) + newAnchorValue;
-                        linkDestination.id = newAnchorValue;
+                        // might not be an internal link
+                        if (linkDestination) {
+                            summaryLink.href = summaryLink.href.substring(0, hastagPosition + 1) + newAnchorValue;
+                            linkDestination.id = newAnchorValue;
+                        }
                     }
-                }
-            });
+                });
 
-            moduleLink.href = '#' + moduleName;
-            moduleLink.textContent = moduleName.charAt(0).toUpperCase() + moduleName.substr(1);
-            li.appendChild(moduleLink);
-            li.appendChild(moduleContent);
-            moduleInternUl.appendChild(li);
+                moduleLink.href = '#' + moduleName;
+                moduleLink.textContent = moduleName.charAt(0).toUpperCase() + moduleName.substr(1);
+                li.appendChild(moduleLink);
+                li.appendChild(moduleContent);
+                moduleInternUl.appendChild(li);
+            }
         });
         modulesLi.appendChild(moduleInternUl);
         nav.appendChild(modulesLi);
