@@ -350,8 +350,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     // later on that prefix will be removed
                     var linkDestination = document.getElementById('user-content-' + anchorValue);
 
-                    summaryLink.href = summaryLink.href.substring(0, hastagPosition + 1) + newAnchorValue;
-                    linkDestination.id = newAnchorValue;
+                    // might not be an internal link
+                    if (linkDestination) {
+                        summaryLink.href = summaryLink.href.substring(0, hastagPosition + 1) + newAnchorValue;
+                        linkDestination.id = newAnchorValue;
+                    }
                 }
             });
 
