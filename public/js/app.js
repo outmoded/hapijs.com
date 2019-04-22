@@ -343,19 +343,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 var moduleSummaryLinks = moduleContent.querySelectorAll('a');
                 Array.prototype.forEach.call(moduleSummaryLinks, function(summaryLink) {
                     var hastagPosition = summaryLink.href.indexOf('#');
+                    var isHapiLink = summaryLink.hostname === 'hapijs.com';
 
-                    if (summaryLink.href && hastagPosition > -1) {
+                    if (summaryLink.href && isHapiLink && hastagPosition > -1) {
                         var anchorValue = summaryLink.href.substring(hastagPosition + 1);
                         var newAnchorValue = moduleName + '-' + anchorValue;
                         // when loading the content from github ids are prefixed with 'user-content-'
                         // later on that prefix will be removed
                         var linkDestination = document.getElementById('user-content-' + anchorValue);
 
-                        // might not be an internal link
-                        if (linkDestination) {
-                            summaryLink.href = summaryLink.href.substring(0, hastagPosition + 1) + newAnchorValue;
-                            linkDestination.id = newAnchorValue;
-                        }
+                        summaryLink.href = summaryLink.href.substring(0, hastagPosition + 1) + newAnchorValue;
+                        linkDestination.id = newAnchorValue;
                     }
                 });
 
