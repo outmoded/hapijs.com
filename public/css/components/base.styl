@@ -16,6 +16,8 @@ body
   background-color: white
   text-rendering: optimizeLegibility
   -webkit-font-smoothing: antialiased
+  word-break: break-word
+
 
 ::-moz-selection
   background-color: $orange-light
@@ -187,6 +189,7 @@ dl
   .content
     width: 80%
     max-width: 1260px
+    display: flex
 
     &.single-column, .single-column, .getting-started > .highlight
       width: 60%
@@ -195,7 +198,6 @@ dl
     margin: 0 auto
 
   .column
-    float: left
     width: 50%
 
     &:first-of-type
@@ -233,3 +235,8 @@ dl
 
   h3
     font-size: $font-size-h3*0.7
+
+@media screen and (min-width: 768px) and (max-width: 1000px)
+
+  .content
+    width: 95%;
