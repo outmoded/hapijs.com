@@ -8,7 +8,7 @@ header
     margin: 0
 
   nav
-    padding: 20px 0
+    padding: 20px
 
     ul
       float: right
@@ -21,24 +21,26 @@ header
       &.logo
         float: left
         padding: 0
-        background: url('/public/img/logo.svg') no-repeat 0 0
+        background: url('/public/img/hapi.svg') no-repeat 0 0
         background-size: contain
+        width: 100px
+        height: 75px
 
         &:hover
           opacity: .8
-      
+
       &.edit
-        
+
         svg
           margin-left: 5px
           transform: translateY(10%)
 
         path
           fill: none
-        
+
         .edit-svg-path
           fill: $orange
-        
+
         &:hover
 
           .edit-svg-path
@@ -113,6 +115,10 @@ header
   -ms-user-select: none
   -o-user-select: none
   user-select: none
+  float: right
+  line-height: 75px
+  width: 30px
+  padding: 0
 
 @media $mobile-devices
 
@@ -132,18 +138,6 @@ header
 
       a
         padding: 10px 20px
-
-        &.logo
-          height: 75px
-          width: 100px
-
-      .nav-toggle
-        float: right
-        margin-top: 40px
-        width: 30px
-        height: 40px
-        padding: 0
-        background: url('/public/img/icon-menu.svg') 0 0 no-repeat
         background-size: contain
 
 @media $desktop
@@ -169,20 +163,13 @@ header
           height: 75px
           width: 100px
 
-      .nav-toggle
-        float: right
-        margin-top: 40px
-        width: 30px
-        height: 40px
-        padding: 0
-        background: url('/public/img/icon-menu.svg') 0 0 no-repeat
         background-size: contain
 
 @media $desktop-wide
 
   header
     ul
-      line-height: 150px
+      line-height: 75px
 
     nav
       ul.unstyled
@@ -198,9 +185,9 @@ header
       a
         padding: 0 20px 0 0;
 
-        &.logo
-          height: 150px
-          width: 201px
+        // &.logo
+        //   height: 150px
+        //   width: 201px
 
   .js .nav-collapse
     position: relative
