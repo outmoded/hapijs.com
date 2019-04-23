@@ -13,7 +13,7 @@
   var responsiveNav = function (el, options) {
 
     var computed = !!window.getComputedStyle;
-    
+
     // getComputedStyle polyfill
     if (!computed) {
       window.getComputedStyle = function(el) {
@@ -63,7 +63,7 @@
           }
         }
       },
-    
+
       removeEvent = function (el, evt, fn, bubble) {
         if ("removeEventListener" in el) {
           try {
@@ -87,7 +87,7 @@
           }
         }
       },
-    
+
       getChildren = function (e) {
         if (e.children.length < 1) {
           throw new Error("The Nav container has no containing elements");
@@ -102,25 +102,25 @@
         }
         return children;
       },
-    
+
       setAttributes = function (el, attrs) {
         for (var key in attrs) {
           el.setAttribute(key, attrs[key]);
         }
       },
-    
+
       addClass = function (el, cls) {
         if (el.className.indexOf(cls) !== 0) {
           el.className += " " + cls;
           el.className = el.className.replace(/(^\s*)|(\s*$)/g,"");
         }
       },
-    
+
       removeClass = function (el, cls) {
         var reg = new RegExp("(\\s|^)" + cls + "(\\s|$)");
         el.className = el.className.replace(reg, " ").replace(/(^\s*)|(\s*$)/g,"");
       },
-    
+
       // forEach method that passes back the stuff we need
       forEach = function (array, callback, scope) {
         for (var i = 0; i < array.length; i++) {
@@ -370,6 +370,11 @@
             "href": "#",
             "class": "nav-toggle"
           });
+
+          const navicon = document.createElement('img');
+          navicon.src = '/public/img/icon-menu.svg';
+
+          toggle.appendChild(navicon)
 
           if (opts.insert === "after") {
             nav.parentNode.insertBefore(toggle, nav.nextSibling);

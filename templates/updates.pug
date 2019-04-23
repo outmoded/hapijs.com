@@ -6,7 +6,7 @@ block title
 block content
 
   section.bottom-rule.github-updates
-    .content
+    .contain
       h3 Latest Updates
       - var issueString = issues.length === 1 ? 'issue' : 'issues';
       - var pullRequestString = pullRequests.length === 1 ? 'pull request' : 'pull requests';
@@ -14,8 +14,8 @@ block content
       p During the last week we’ve closed <strong>#{issues.length} #{issueString}</strong>, merged <strong>#{pullRequests.length} #{pullRequestString}</strong> and pushed <strong>#{commits.length} #{commitString}</strong> to master branch.
 
       p If you want information about modules releases in the ecosystem other than the core hapi module, you can look into issues in their respective repositories. They are labelled with <strong>release notes</strong> or <strong>breaking changes</strong> for major releases, otherwise for the minor releases check the issues <strong>milestones</strong>.
-      
-      .cf
+
+      .cf.contain.content
         .column.pull-request-list
           header.cf
             h4.pull-left Merged pull requests
@@ -41,7 +41,7 @@ block content
                 p.issue-title= issue.title
 
   section.bottom-rule.changelog
-    .content
+    .contain
       h3 Changelog
       .changelog
         include includes/changelog

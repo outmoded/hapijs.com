@@ -28,6 +28,7 @@ body
   color: white
 
 .cf
+  margin: 0 auto
   &:before,
   &:after
     content: " "
@@ -162,8 +163,10 @@ dl
     margin: 0
     color: $gray-light
 
-.content
+.content, .contain
   margin: 0 auto
+  .content
+    width: 100%
 
 .bottom-rule
   position: relative
@@ -186,9 +189,10 @@ dl
 
 @media $desktop
 
+  .contain
+    max-width: 1260px
   .content
     width: 80%
-    max-width: 1260px
     display: flex
 
     &.single-column, .single-column, .getting-started > .highlight
