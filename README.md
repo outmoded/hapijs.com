@@ -18,7 +18,7 @@ Lead Maintainer: [Jonas Pauthier](https://github.com/Nargonath)
     - [x] **public_repo**     :   *Access public repositories*
     - [ ] **repo:invite**     :   *Access repository invitations*
  
-
+For more details, here is github's [documentation](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line).
 
 * Copy the `config/default.json` file to `config/local.json` and put your token in the `githubToken` field of `local.json`. NOTE: Please do not commit the file that contains your real github token. That would make it public and allow anyone to look at this repo and use your token as though they were you.
 
