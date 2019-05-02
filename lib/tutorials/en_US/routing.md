@@ -128,7 +128,7 @@ server.route({
     path: '/',
     handler: function (request, h) {
 
-        return request.params;
+        return request.query;
     }
 });
 ```
