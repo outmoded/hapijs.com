@@ -199,8 +199,8 @@ One common case for serving static content is setting up a file server. The foll
 
 ```js
 const Path = require('path');
-const Hapi = require('@hapi');
-const Inert = require('@inert');
+const Hapi = require('@hapi/hapi');
+const Inert = require('@hapi/inert');
 
 const init = async () => {
 
