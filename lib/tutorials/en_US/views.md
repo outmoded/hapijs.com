@@ -36,14 +36,14 @@ To get started with views, first you have to configure at least one templating e
 'use strict';
 
 const Path = require('path');
-const Hapi = require('hapi');
-const Hoek = require('hoek');
+const Hapi = require('@hapi/hapi');
+const Hoek = require('@hapi/hoek');
 
 const start = async () => {
 
     const server = Hapi.server();
 
-    await server.register(require('vision'));
+    await server.register(require('@hapi/vision'));
 
     server.views({
         engines: {
@@ -202,13 +202,13 @@ For reference, here is a complete server script that uses the fortune view helpe
 ```javascript
 'use strict';
 
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 
 const start = async () => {
 
     const server = Hapi.server({ port: 8080 });
 
-    await server.register(require('vision'));
+    await server.register(require('@hapi/vision'));
 
     server.views({
         engines: {
