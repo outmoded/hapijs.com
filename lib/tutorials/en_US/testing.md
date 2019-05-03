@@ -21,7 +21,7 @@ This tutorial goes into a basic setup for testing routes, and outlines one possi
 
 To install `lab`, type the following in your terminal:
 
-`npm install --save-dev lab`
+`npm install --save-dev @hapi/lab`
 
 ## <a name="code" /> code
 
@@ -29,7 +29,7 @@ To install `lab`, type the following in your terminal:
 
 To install `code`, type the following in your terminal:
 
-`npm install --save-dev code`
+`npm install --save-dev @hapi/code`
 
 ## <a name="server" /> Server Setup
 
@@ -38,7 +38,7 @@ Taking the server example from the Getting Started tutorial, we make a minor mod
 ```js
 'use strict';
 
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 
 const server = Hapi.server({
     port: 3000,
@@ -97,8 +97,8 @@ To get started, create a file called `example.test.js` in the `test` directory:
 ```js
 'use strict';
 
-const Lab = require('lab');
-const { expect } = require('code');
+const Lab = require('@hapi/lab');
+const { expect } = require('@hapi/code');
 const { afterEach, beforeEach, describe, it } = exports.lab = Lab.script();
 const { init } = require('../lib/server');
 
