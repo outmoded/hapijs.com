@@ -10,13 +10,13 @@ _This tutorial is compatible with hapi v17_
 - [Strategies](#strategies)
 - [Default Strategy](#default)
 - [Route Configuration](#route)
-- [hapi-auth-basic](#basic)
-- [hapi-auth-cookie](#cookie)
+- [@hapi/basic](#basic)
+- [@hapi/cookie](#cookie)
 
 
 ## <a name="overview" /> Overview
 
-Most modern web apps use some form of authentication. Authentication within hapi is based on the concept of `schemes` and `strategies`. `Schemes` are a way of handling authentication within hapi. For example, the `hapi-auth-basic` and `hapi-auth-cookie` plugins would be considered `schemes`. A `strategy` is a pre-configured instance of a `scheme`. You use `strategies` to implement authentication `schemes` into your application.  
+Most modern web apps use some form of authentication. Authentication within hapi is based on the concept of `schemes` and `strategies`. `Schemes` are a way of handling authentication within hapi. For example, the `@hapi/basic` and `@hapi/cookie` plugins would be considered `schemes`. A `strategy` is a pre-configured instance of a `scheme`. You use `strategies` to implement authentication `schemes` into your application.  
 
 ## <a name="schemes" /> Schemes
 
@@ -105,15 +105,15 @@ Lastly, the `payload` parameter can be set to `false` denoting the payload is no
 
 The `payload` parameter is only possible to use with a strategy that supports the `payload` method in its scheme.
 
-## <a name="basic" /> hapi-auth-basic
+## <a name="basic" /> basic
 
-The first `scheme` we will look at is the [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) plugin. Just like the name says, the `hapi-auth-basic` plugin uses basic authentication to validate users. Here is an example of setting up `hapi-auth-basic`:
+The first `scheme` we will look at is the [@hapi/basic](https://github.com/hapijs/basic) plugin. Just like the name says, the `@hapi/basic` plugin uses basic authentication to validate users. Here is an example of setting up `@hapi/basic`:
 
 ```js
 'use strict';
 
 const Bcrypt = require('bcrypt');
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 
 const users = {
     john: {
@@ -141,7 +141,7 @@ const start = async () => {
 
     const server = Hapi.server({ port: 4000 });
 
-    await server.register(require('hapi-auth-basic'));
+    await server.register(require('@hapi/basic'));
 
     server.auth.strategy('simple', 'basic', { validate });
 
@@ -165,7 +165,7 @@ const start = async () => {
 start();
 ```
 
-First, you define your `users` database, which is a simple object in this example. Then you define a validation function, which is a feature specific to [hapi-auth-basic](https://github.com/hapijs/hapi-auth-basic) and allows you to verify that the user has provided valid credentials. For this validation function, you use `Bcrypt` to compare the user provided password with the hashed password in your database.  
+First, you define your `users` database, which is a simple object in this example. Then you define a validation function, which is a feature specific to [@hapi/basic](https://github.com/hapijs/basic) and allows you to verify that the user has provided valid credentials. For this validation function, you use `Bcrypt` to compare the user provided password with the hashed password in your database.  
 
 Next, you register the plugin, which creates a scheme with the name of `basic`. This is done within the plugin via [server.auth.scheme()](/api#-serverauthschemename-scheme).
 
@@ -173,9 +173,9 @@ Once the plugin has been registered, you use [server.auth.strategy()](/api#serve
 
 The last thing you do is tell a route to use the strategy named `simple` for authentication.
 
-## <a name="cookie" /> hapi-auth-cookie
+## <a name="cookie" /> cookie
 
-[hapi-auth-cookie](https://github.com/hapijs/hapi-auth-cookie) is a plugin that will store a cookie in the users browser once they are authenticated. This has the option of keeping the user logged in, even after they leave the site. Here is an example of setting up `hapi-auth-cookie`:
+[@hapi/cookie](https://github.com/hapijs/cookie) is a plugin that will store a cookie in the users browser once they are authenticated. This has the option of keeping the user logged in, even after they leave the site. Here is an example of setting up `@hapi/cookie`:
 
 In this example, the home route, "/", is restricted and can only be accessed once a user has authenticated themselves:  
 
@@ -183,7 +183,7 @@ In this example, the home route, "/", is restricted and can only be accessed onc
 'use strict';
 
 const Bcrypt = require('bcrypt');
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 
 const users = [
     {
@@ -198,7 +198,7 @@ const start = async () => {
 
     const server = Hapi.server({ port: 4000 });
 
-    await server.register(require('hapi-auth-cookie'));
+    await server.register(require('@hapi/cookie'));
 
     server.auth.strategy('session', 'cookie', {
         cookie: {
@@ -284,7 +284,7 @@ const start = async () => {
 
 start();
 ```
-First, you need to do is register the `hapi-auth-cookie` plugin with `server.register`. Once the plugin is registered, you configure your `strategy` by calling `server.auth.strategy`. `server.auth.strategy` takes three parameters: name of the strategy, what scheme you are using, and an options object. For your strategy, you name it `session`. For the scheme, you will be using the `cookie` scheme. If you were using `hapi-auth-basic`, this parameter would be `basic`. The last parameter is an options object. This is how you can customized your auth strategy to fit your needs.
+First, you need to do is register the `@hapi/cookie` plugin with `server.register`. Once the plugin is registered, you configure your `strategy` by calling `server.auth.strategy`. `server.auth.strategy` takes three parameters: name of the strategy, what scheme you are using, and an options object. For your strategy, you name it `session`. For the scheme, you will be using the `cookie` scheme. If you were using `@hapi/basic`, this parameter would be `basic`. The last parameter is an options object. This is how you can customized your auth strategy to fit your needs.
 
 The first property you configure is the `cookie` object. In your `strategy`, you will configure three properties of the `cookie` object. First, you set the name of the cookie, in this case `sid-example`.  Next, you set the password that will be used to encrypt the cookie. This should be at least 32 characters long. Last, you set `isSecure` to `false`. This is ok for development while working over HTTP. In production, this should be switched back to `true`, which is the default setting. 
 
