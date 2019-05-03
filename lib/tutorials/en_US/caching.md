@@ -119,15 +119,15 @@ const server = Hapi.server({
             provider: {
                 constructor: CatboxRedis,
                 options: {
-                    partition : 'my_cached_data'
+                    partition : 'my_cached_data',
                     host: 'redis-cluster.domain.com',
                     port: 6379,
                     database: 0,
-                    tls: {},
+                    tls: {}
                 }
             }
         }
-    ]    
+    ]
 });
 ```
 
