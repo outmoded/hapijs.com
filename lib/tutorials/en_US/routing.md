@@ -137,7 +137,7 @@ If you sent the request `localhost:3000?foo[bar]=baz`, hapi, by default would re
 With the [qs](https://github.com/ljharb/qs) module, you can parse the query string out. An example: 
 
 ```js
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 const Qs = require('qs');
 
 const server = Hapi.server({
@@ -258,7 +258,7 @@ The second property is `validate`. This allows you to set validation rules for v
 ```js
 'use strict';
 
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 
 const internals = {};
 
