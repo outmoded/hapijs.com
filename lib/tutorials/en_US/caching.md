@@ -108,20 +108,20 @@ hapi initializes a default [client](https://github.com/hapijs/catbox#client) usi
 ```javascript
 'use strict';
 
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 
 const server = Hapi.server({
     port: 8000,
     cache: [
         {
             name: 'mongoCache',
-            engine: require('catbox-mongodb'),
+            engine: require('@hapi/catbox-mongodb'),
             host: '127.0.0.1',
             partition: 'cache'
         },
         {
             name: 'redisCache',
-            engine: require('catbox-redis'),
+            engine: require('@hapi/catbox-redis'),
             host: '127.0.0.1',
             partition: 'cache'
         }
