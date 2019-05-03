@@ -25,13 +25,9 @@ Validating data can be very helpful in making sure that your application is stab
 
 ## <a name="joi" /> Joi
 
-[Joi](https://github.com/hapijs/joi) is an object schema description language and validator for JavaScript objects. Joi allows you to create blueprints or schemas for JavaScript objects to ensure validation of key information. Joi can validate both input and output data. To get started with `joi`, you must first install and add it as a dependency to your project:
+[Joi](https://github.com/hapijs/joi) is an object schema description language and validator for JavaScript objects. Joi allows you to create blueprints or schemas for JavaScript objects to ensure validation of key information. Joi can validate both input and output data. Joi comes bundled with hapi, so to use it, you just have to require the module:
 
-`npm install joi`
-
-Then, you must import it to your project:
-
-`const Joi = require('joi');`
+`const Joi = require('@hapi/joi');`
 
 ## <a name="input" /> Input Validation
 
