@@ -93,7 +93,7 @@ hapi provides powerful, convenient server-side caching via [catbox](https://www.
 
 ### <a name="catbox" /> catbox
 
-[catbox](https://github.com/hapijs/catbox) is a multi-strategy key-value object store. It comes with extensions supporting a memory cache, [Redis](https://redis.io), [MongoDB](https://www.mongodb.com), [Memcached](http://memcached.org), and [Amazon S3](https://aws.amazon.com/s3).
+[catbox](https://github.com/hapijs/catbox) is a multi-strategy key-value object store. It comes with extensions supporting a memory cache, [Redis](https://redis.io), and [Memcached](http://memcached.org).
 
 In order to reduce module dependencies, catbox does not include the external caching strategies. To use other strategies, each service must be manually installed via npm or package dependencies manually.
 
@@ -101,35 +101,37 @@ catbox has two interfaces; client and policy.
 
 ### <a name="client" /> Client
 
-[Client](https://github.com/hapijs/catbox#client) is a low-level interface that allows you set/get key-value pairs. It is initialized with one of the available adapters: ([Memory](https://github.com/hapijs/catbox-memory), [Redis](https://github.com/hapijs/catbox-redis), [mongoDB](https://github.com/hapijs/catbox-mongodb), [Memcached](https://github.com/hapijs/catbox-memcached), or [Riak](https://github.com/DanielBarnes/catbox-riak)).
+[Client](https://github.com/hapijs/catbox#client) is a low-level interface that allows you set/get key-value pairs. It is initialized with one of the available adapters: ([Memory](https://github.com/hapijs/catbox-memory), [Redis](https://github.com/hapijs/catbox-redis), or [Memcached](https://github.com/hapijs/catbox-memcached).
 
-hapi initializes a default [client](https://github.com/hapijs/catbox#client) using the [catbox memory](https://github.com/hapijs/catbox-memory) adapter. Let's see how you can define more clients.
+hapi initializes a default [client](https://github.com/hapijs/catbox#client) using the [catbox memory](https://github.com/hapijs/catbox-memory) adapter. Let's see how you can define another client using the [redis](http://redis.io/) strategy.
 
 ```javascript
 'use strict';
 
 const Hapi = require('@hapi/hapi');
+const CatboxRedis = require('@hapi/catbox-redis');
 
 const server = Hapi.server({
     port: 8000,
     cache: [
         {
-            name: 'mongoCache',
-            engine: require('@hapi/catbox-mongodb'),
-            host: '127.0.0.1',
-            partition: 'cache'
-        },
-        {
-            name: 'redisCache',
-            engine: require('@hapi/catbox-redis'),
-            host: '127.0.0.1',
-            partition: 'cache'
+            name: 'my_cache',
+            provider: {
+                constructor: CatboxRedis,
+                options: {
+                    partition : 'my_cached_data'
+                    host: 'redis-cluster.domain.com',
+                    port: 6379,
+                    database: 0,
+                    tls: {},
+                }
+            }
         }
-    ]
+    ]    
 });
 ```
 
-In the above example, you defined two catbox clients; mongoCache and redisCache. Including the default memory cache created by hapi, there are now three available cache clients. You can replace the default client by omitting the `name` property when registering a new cache client. `partition` tells the adapter how cache should be named ('catbox' by default). In the case of [mongoDB](http://www.mongodb.org/), this becomes the database name and in the case of [redis](http://redis.io/) it is used as key prefix.
+In the above example, you defined a new catbox client, `my_cache`. Including the default memory cache created by hapi, there are now two available cache clients. You can replace the default client by omitting the `name` property when registering a new cache client. `partition` tells the adapter how cache should be named ('catbox' by default). In the case of [redis](http://redis.io/) it is used as key prefix.
 
 ### <a name="policy" /> Policy
 
@@ -148,7 +150,7 @@ const start = async () => {
     };
 
     const sumCache = server.cache({
-        cache: 'mongoCache',
+        cache: 'my_cache',
         expiresIn: 10 * 1000,
         segment: 'customSegment',
         generateFunc: async (id) => {
@@ -177,13 +179,13 @@ const start = async () => {
 
 start();
 ```
-If you make a request to http://localhost:8000/add/1/5, you should get the response `6` after about a second. If you hit that endpoint again the response should come immediately because it's being served from the cache. If you were to wait 10s and then call it again, you'd see that it took a while because the cached value has now been ejected from the cache.
+If you make a request to `http://localhost:8000/add/1/5`, you should get the response `6` after about a second. If you hit that endpoint again the response should come immediately because it's being served from the cache. If you were to wait 10s and then call it again, you'd see that it took a while because the cached value has now been ejected from the cache.
 
-`server.cache(options)` provisions a cache segment within the server cache facility. In this case, your policy will be using `'mongoCache'` which you created above with `server.cache`.
+`server.cache(options)` provisions a cache segment within the server cache facility. In this case, your policy will be using `'my_cache'` which you created above with `server.cache`.
 
 `expiresIn` states the time, in milliseconds, the cache will expire in relation to the time the item was saved in the cache. In this case, our cache will expire 10 seconds after the item was saved. 
 
-`segment` that allow you to further isolate caches within one [client](https://github.com/hapijs/catbox#client) partition. If you want to cache results from two different methods, you usually don't want mix the results together. In [mongoDB](http://www.mongodb.org/) adapters, `segment` represents a collection and in [redis](http://redis.io/) it's an additional prefix along with the `partition` option. The default value for `segment` when [server.cache()](/api#-servercacheoptions) is called inside of a plugin will be `'!pluginName'`. When creating [server methods](/tutorials/server-methods), the `segment` value will be `'#methodName'`. If you have a use case for multiple policies sharing one segment there is a [shared](/api#-servercacheoptions) option available as well.
+`segment` that allow you to further isolate caches within one [client](https://github.com/hapijs/catbox#client) partition. If you want to cache results from two different methods, you usually don't want mix the results together. In [redis](http://redis.io/), `segment` is an additional prefix along with the `partition` option. The default value for `segment` when [server.cache()](/api#-servercacheoptions) is called inside of a plugin will be `'!pluginName'`. When creating [server methods](/tutorials/server-methods), the `segment` value will be `'#methodName'`. If you have a use case for multiple policies sharing one segment there is a [shared](/api#-servercacheoptions) option available as well.
 
 `generateFunc` is a function that will generate a new cache item if one is not found in the cache when calling `get()`. In this example, the generate function will generate a value of two numbers add together. The `generateFunc` function will also be called if an item in the cache exists, but is found to be stale. You can set the time when an item in the cache will be stale by configuring the `staleIn` option. `staleIn` is a number in milliseconds to mark an item stored in cache as stale and attempt to regenerate it when `generateFunc` is provided. `staleIn` must be less than `expiredIn`.
 
@@ -206,7 +208,7 @@ const start = async () => {
 
     server.method('sum', add, {
         cache: {
-            cache: 'mongoCache',
+            cache: 'my_cache',
             expiresIn: 10 * 1000,
             generateTimeout: 2000
         }
@@ -243,7 +245,7 @@ const start = async () => {
 
     server.method('sum', add, {
         cache: {
-            cache: 'mongoCache',
+            cache: 'my_cache',
             expiresIn: 10 * 1000,
             generateTimeout: 2000,
             getDecoratedValue: true
