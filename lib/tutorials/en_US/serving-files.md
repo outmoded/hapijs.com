@@ -21,7 +21,7 @@ Inevitably while building any web application, the need arises to server a simpl
 
 First you need to install and add `inert` as a dependency to your project:
 
-`npm install inert`
+`npm install @hapi/inert`
 
 ## <a name="inert" /> Inert
 
@@ -34,7 +34,7 @@ To simplify things, especially if you have multiple routes that respond with fil
 ```javascript
 'use strict';
 
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 const Path = require('path');
 
 const start = async () => {
@@ -47,7 +47,7 @@ const start = async () => {
         }
     });
 
-    await server.register(require('inert'));
+    await server.register(require('@hapi/inert'));
 
     server.route({
         method: 'GET',
@@ -77,7 +77,7 @@ const start = async () => {
 
     const server = Hapi.server();
 
-    await server.register(require('inert'));
+    await server.register(require('@hapi/inert'));
 
     server.route({
         method: 'GET',
@@ -199,8 +199,8 @@ One common case for serving static content is setting up a file server. The foll
 
 ```js
 const Path = require('path');
-const Hapi = require('hapi');
-const Inert = require('inert');
+const Hapi = require('@hapi');
+const Inert = require('@inert');
 
 const init = async () => {
 
