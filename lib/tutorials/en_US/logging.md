@@ -52,7 +52,7 @@ In this example, if there is a request-specific event with a tag of `error`, the
 `server.log()` takes three parameters, `(tags, data, timestamp)`. The `tags` and `data` parameters are exactly the same as in `request.logs()`. The `timestamp` parameter defaults to `Date.now()` and should only be passed in if you need to override the default for some reason.  
 
 ```js
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 const server = Hapi.server({ port: 80 });
 
 server.log(['test', 'error'], 'Test event');
