@@ -14,11 +14,11 @@ block header
         h4 hapi enables developers to focus on writing reusable application logic instead of spending time building infrastructure.
 
         .latest-update
-          small Current version: <a href='https://github.com/hapijs/hapi/tags'>#{version.version}</a>
+          small Current version: <a href='https://github.com/hapijs/hapi/tags'>#{version && version.version || 'N/A'}</a>
           small  ● Latest update:
-          small  <a href="#{latestUpdate.url}" role="update">#{latestUpdate.updated}</a>
+          small  <a href="#{latestUpdate.url}" role="update">#{latestUpdate && latestUpdate.updated || 'N/A'}</a>
           small  ● Downloads last month:
-          small  <a href="http://npm-stat.com/charts.html?package=hapi">#{downloads}</a>
+          small  <a href="http://npm-stat.com/charts.html?package=hapi">#{downloads || 'N/A'}</a>
 
 block content
 
