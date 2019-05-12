@@ -1,9 +1,5 @@
-FROM node:8
+FROM node:lts-alpine
 
-WORKDIR /app
-EXPOSE 3000
+WORKDIR /usr/server
 
-ADD . /app
-RUN npm install && npm test
-
-CMD ["npm", "start"]
+RUN apk update && apk add bash
