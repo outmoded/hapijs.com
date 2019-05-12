@@ -5,8 +5,9 @@ const Hapi = require('hapi');
 const Pug = require('pug');
 const Markdown = require('./lib/markdown');
 const Path = require('path');
+const isProd = process.env.NODE_ENV === 'production';
 
-if (Config.server.cache) {
+if (Config.server.cache && isProd) {
     Config.server.cache.engine = require(Config.server.cache.engine);
 }
 

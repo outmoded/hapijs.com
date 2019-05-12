@@ -5,5 +5,8 @@
             "engine": "catbox-redis",
             "host": "redis"
         }
+    },
+    "redis": {
+        "host": "${server.cache.host}"
     }
 }
