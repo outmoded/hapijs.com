@@ -22,7 +22,7 @@ Create a new directory `myproject`, and from there:
 
 - Run: `npm init` and follow the prompts.  This will generate a package.json file for you.
 
-- Run: `npm install @hapi/hapi`, this will install the latest version of hapi as a dependency in your package.json.
+- Run: `npm install --save @hapi/hapi`, this will install the latest version of hapi as a dependency in your package.json.
 
 ## <a name="server" /> Creating a Server
 
