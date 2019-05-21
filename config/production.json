@@ -7,6 +7,6 @@
         }
     },
     "redis": {
-        "host": "${server.cache.host}"
+        "host": "${self.server.cache.host}"
     }
 }
