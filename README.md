@@ -12,6 +12,10 @@ Lead Maintainer: [Jonas Pauthier](https://github.com/Nargonath)
 
 ## Running/developing
 
+Behind the scene the website is using `docker` for its development environment because it relies on `redis` to cache some of its data. For you to run the website locally you need to setup `docker` on your local machine. Please refer to [`docker` official documentation](https://docs.docker.com/install/).
+
+Once `docker` is installed, you can follow the next steps:
+
 * First, obtain a token from github [here](https://github.com/settings/tokens/new) and select checked scopes only (only two)
 
   - [ ] **repo**              :   *Full control of private repositories*
@@ -27,9 +31,7 @@ For more details, here is github's [documentation](https://help.github.com/en/ar
 * Run the following commands
 
 ```bash
-npm install
-make
-npm start or npm run dev (for automatic code reload)
+make restart
 ```
 
 You may now visit `http://localhost:3000` in your browser to view the site.
