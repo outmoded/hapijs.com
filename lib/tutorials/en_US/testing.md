@@ -134,6 +134,6 @@ To run the tests, you can modify the `package.json` of your project to run your 
 
 ```json
   "scripts": {
-    "test": "lab -v **/*.spec.js"
+    "test": "lab -v **/*.test.js"
   }
 ```
