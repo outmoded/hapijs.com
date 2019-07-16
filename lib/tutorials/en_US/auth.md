@@ -265,15 +265,18 @@ const start = async () => {
                     (user) => user.username === username
                 );
 
-                if (!account || !(await Bcrypt.compare(password, user.password))) {
+                if (!account || !(await Bcrypt.compare(password, account.password))) {
 
                     return h.view('/login');
         }
 
-                request.cookieAuth.set({ id: user.id });
+                request.cookieAuth.set({ id: account.id });
 
                 return h.redirect('/');
-             }
+            },
+            options: {
+                auth: false
+            }
         }
     ]);
 
