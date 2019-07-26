@@ -17,7 +17,7 @@ _This tutorial is compatible with hapi v17_
 
 ## <a name="overview" /> Overview
 
-Inevitably while building any web application, the need arises to server a simple file from disk. There is a hapi plugin called [inert](https://github.com/hapijs/inert) that adds this functionality to hapi through the use of additional handlers. 
+Inevitably while building any web application, the need arises to serve a simple file from disk. There is a hapi plugin called [inert](https://github.com/hapijs/inert) that adds this functionality to hapi through the use of additional handlers. 
 
 First you need to install and add `inert` as a dependency to your project:
 
@@ -237,5 +237,5 @@ The first thing you do is require both `inert` and `path`. As you will see, you 
 
 Next, you configure `server.options.routes`. You set the location the server will look for the static files by setting the `relativeTo` option.  
 
-After your server is configured, you then register the `inert` plugin. This will allow you to have access to the `directory` handler, which will enable you to server your files. In the `directory` handler, you configure `path`, which is required, to look in the entire `public` directory which you specified in the `relativeTo` option. The second option is the `redirectToSlash` option. By setting this to `true`, you tell the server to redirect requests without trailing slashes to the same path with those with the trailing slash.
+After your server is configured, you then register the `inert` plugin. This will allow you to have access to the `directory` handler, which will enable you to serve your files. In the `directory` handler, you configure `path`, which is required, to look in the entire `public` directory which you specified in the `relativeTo` option. The second option is the `redirectToSlash` option. By setting this to `true`, you tell the server to redirect requests without trailing slashes to the same path with those with the trailing slash.
 
