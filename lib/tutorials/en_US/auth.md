@@ -295,7 +295,7 @@ The next property is `redirectTo`. This will tell the server where to redirect t
 
 The last property is the `validateFunc` function. The `validateFunc` validates that a current cookie is still valid. For example, if a user authenticates themselves successfully, receives a cookie, and then leaves the site. Once they return, the `validateFunc` will check if their current cookie is still valid. 
 
-You setup the default strategy by calling `server.auth.default('session')`. This will set set the default auth strategy for all routes.   
+You setup the default strategy by calling `server.auth.default('session')`. This will set the default auth strategy for all routes.   
 
 Once your strategy is set up, you need to set up route that will validate the provided username and password. In this case, your `POST` route to `'/login'` will do just that. First, it will pull the `username` and `password` from `request.payload`, which the user provided in the form from the `'/login'` `'GET'` route. Next, you find the user from the database by searching for their username:
 
@@ -304,7 +304,7 @@ const account = users.find(
     (user) => user.username === username
 );
 ```
-If the user doesn't not exists, or if the provided password is wrong, you redirect the user back to the login page. You use `Bcrypt` to compare the user provided password with the hashed password from the database.  
+If the user doesn't exist, or if the provided password is wrong, you redirect the user back to the login page. You use `Bcrypt` to compare the user provided password with the hashed password from the database.  
 
 Lastly, if the user does exist, and the passwords match, the user is then redirected to the homepage.  
 
