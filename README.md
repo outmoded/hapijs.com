@@ -2,13 +2,8 @@
 
 # hapijs.com
 
-<a href="https://www.packet.net"><img src="https://www.packet.net/assets/images/logo-main.png" height="80px" align="right"/></a>
-
-This is the home of [hapijs.com](http://hapijs.com).
-
-Lead Maintainer: [Jonas Pauthier](https://github.com/Nargonath)
-
-**hapijs.com** is generously hosted by [packet](https://www.packet.net).
+This was the old developer website for hapi under [hapijs.com](http://hapijs.com). For the current site check
+https://github.com/hapijs/hapi.dev.
 
 ## Running/developing
 
